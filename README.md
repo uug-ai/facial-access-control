@@ -23,6 +23,10 @@ Next to the web based application, a machine learning workload is running in the
 - Isolation of biometric data on your infrastructure (you own the biometrics, nothing is in the cloud)
 - ....
 
+## Architecture
+
+To be completed
+
 ## Contributors
 
 This project exists thanks to all the people who contribute.
