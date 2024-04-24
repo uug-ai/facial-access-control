@@ -10,6 +10,10 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: /ui
+
     steps: 
       - name: checkout
         uses: actions/checkout@v4
