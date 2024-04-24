@@ -1,0 +1,90 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "This is the API for using and configure Kerberos Agent.",
+        "title": "Swagger Kerberos Agent API",
+        "termsOfService": "https://kerberos.io",
+        "contact": {
+            "name": "API Support",
+            "url": "https://www.kerberos.io",
+            "email": "support@kerberos.io"
+        },
+        "license": {
+            "name": "Apache 2.0 - Commons Clause",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
+    },
+    "basePath": "/",
+    "paths": {
+        "/api/login": {
+            "post": {
+                "description": "Get Authorization token.",
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Get Authorization token.",
+                "operationId": "login",
+                "parameters": [
+                    {
+                        "description": "Credentials",
+                        "name": "credentials",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Authentication"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Authorization"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Authentication": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Authorization": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "expire": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}

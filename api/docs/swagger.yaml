@@ -1,0 +1,60 @@
+basePath: /
+definitions:
+  models.Authentication:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.Authorization:
+    properties:
+      code:
+        type: integer
+      expire:
+        type: string
+      role:
+        type: string
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+info:
+  contact:
+    email: support@kerberos.io
+    name: API Support
+    url: https://www.kerberos.io
+  description: This is the API for using and configure Kerberos Agent.
+  license:
+    name: Apache 2.0 - Commons Clause
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://kerberos.io
+  title: Swagger Kerberos Agent API
+  version: "1.0"
+paths:
+  /api/login:
+    post:
+      description: Get Authorization token.
+      operationId: login
+      parameters:
+      - description: Credentials
+        in: body
+        name: credentials
+        required: true
+        schema:
+          $ref: '#/definitions/models.Authentication'
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Authorization'
+      summary: Get Authorization token.
+      tags:
+      - authentication
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
