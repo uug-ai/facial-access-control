@@ -23,10 +23,16 @@ Next to the web based application, a machine learning workload is running in the
 - Isolation of biometric data on your infrastructure (you own the biometrics, nothing is in the cloud)
 - ....
 
-## Web app
+## Web app (ui)
 
 The web based application will make use of the [Next.js](https://nextjs.org/) framework. [Storybook](https://storybook.js.org/)
  will be used to keep track of and test our UI components.
+
+## Back-end (api)
+
+The back-end or API is written in Golang, and defines specific methods to persist data and call the face recognition model.
+
+## Face recognition (ml)
 
 ## Architecture
 
