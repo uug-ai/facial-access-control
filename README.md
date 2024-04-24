@@ -23,6 +23,11 @@ Next to the web based application, a machine learning workload is running in the
 - Isolation of biometric data on your infrastructure (you own the biometrics, nothing is in the cloud)
 - ....
 
+## Web app
+
+The web based application will make use of the [Next.js](https://nextjs.org/) framework. [Storybook](https://storybook.js.org/)
+ will be used to keep track of and test our UI components.
+
 ## Architecture
 
 To be completed
