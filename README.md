@@ -22,6 +22,12 @@ Next to the web based application, a machine learning workload is running in the
 - On the fly updating of new biometric data
 - Isolation of biometric data on your infrastructure (you own the biometrics, nothing is in the cloud)
 - ....
+  
+ ## Designs
+
+You can view the designs and mockups for our project on Figma. Click the link below to access them:
+
+[View Figma Designs](https://www.figma.com/file/n6MKXziHYC69485QCvtW1g/Facial-Access-Control---Luis%2FGlenn-%26-Kilian%2FJonas?type=design&node-id=0%3A1&mode=design&t=HiWxICFMNlHRh4jI-1)
 
 ## Web app (ui)
 
