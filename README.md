@@ -42,7 +42,9 @@ The back-end or API is written in Golang, and defines specific methods to persis
 
 ## Architecture
 
-To be completed
+A high-level architecture is visualised below, showing how the different components in this project are communicating with each other. The idea is that each component `Web app`, `Back-end` and `Face recognition` can be installed where your prefer. For example you could deploy the `Web app` and `Back-end` on a cloud provider, and self-host the `Face recognition` on your own private cloud or edge deployment to make sure you are owning the biometric data.
+
+![Architecture](./assets/images/architecture.svg)
 
 ## Contributors
 
