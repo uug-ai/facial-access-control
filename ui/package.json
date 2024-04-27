@@ -9,7 +9,8 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "jest && playwright test"
+    "test": "jest",
+    "playwright-test": "npx playwright test"
   },
   "dependencies": {
     "next": "14.2.2",
