@@ -29,6 +29,12 @@ You can view the designs and mockups for our project on Figma. Click the link be
 
 [View Figma Designs](https://www.figma.com/file/n6MKXziHYC69485QCvtW1g/Facial-Access-Control---Luis%2FGlenn-%26-Kilian%2FJonas?type=design&node-id=0%3A1&mode=design&t=HiWxICFMNlHRh4jI-1)
 
+## Architecture
+
+A high-level architecture is visualised below, showing how the different components in this project are communicating. The idea is that each component `Web app`, `Back-end` and `Face recognition` can be installed where your prefer. For example you could deploy the `Web app` and `Back-end` on a cloud provider, and self-host the `Face recognition` on your own private cloud or edge deployment to make sure you are owning the biometric data.
+
+![Architecture](./assets/images/architecture.svg)
+
 ## Web app (ui)
 
 The web based application will make use of the [Next.js](https://nextjs.org/) framework. [Storybook](https://storybook.js.org/)
@@ -40,12 +46,28 @@ The back-end or API is written in Golang, and defines specific methods to persis
 
 ## Face recognition (ml)
 
-## Architecture
+To be documented
 
-A high-level architecture is visualised below, showing how the different components in this project are communicating. The idea is that each component `Web app`, `Back-end` and `Face recognition` can be installed where your prefer. For example you could deploy the `Web app` and `Back-end` on a cloud provider, and self-host the `Face recognition` on your own private cloud or edge deployment to make sure you are owning the biometric data.
+## Kerberos.io (camera networks)
 
-![Architecture](./assets/images/architecture.svg)
+Uuft is focussing on a very specific usecase `face recognition`, however to operate in production it requires a camera infrastructure (`surveillance cameras` or `ip cameras`) to be processed. For example you might use an entrance camera to track incoming employees.
 
+ Managing a camera network comes with it's own challenges and requires a solution on it's own: onboarding cameras, storing recordings, livestreams, alerts, and more. Bottom line it's very complex to manage various cameras brands and make it stable and resilient.
+
+To overcome the complexity of managing a multitude of camera networks, we are using the [`kerberos.io`](https://github.com/kerberos-io) stack. The idea is that we will deploy `kerberos.io` in one or more networks, consolidate all the cameras in a single distributed environment, and then target `uuft`'s facial access control solution to one or more cameras.
+
+## Custom applications
+
+You might not always require surveillance or ip cameras for your usecase. For example you can embed facial recognition into your own application, for example using your smartphone, tablet or working device (laptop). 
+
+A few example usecases are:
+
+- Meeting room verification: validate if the user in front of the door has made a booking into the system. On validation of the person, the meeting room door unlocks.
+- Welcome desk: a kiosk screen at the entrance of a building, who can recognise your profile and shows relevant updates for you (urgent messages, next meeting, etc).
+- Locker: open a personal locker or mailbox.
+
+As described above you might already have your own usecase, for which you would like to integrate facial recognition in. By using `uuft` you can rely on a stable and user-friendly system that scales, and do not have to build a complete facial recognition system from scratch. Using `apis` and a management pane you can quickly onboard new facial biometrics and provide access to your solution in a matter of seconds.
+ 
 ## Contributors
 
 This project exists thanks to all the people who contribute.
