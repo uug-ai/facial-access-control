@@ -50,7 +50,7 @@ To be documented
 
 Uuft is focussing on a very specific usecase `face recognition`, however to operate in production it requires a camera infrastructure (`surveillance cameras` or `ip cameras`) to be processed. For example you might use an entrance camera to track incoming employees.
 
- Managing a camera network comes with it's own challenges and requires a solution on it's own: onboarding cameras, storing recordings, livestreams, alerts, and more. Bottom line it's very complex to manage various cameras brands and make it stable and resilient.
+ Managing a camera network comes with its own challenges and requires a solution on its own: onboarding cameras, storing recordings, livestreams, alerts, and more. Bottom line it's very complex to manage various cameras brands, make it stable, resilient and have a lot of management features in place. You would spend months and years building this yourself.
 
 To overcome the complexity of managing a multitude of camera networks, we are using the [`kerberos.io`](https://github.com/kerberos-io) stack. The idea is that we will deploy `kerberos.io` in one or more networks, consolidate all the cameras in a single distributed environment, and then target `uuft`'s facial access control solution to one or more cameras.
 
