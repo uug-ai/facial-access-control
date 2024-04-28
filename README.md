@@ -60,7 +60,7 @@ You might not always require surveillance or ip cameras for your usecase. For ex
 
 A few example usecases are:
 
-- Blacklist: notify if a person was detected which is added to a blacklist.
+- Blacklist: notify if a person was detected which is found on a blacklist.
 - Meeting room verification: validate if the user in front of the door has made a booking into the system. On validation of the person, the meeting room door unlocks.
 - Welcome desk: a kiosk screen at the entrance of a building, who can recognise your profile and shows relevant updates for you (urgent messages, next meeting, etc).
 - Automated locker: open a personal locker or mailbox.
