@@ -42,11 +42,11 @@ class FacialRecognition:
                 collection_name=collection_name,
                 records=[
                     models.Record(
-                        id=data["id"],
+                        id=doc["id"],
                         # Embedding of the image
                         vector=DeepFace.represent(img_path = doc["img_path"])[0]["embedding"],
                         payload=doc
-                    ) for doc in data
+                    ) for idx, doc in enumerate(data)
                 ]
             )
             return True
@@ -61,14 +61,6 @@ class FacialRecognition:
             collection_name=collection_name,
             query_vector=input_embedding,
             query_filter=models.Filter(
-                must=[
-                    models.FieldCondition(
-                        key="extra_filter",
-                        range=models.Range(
-                            gte=2 # greater than or equal
-                        )
-                    )
-                ]
             ),
             limit=1
         )

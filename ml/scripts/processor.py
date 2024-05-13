@@ -6,7 +6,7 @@ import os
 
 DEV_LOCAL_VIDEO = True
 VIDEO_PATH = "ml/data/face_inference.mp4"
-FOLDER_PATH = ""
+FOLDER_PATH = "ml/data/test_images"
 TESTING_FPS = 3
 OPENCV_WRITE_VIDEO = False
 
@@ -24,20 +24,23 @@ def get_video_characteristics(cap):
     return frame_rate, total_frames, duration_seconds, frame_width, frame_height
 
 if DEV_LOCAL_VIDEO:
+    
     qdrant = FacialRecognition.__init__(collection_name="people", db_path=":memory:", embedding_size=4096, dist_metric="cosine", verbose=True)
 
     # Iterate over files in the folder
     batch_list = []
+    id = 0
     for filename in os.listdir(FOLDER_PATH):
         # Check if the file is an image (you can add more image extensions if needed)
         if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
             # Construct the full path to the image file
             image_path = os.path.join(FOLDER_PATH, filename)
             
-        batch_list.append({"id": filename, "img_path": image_path})
-    
-    FacialRecognition.batch_add_embeddings(qdrant, "people", batch_list)
+        batch_list.append({"id": id, "img_path": image_path})
+        id += 1
 
+    FacialRecognition.batch_add_embeddings(qdrant, "people", batch_list)
+    
     # Open video-capture/recording using the video-path.
     cap = cv2.VideoCapture(VIDEO_PATH)
     # Throw FileNotFoundError if cap is unable to open.
@@ -50,7 +53,7 @@ if DEV_LOCAL_VIDEO:
         # Define the codec and create VideoWriter object
         fourcc = cv2.VideoWriter_fourcc(*'mp4v')
         video_out = cv2.VideoWriter('output/output-video.mp4', fourcc, TESTING_FPS, (frame_width, frame_height))
-
+    
     
 # frame_count variable is used to alter the frame selection process, this allows for FPS changes.
 frame_count = 0
@@ -69,6 +72,10 @@ while frame_count < total_frames:
         if success:
 
             cv2.imshow("YOLOv8 Tracking", frame)
-            vector=DeepFace.represent(frame)[0]["embedding"]
-            qdrant.embedding_search("people", vector, True)
+            vector=DeepFace.represent(frame, enforce_detection=False)[0]["embedding"]
+            hits = FacialRecognition.embedding_search(qdrant, "people", vector, False)
+            if hits[0].score >= 0.3:
+                print(hits[0].payload["img_path"].split("/")[-1], "score:", hits[0].score)
             cv2.waitKey(1)
+    
+    frame_count += 1
