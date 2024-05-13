@@ -36,7 +36,7 @@ if DEV_LOCAL_VIDEO:
             
         batch_list.append({"id": filename, "img_path": image_path})
     
-    qdrant.batch_add_embeddings("people", batch_list)
+    FacialRecognition.batch_add_embeddings(qdrant, "people", batch_list)
 
     # Open video-capture/recording using the video-path.
     cap = cv2.VideoCapture(VIDEO_PATH)

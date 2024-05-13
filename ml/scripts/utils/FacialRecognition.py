@@ -36,9 +36,9 @@ class FacialRecognition:
 
         return qdrant
 
-    def batch_add_embeddings(self, collection_name: str, data: list[dict]):
+    def batch_add_embeddings(qdrant: QdrantClient, collection_name: str, data: list[dict]):
         try:
-            self.upload_records(
+            qdrant.upload_records(
                 collection_name=collection_name,
                 records=[
                     models.Record(
@@ -56,8 +56,8 @@ class FacialRecognition:
             print("Failure adding embeddings:", e)
             
 
-    def embedding_search(self, collection_name: str, input_embedding, verbose: bool = True):
-        hits = self.search(
+    def embedding_search(qdrant: QdrantClient, collection_name: str, input_embedding, verbose: bool = True):
+        hits = qdrant.search(
             collection_name=collection_name,
             query_vector=input_embedding,
             query_filter=models.Filter(
