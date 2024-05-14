@@ -1,6 +1,5 @@
 from utils.QueueProcessor import QueueProcessor
 from utils.FacialRecognition import FacialRecognition
-from deepface import DeepFace
 import cv2
 import os
 
@@ -92,8 +91,6 @@ def process_frame(cap, video_char, qdrant, verbose=True, show_frame=False):
                             # Put the name on the screen
                             cv2.putText(frame, name, (x, y-40), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
                             cv2.putText(frame, str(score), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
-
-
 
                 if show_frame:
                     # Display the resulting frame
