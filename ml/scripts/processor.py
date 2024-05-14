@@ -4,15 +4,47 @@ from deepface import DeepFace
 import cv2
 import os
 
-DEV_LOCAL_VIDEO = True
-VIDEO_PATH = "ml/data/face_inference.mp4"
-FOLDER_PATH = "ml/data/test_images"
+DEV_ADD_SAMPLES_TO_DB = True
+DEV_SAMPLES_FOLDER_PATH = "ml/data/test_images"
+DEV_RUN_ON_LOCAL_VIDEO = True
+DEV_LOCAL_VIDEO_PATH = "ml/data/face_inference.mp4"
+FACE_RECOGNITION_MODEL = "Facenet"
+
 TESTING_FPS = 3
-OPENCV_WRITE_VIDEO = False
+
+def initialise_facialrecognition(collection_name, db_path, embedding_size, dist_metric, verbose):
+    
+    qdrant = FacialRecognition.__init__(collection_name, db_path, embedding_size, dist_metric, verbose)
+
+    if DEV_ADD_SAMPLES_TO_DB:
+        batch_list = []
+        for idx, filename in enumerate(os.listdir(DEV_SAMPLES_FOLDER_PATH)):
+            image_path = os.path.join(DEV_SAMPLES_FOLDER_PATH, filename)
+            batch_list.append({"id": idx, "img_path": image_path})
+        FacialRecognition.batch_add_embeddings(qdrant = qdrant, model_name = FACE_RECOGNITION_MODEL, collection_name = "people", data = batch_list)
+    
+    return qdrant
+
+
+def open_capture(video_path):
+    # Open video-capture/recording using the video-path.
+    cap = cv2.VideoCapture(video_path)
+
+    # Define frame_count variable to keep track of the current frame.
+    global frame_count
+    frame_count = 0
+
+    # Throw FileNotFoundError if cap is unable to open.
+    if not cap.isOpened():
+        FileNotFoundError('Unable to open video file')
+    
+    return cap
+
 
 def get_video_characteristics(cap):
     # Get recording framerate.
     frame_rate = cap.get(cv2.CAP_PROP_FPS)
+    frame_skip_factor = round(frame_rate / TESTING_FPS)
     # Get total number of frames.
     total_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
     # Calculate duration (in seconds).
@@ -20,62 +52,61 @@ def get_video_characteristics(cap):
     # Find frame width and height, used for counting feature later-on in the pipeline.
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-
-    return frame_rate, total_frames, duration_seconds, frame_width, frame_height
-
-if DEV_LOCAL_VIDEO:
     
-    qdrant = FacialRecognition.__init__(collection_name="people", db_path=":memory:", embedding_size=4096, dist_metric="cosine", verbose=True)
 
-    # Iterate over files in the folder
-    batch_list = []
-    id = 0
-    for filename in os.listdir(FOLDER_PATH):
-        # Check if the file is an image (you can add more image extensions if needed)
-        if filename.endswith(".jpg") or filename.endswith(".png") or filename.endswith(".jpeg"):
-            # Construct the full path to the image file
-            image_path = os.path.join(FOLDER_PATH, filename)
-            
-        batch_list.append({"id": id, "img_path": image_path})
-        id += 1
+    return {"frame_rate": frame_rate, "frame_skip_factor": frame_skip_factor, "total_frames": total_frames, "duration_seconds": duration_seconds, "frame_width":frame_width, "frame_height": frame_height}
 
-    FacialRecognition.batch_add_embeddings(qdrant, "people", batch_list)
+
+def process_frame(cap, video_char, qdrant, verbose=True, show_frame=False):
     
-    # Open video-capture/recording using the video-path.
-    cap = cv2.VideoCapture(VIDEO_PATH)
-    # Throw FileNotFoundError if cap is unable to open.
-    if not cap.isOpened():
-        FileNotFoundError('Unable to open video file')
-
-    frame_rate, total_frames, duration_seconds, frame_width, frame_height = get_video_characteristics(cap)
-
-    if OPENCV_WRITE_VIDEO:
-        # Define the codec and create VideoWriter object
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        video_out = cv2.VideoWriter('output/output-video.mp4', fourcc, TESTING_FPS, (frame_width, frame_height))
-    
-    
-# frame_count variable is used to alter the frame selection process, this allows for FPS changes.
-frame_count = 0
-# Calculate the frame skip factor based on the original and desired FPS
-frame_skip_factor = round(frame_rate / TESTING_FPS)
-
-# Loop through the video frames.
-while frame_count < total_frames:
-    
-    # Read the frame from the video.
     success, frame = cap.read()
 
-    # Check for successful cap.read().
-    if frame_count % frame_skip_factor == 0:
+    if frame_count % video_char["frame_skip_factor"] == 0:
 
         if success:
+            represent_data=FacialRecognition.get_represent(frame, model_name = FACE_RECOGNITION_MODEL, enforce_detection=False)
 
-            cv2.imshow("YOLOv8 Tracking", frame)
-            vector=DeepFace.represent(frame, enforce_detection=False)[0]["embedding"]
-            hits = FacialRecognition.embedding_search(qdrant, "people", vector, False)
-            if hits[0].score >= 0.3:
-                print(hits[0].payload["img_path"].split("/")[-1], "score:", hits[0].score)
-            cv2.waitKey(1)
+            for idx, detected_face in enumerate(represent_data):
+                if represent_data[idx]["face_confidence"] > 0.9:
+                    hit = FacialRecognition.embedding_search(qdrant = qdrant, collection_name = "people", input_embedding = detected_face["embedding"], score_threshold=0.35, verbose = verbose)[0]
+                    if hit.score >= 0.4:
+                        name = hit.payload["img_path"].split("/")[-1].split(".")[0]
+                        score = round(hit.score, 2)
+                        print(name, "detected with a score of:", score)
+
+                        if show_frame:
+                            # Get the coordinates of the lower left corner
+                            x = represent_data[idx]["facial_area"]["x"]
+                            y = represent_data[idx]["facial_area"]["y"]
+
+                            # Get the width and height of the rectangle
+                            w = represent_data[idx]["facial_area"]["w"]
+                            h = represent_data[idx]["facial_area"]["h"]
+
+                            # Draw rectangle on the frame
+                            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+                            # Get the name from the image path
+                            name = hit.payload["img_path"].split("/")[-1].split(".")[0]
+
+                            # Put the name on the screen
+                            cv2.putText(frame, name, (x, y-40), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
+                            cv2.putText(frame, str(score), (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (36,255,12), 2)
+
+
+
+                if show_frame:
+                    # Display the resulting frame
+                    cv2.imshow('Image with bounding box', frame)
+                    cv2.waitKey(1)
     
+
+db = initialise_facialrecognition(collection_name="people", db_path=":memory:", embedding_size=128, dist_metric="cosine", verbose=True)
+cap = open_capture(DEV_LOCAL_VIDEO_PATH)
+video_char = get_video_characteristics(cap)
+while frame_count < video_char["total_frames"]:
+    hits = process_frame(cap, video_char, db, verbose=False, show_frame=True)
     frame_count += 1
+
+cap.release()
+cv2.destroyAllWindows()

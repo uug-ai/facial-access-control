@@ -35,8 +35,11 @@ class FacialRecognition:
             pass
 
         return qdrant
+    
+    def get_represent(image, model_name, enforce_detection = True):
+        return DeepFace.represent(image, enforce_detection=enforce_detection, model_name=model_name)
 
-    def batch_add_embeddings(qdrant: QdrantClient, collection_name: str, data: list[dict]):
+    def batch_add_embeddings(qdrant: QdrantClient, model_name: str, collection_name: str, data: list[dict]):
         try:
             qdrant.upload_records(
                 collection_name=collection_name,
@@ -44,9 +47,9 @@ class FacialRecognition:
                     models.Record(
                         id=doc["id"],
                         # Embedding of the image
-                        vector=DeepFace.represent(img_path = doc["img_path"])[0]["embedding"],
+                        vector=FacialRecognition.get_represent(doc["img_path"], model_name, enforce_detection=True)[0]["embedding"],
                         payload=doc
-                    ) for idx, doc in enumerate(data)
+                    ) for doc in data
                 ]
             )
             return True
@@ -56,17 +59,15 @@ class FacialRecognition:
             print("Failure adding embeddings:", e)
             
 
-    def embedding_search(qdrant: QdrantClient, collection_name: str, input_embedding, verbose: bool = True):
+    def embedding_search(qdrant: QdrantClient, collection_name: str, input_embedding, score_threshold, verbose: bool = True):
         hits = qdrant.search(
             collection_name=collection_name,
             query_vector=input_embedding,
-            query_filter=models.Filter(
-            ),
             limit=1
         )
 
         if verbose:
             for hit in hits:
-                print(hit.payload, "score:", hit.score)
+                print(hit.payload["img_path"].split("/")[-1], "score:", hit.score)
         
         return hits
