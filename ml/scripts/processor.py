@@ -12,9 +12,17 @@ DEV_ADD_SAMPLES_TO_DB = True
 DEV_SAMPLES_FOLDER_PATH = "ml/data/test_images"
 DEV_RUN_ON_LOCAL_VIDEO = True
 DEV_LOCAL_VIDEO_PATH = "ml/data/face_inference.mp4"
+VIDEO_PATH = ""
 FACE_RECOGNITION_MODEL = "Facenet"
 TESTING_FPS = 3
 SHOW_TIMELINE = True
+
+SOURCE_QUEUE_NAME = os.getenv("QUEUE_NAME", "")
+TARGET_QUEUE_NAME = os.getenv("QUEUE_TARGET", "")
+SOURCE_QUEUE_SYSTEM = os.getenv("QUEUE_SYSTEM", "")
+STORAGE_URI = os.getenv("VAULT_API_URL", "")
+STORAGE_ACCESS_KEY = os.getenv("VAULT_ACCESS_KEY", "")
+STORAGE_SECRET_KEY = os.getenv("VAULT_SECRET_KEY", "")
 
 
 
@@ -44,10 +52,6 @@ def open_capture(video_path):
     # Open video-capture/recording using the video-path.
     cap = cv2.VideoCapture(video_path)
 
-    # Define frame_count variable to keep track of the current frame.
-    global frame_count
-    frame_count = 0
-
     # Throw FileNotFoundError if cap is unable to open.
     if not cap.isOpened():
         FileNotFoundError('Unable to open video file')
@@ -75,7 +79,7 @@ def get_video_characteristics(cap):
 
 
 
-def process_frame(verbose=True, show_frame=False):
+def process_frame(cap, video_char, frame_count, timeline, show_frame=False, verbose=False):
     """ Process the frame from the video-capture.
     """
 
@@ -138,30 +142,54 @@ def process_frame(verbose=True, show_frame=False):
 
     return detection
 
-        
+
+
+
+def process_video():
+    # Open the video-capture/recording.
+    cap = open_capture(VIDEO_PATH)
+    # Get the characteristics of the video-capture/recording.
+    video_char = get_video_characteristics(cap)
+
+    timeline = Timeline(video_char) if SHOW_TIMELINE else None
+
+    # Process the frames from the video-capture/recording.
+    print("Processing frames from the video-capture/recording...")
+    frame_count = 0
+    while frame_count < video_char["total_frames"]:
+        # Process the frame, looking for faces.
+        process_frame(cap, video_char, frame_count, timeline, show_frame=True, verbose=False)
+        frame_count += 1
+
+    cap.release()
+    cv2.destroyAllWindows()
     
 
 
 # Initialise the FacialRecognition class.
 fr = initialise_facialrecognition(collection_name="people", db_path=":memory:", model_name= "Facenet", embedding_size=128, dist_metric="cosine", verbose=True)
 
-# Open the video-capture/recording.
-cap = open_capture(DEV_LOCAL_VIDEO_PATH)
-# Get the characteristics of the video-capture/recording.
-video_char = get_video_characteristics(cap)
+# Check if the video-capture/recording is to be run on a local video.
+VIDEO_PATH = DEV_LOCAL_VIDEO_PATH if DEV_RUN_ON_LOCAL_VIDEO else VIDEO_PATH
 
-detections = []
+if DEV_RUN_ON_LOCAL_VIDEO:
+    process_video()
 
-if SHOW_TIMELINE:
-    timeline = Timeline(video_char)
+else:
+    # Initialise the QueueProcessor class.
+    qp = QueueProcessor(SOURCE_QUEUE_NAME, TARGET_QUEUE_NAME, SOURCE_QUEUE_SYSTEM, STORAGE_URI, STORAGE_ACCESS_KEY, STORAGE_SECRET_KEY)
 
-# Process the frames from the video-capture/recording.
-print("Processing frames from the video-capture/recording...")
-while frame_count < video_char["total_frames"]:
-    # Process the frame, looking for faces.
-    detected_bool = process_frame(verbose=False, show_frame=True)
-    detections.append(detected_bool)
-    frame_count += 1
+    while True:
+        # Process the messages received from the source queue.
+        resp = qp.process_messages()
+        obj_data = resp.content
 
-cap.release()
-cv2.destroyAllWindows()
+        # From the received requested data, reconstruct a video-file.
+        # This creates a video-file in the data folder, containing the recording.
+        with open(VIDEO_PATH, 'wb') as output:
+            output.write(obj_data)
+    
+        process_video()
+
+
+
