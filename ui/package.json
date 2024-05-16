@@ -12,7 +12,9 @@
     "test": "jest",
     "playwright-test": "npx playwright test"
   },
+ 
   "dependencies": {
+    "@uug-ai/ui": "^1.0.5",
     "next": "14.2.2",
     "react": "^18",
     "react-dom": "^18",
