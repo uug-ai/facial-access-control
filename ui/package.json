@@ -1,23 +1,22 @@
 {
   "name": "ui",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
     "test": "jest",
-    "playwright-test": "npx playwright test"
+    "playwright-test": "npx playwright test",
+    "tailwind": "npx tailwindcss -i ./src/app/index.css -o ./styles/tailwind.css --watch"
   },
   "dependencies": {
-    "@uug-ai/ui": "^1.0.8",
-    "class-variance-authority": "^0.7.0",
-    "next": "14.2.2",
+    "@uug-ai/ui": "^1.0.18",
+    "autoprefixer": "^10.4.19",
+    "next": "14",
     "react": "^18",
     "react-dom": "^18",
+    "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
@@ -43,7 +42,6 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "storybook": "^8.0.9",
-    "tailwindcss": "^3.4.1",
     "typescript": "^5.4.5"
   }
 }
