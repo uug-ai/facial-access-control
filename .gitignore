@@ -2,3 +2,4 @@ ml/scripts/utils/__pycache__
 ml/data/face_inference.mp4
 ml/data/test_images
 node_modules
+ui/out
