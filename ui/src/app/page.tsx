@@ -1,4 +1,4 @@
-import { Button, Input, Gradient } from "@uug-ai/ui";
+import { Button, Input, Gradient, Socials } from "@uug-ai/ui";
 import React from "react";
 
 export default function Home() {
@@ -7,6 +7,7 @@ export default function Home() {
       <Gradient />
       <Button>Click me</Button>
       <Input placeholder="Type here" />
+      <Socials />
     </main>
   );
 }
