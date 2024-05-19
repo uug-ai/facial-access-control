@@ -8,7 +8,7 @@
     "lint": "next lint",
     "test": "jest",
     "playwright-test": "npx playwright test",
-    "tailwind": "npx tailwindcss -i ./src/app/index.css -o ./styles/tailwind.css --watch"
+    "tailwind": "npx tailwindcss -c ./tailwind.config.js -i ./src/index.css -o ./styles/tailwind.css --watch"
   },
   "dependencies": {
     "@uug-ai/ui": "^1.0.18",

@@ -1,6 +1,5 @@
 import { Button, Input, Gradient } from "@uug-ai/ui";
 import React from "react";
-import "../../styles/tailwind.css";
 
 export default function Home() {
   return (
