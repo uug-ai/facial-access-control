@@ -12,7 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.sky,
+        primary: colors.green,
       },
       minWidth: {
         0: "0",
