@@ -38,5 +38,5 @@ jobs:
       - name: upload static website
         uses: actions/upload-artifact@v4
         with:
-          name: uuft-static
+          name: static
           path: .next
