@@ -1,4 +1,4 @@
-# uuft.ai (facial access control)
+# head.uug.ai (facial access control)
 
 This project is a facial access control system that allows you to setup a facial biometric permission application to provide access to various applications, IoT devices, IOs or other types of access control. The application is called `uuft` which is Ghent dialect for `head` and relates to concept the face recognition.
 
