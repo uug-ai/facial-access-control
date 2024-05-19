@@ -4356,9 +4356,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@uug-ai/ui@npm:^1.0.19":
-  version: 1.0.19
-  resolution: "@uug-ai/ui@npm:1.0.19"
+"@uug-ai/ui@npm:^1.0.20":
+  version: 1.0.20
+  resolution: "@uug-ai/ui@npm:1.0.20"
   dependencies:
     "@storybook/addon-essentials": "npm:^8.0.9"
     "@storybook/addon-interactions": "npm:^8.0.9"
@@ -4377,7 +4377,7 @@ __metadata:
     react: ^18
     react-dom: ^18
     ts-node: ^10.9.2
-  checksum: 10c0/5ef8ce87c11953fc9f137fc92ff385c3ee3cfcd0e9c6c85077f12e87b716b47debe053ce7ab0e3c229fde6a3cb561fff4ed859fd093e3a324c456ef077385972
+  checksum: 10c0/7f4c3a7c942a29c4e7479c95bb13fe383fc91155ad0042d2b2cdda80c540b47e84222089ee548ef8c76ee4ec0ade522438fddc7115f517730070e182a70cc6e8
   languageName: node
   linkType: hard
 
@@ -14279,7 +14279,7 @@ __metadata:
     "@types/node": "npm:^20"
     "@types/react": "npm:^18"
     "@types/react-dom": "npm:^18"
-    "@uug-ai/ui": "npm:^1.0.19"
+    "@uug-ai/ui": "npm:^1.0.20"
     autoprefixer: "npm:^10.4.19"
     eslint: "npm:^8"
     eslint-config-next: "npm:14.2.2"

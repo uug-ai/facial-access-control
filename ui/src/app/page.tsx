@@ -1,15 +1,25 @@
-import { Button, Input, Gradient, Socials } from "@uug-ai/ui";
+import { Button, Input, Gradient, Socials, Box, Stack, Password, Row } from "../components/ui";
 import React from "react";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1>Facial Access Control</h1>
-      <Gradient />
-      <Button>Click me</Button>
-      <Input placeholder="Type here" />
-      <Socials />
-    </main>
+    <Box className="shadow-inner min-h-screen min-w-fit max-w-96 w-4/12 flex flex-col items-start bg-primary-50/15">
+    <Gradient />
+    <Stack className="p-8">
+      <Input
+        type="text"
+        id="username"
+        placeholder="username"
+        className="mb-4"
+      />
+      <Row className="mb-1"></Row>
+      <Password placeholder="password" id="username" className="mb-4" />
+      <Button type="submit" variant="solid" width="third">
+        Sign in
+      </Button>
+    </Stack>
+    <Socials className="mt-auto self-center justify-self-end p-8" />
+  </Box>
   );
 }
  
