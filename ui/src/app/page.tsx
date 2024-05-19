@@ -1,7 +1,7 @@
 import { Button, Input, Gradient, Socials, Box, Stack, Password, Row } from "../components/ui";
 import React from "react";
 
-export default function Home() {
+export default function App() {
   return (
     <Box className="shadow-inner min-h-screen min-w-fit max-w-96 w-4/12 flex flex-col items-start bg-primary-50/15">
     <Gradient />

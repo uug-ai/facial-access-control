@@ -1,7 +1,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
-import Home from "../src/app/page.tsx";
+import Home from "../src/app/home.tsx";
 
 describe("Home", () => {
   it("renders a heading", () => {
