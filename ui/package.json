@@ -11,7 +11,7 @@
     "tailwind": "npx tailwindcss -c ./tailwind.config.js -i ./src/index.css -o ./styles/tailwind.css --watch"
   },
   "dependencies": {
-    "@uug-ai/ui": "^1.0.20",
+    "@uug-ai/ui": "^1.0.28",
     "autoprefixer": "^10.4.19",
     "next": "14",
     "react": "^18",
