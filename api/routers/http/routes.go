@@ -26,6 +26,14 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 			})
 		})
 
+		api.GET("/users", func(c *gin.Context) {
+			// Create a list of random users
+			users := controllers.GetUsers()
+			c.JSON(200, gin.H{
+				"data": users,
+			})
+		})
+
 		// Secured endpoints..
 		api.Use(authMiddleware.MiddlewareFunc())
 		{

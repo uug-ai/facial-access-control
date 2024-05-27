@@ -33,6 +33,19 @@ definitions:
       name:
         type: string
     type: object
+  models.User:
+    properties:
+      installed:
+        type: boolean
+      language:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact:
     email: support@kerberos.io
@@ -79,6 +92,20 @@ paths:
       summary: Get Authorization token.
       tags:
       - authentication
+  /api/users:
+    get:
+      description: Get all users
+      operationId: getUsers
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.User'
+            type: array
+      summary: Get all users
+      tags:
+      - users
 securityDefinitions:
   Bearer:
     in: header
