@@ -20,6 +20,19 @@ definitions:
       username:
         type: string
     type: object
+  models.Location:
+    properties:
+      address:
+        type: string
+      id:
+        type: integer
+      lat:
+        type: number
+      lng:
+        type: number
+      name:
+        type: string
+    type: object
 info:
   contact:
     email: support@kerberos.io
@@ -33,6 +46,20 @@ info:
   title: Swagger Kerberos Agent API
   version: "1.0"
 paths:
+  /api/locations:
+    get:
+      description: Get all locations
+      operationId: getLocations
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Location'
+            type: array
+      summary: Get all locations
+      tags:
+      - locations
   /api/login:
     post:
       description: Get Authorization token.

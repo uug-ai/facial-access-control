@@ -3,6 +3,7 @@ package http
 import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/uug-ai/facial-access-control/api/controllers"
 )
 
 func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterGroup {
@@ -14,6 +15,14 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 		api.GET("/dashboard", func(c *gin.Context) {
 			c.JSON(200, gin.H{
 				"message": "dashboard",
+			})
+		})
+
+		api.GET("/locations", func(c *gin.Context) {
+			// Create a list of random locations
+			locations := controllers.GetLocations()
+			c.JSON(200, gin.H{
+				"data": locations,
 			})
 		})
 
