@@ -1,4 +1,3 @@
-"use client";
 import StoreProvider from "./StoreProvider";
 import type { Metadata } from "next";
 import Head from "next/head";
