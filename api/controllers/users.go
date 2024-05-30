@@ -14,6 +14,7 @@ func GetUsers() []models.User {
 		{Installed: true, Username: "admin", Password: "admin", Role: "admin", Language: "en"},
 		{Installed: true, Username: "user", Password: "user", Role: "user", Language: "en"},
 		{Installed: true, Username: "Kilian", Password: "Kilian", Role: "admin", Language: "en"},
+		{Installed: true, Username: "Cedric", Password: "Cedric", Role: "admin", Language: "en"},
 	}
 	return users
 }

@@ -16,6 +16,8 @@ export const store = () => {
   });
 };
 
+//setupListeners(store.dispatch);
+
 // Infer the type of store
 export type AppStore = ReturnType<typeof store>;
 // Infer the `RootState` and `AppDispatch` types from the store itself

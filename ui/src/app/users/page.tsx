@@ -3,10 +3,13 @@
 import { useGetUsersQuery } from "@/lib/features/users/userApi";
 import React from "react";
 
+let i = 0;
+
 export default function Users() {
-  const { data, error, isLoading } = useGetUsersQuery("/users");
+  const { data, error, isLoading, refetch } = useGetUsersQuery("");
 
   console.log(data);
+  console.log(i++);
   console.log(error);
 
   if (isLoading) {
@@ -39,6 +42,7 @@ export default function Users() {
 
   return (
     <div>
+      <button onClick={() => refetch()}>Refresh Data</button>
       {data &&
         data.data.map((user: any) => (
           <div key={user.username}>{user.username}</div>
