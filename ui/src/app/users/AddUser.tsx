@@ -52,6 +52,8 @@ const AddUser = () => {
   return (
     <div>
       <button onClick={handleAddUser}>Add User</button>
+      {data && <div>User added successfully</div>}
+      {data?.email && <div>Email: {data.email}</div>}
     </div>
   );
 };

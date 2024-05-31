@@ -11,9 +11,9 @@ var Users = []models.User{
 	{Id: 5, FirstName: "Romain", LastName: "Davis", Email: "romain@example.com", Password: "Romain", Role: "admin", Language: "en"},
 	{Id: 6, FirstName: "Alex", LastName: "Wilson", Email: "alex@example.com", Password: "Alex", Role: "admin", Language: "en"},
 	{Id: 7, FirstName: "Mickael", LastName: "Taylor", Email: "mickael@example.com", Password: "Mickael", Role: "admin", Language: "en"},
-	{Id: 8, FirstName: "Mickael", LastName: "Thomas", Email: "mickael@example.com", Password: "Mickael", Role: "admin", Language: "en"},
-	{Id: 9, FirstName: "Mickael", LastName: "Robinson", Email: "mickael@example.com", Password: "Mickael", Role: "admin", Language: "en"},
-	{Id: 10, FirstName: "Mickael", LastName: "Clark", Email: "mickael@example.com", Password: "Mickael", Role: "admin", Language: "en"},
+	{Id: 8, FirstName: "Mickael", LastName: "Thomas", Email: "mickael1@example.com", Password: "Mickael", Role: "admin", Language: "en"},
+	{Id: 9, FirstName: "Mickael", LastName: "Robinson", Email: "mickael2@example.com", Password: "Mickael", Role: "admin", Language: "en"},
+	{Id: 10, FirstName: "Mickael", LastName: "Clark", Email: "mickael3@example.com", Password: "Mickael", Role: "admin", Language: "en"},
 }
 
 var Locations = []models.Location{
