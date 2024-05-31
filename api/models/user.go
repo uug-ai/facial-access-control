@@ -1,6 +1,7 @@
 package models
 
 type User struct {
+	Id        int    `json:"id" bson:"id"`
 	Installed bool   `json:"installed" bson:"installed"`
 	Username  string `json:"username" bson:"username"`
 	Password  string `json:"password" bson:"password"`
