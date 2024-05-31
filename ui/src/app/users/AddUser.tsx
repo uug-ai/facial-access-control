@@ -1,18 +1,8 @@
-"use client";
-
-import { useGetUsersQuery } from "@/lib/services/users/userApi";
 import React from "react";
-import AddUser from "./AddUser";
+import { useAddUserMutation } from "@/lib/services/users/userApi"; // Replace "path/to/addUsersQuery" with the actual path to the module containing the useAddUsersQuery function.
 
-export default function Users() {
-  const { data, error, isLoading, refetch } = useGetUsersQuery("");
-
-  console.log(data);
-  console.log(error);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+const AddUser = () => {
+  const [addUser, { data, error, isLoading }] = useAddUserMutation();
 
   // Possible values of error:
   // FetchBaseQueryError | SerializedError | undefined
@@ -38,16 +28,32 @@ export default function Users() {
     }
   }
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  const handleAddUser = async () => {
+    try {
+      const newUserData = {
+        firstName: "John",
+        lastName: "Doe",
+        email: "johndoe@example.com",
+        password: "password",
+        role: "admin",
+        installed: true,
+        language: "en",
+      };
+      await addUser(newUserData);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <div>
-      <div>
-        <button onClick={() => refetch()}>Refresh Data</button>
-        {data &&
-          data.data.map((user: any) => (
-            <div key={user.email}>{user.email}</div>
-          ))}
-      </div>
-      <AddUser />
+      <button onClick={handleAddUser}>Add User</button>
     </div>
   );
-}
+};
+
+export default AddUser;

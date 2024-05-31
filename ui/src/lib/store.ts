@@ -1,6 +1,6 @@
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./features/users/userSlice";
-import { userApi } from "./features/users/userApi";
+import { userApi } from "./services/users/userApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 // const rootReducer = combineSlices(userSlice);
