@@ -1,8 +1,6 @@
 package controllers
 
 import (
-	"fmt"
-
 	"github.com/uug-ai/facial-access-control/api/models"
 )
 
