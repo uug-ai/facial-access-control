@@ -6,6 +6,7 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/uug-ai/facial-access-control/api/controllers"
+	"github.com/uug-ai/facial-access-control/api/models"
 )
 
 func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterGroup {
@@ -78,6 +79,21 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 				"data": user,
 			})
 		})
+
+		api.POST("/users", func(c *gin.Context) {
+			var user models.User
+			if err := c.ShouldBindJSON(&user); err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid user data",
+				})
+				return
+			}
+
+			c.JSON(201, gin.H{
+				"message": "User added successfully",
+			})
+		})
+			
 
 		// Secured endpoints..
 		api.Use(authMiddleware.MiddlewareFunc())

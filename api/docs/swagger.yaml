@@ -117,6 +117,28 @@ paths:
       summary: Get all users
       tags:
       - users
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      operationId: addUser
+      parameters:
+      - description: User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Create user
+      tags:
+      - users
   /api/users/{id}:
     get:
       description: Get user by id

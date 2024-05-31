@@ -34,3 +34,20 @@ func GetUser(id int) models.User {
 	}
 	return models.User{}
 }
+
+// user godoc
+// @Router /api/users [post]
+// @ID addUser
+// @Tags users
+// @Summary Create user
+// @Description Create user
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User"
+// @Success 200 {object} models.User
+func AddUser(user models.User) models.User {
+	users := database.GetUsers()
+	user.Id = len(users) + 1
+	users = append(users, user)
+	return user
+}
