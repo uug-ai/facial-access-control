@@ -49,11 +49,14 @@ const AddUser = () => {
     }
   };
 
+  console.log("Add user data: ");
+  console.log(data);
+
   return (
     <div>
+      {data?.email}
       <button onClick={handleAddUser}>Add User</button>
       {data && <div>User added successfully</div>}
-      {data?.email && <div>Email: {data.email}</div>}
     </div>
   );
 };

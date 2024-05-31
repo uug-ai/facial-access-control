@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"errors"
+
 	"github.com/uug-ai/facial-access-control/api/database"
 	"github.com/uug-ai/facial-access-control/api/models"
 )
@@ -45,9 +47,15 @@ func GetUser(id int) models.User {
 // @Produce json
 // @Param user body models.User true "User"
 // @Success 200 {object} models.User
-func AddUser(user models.User) models.User {
+func AddUser(user models.User) error {
 	users := database.GetUsers()
+	// Check if the user already exists
+	for _, u := range users {
+		if u.Id == user.Id {
+			return errors.New("user already exists")
+		}
+	}
 	user.Id = len(users) + 1
 	users = append(users, user)
-	return user
+	return nil
 }
