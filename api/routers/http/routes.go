@@ -28,6 +28,28 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 			})
 		})
 
+		api.GET("/locations/:id", func(c *gin.Context) {
+			// Get the id parameter from the URL
+			id := c.Param("id")
+
+			// Convert id to an integer
+			locationID, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid location ID",
+				})
+				return
+			}
+
+			// Use the locationID to fetch the location
+			location := controllers.GetLocation(locationID)
+
+			c.JSON(200, gin.H{
+				"data": location,
+			})
+		})
+		
+
 		api.GET("/users", func(c *gin.Context) {
 			// Create a list of random users
 			users := controllers.GetUsers()

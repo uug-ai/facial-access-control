@@ -64,6 +64,24 @@ paths:
       summary: Get all locations
       tags:
       - locations
+  /api/locations/{id}:
+    get:
+      description: Get location by ID
+      operationId: getLocation
+      parameters:
+      - description: Location ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Location'
+      summary: Get location by ID
+      tags:
+      - locations
   /api/login:
     post:
       description: Get Authorization token.

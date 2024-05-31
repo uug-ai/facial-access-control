@@ -36,6 +36,33 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/locations/{id}": {
+            "get": {
+                "description": "Get location by ID",
+                "tags": [
+                    "locations"
+                ],
+                "summary": "Get location by ID",
+                "operationId": "getLocation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Location ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Location"
+                        }
+                    }
+                }
+            }
+        },
         "/api/login": {
             "post": {
                 "description": "Get Authorization token.",
