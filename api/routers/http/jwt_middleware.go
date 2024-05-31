@@ -34,7 +34,7 @@ func JWTMiddleWare() jwt.GinJWTMiddleware {
 			claims := jwt.ExtractClaims(c)
 			user := claims["id"].(map[string]interface{})
 			return &models.User{
-				Username: user["username"].(string),
+				Email: user["email"].(string),
 				Role:     user["role"].(string),
 			}
 		},
@@ -43,13 +43,13 @@ func JWTMiddleWare() jwt.GinJWTMiddleware {
 			if err := c.ShouldBind(&loginVals); err != nil {
 				return "", jwt.ErrMissingLoginValues
 			}
-			username := loginVals.Username
+			email := loginVals.Email
 			password := loginVals.Password
 
-			// Get username from ENV
-			usernameFromConfig := os.Getenv("USERNAME")
-			if usernameFromConfig == "" {
-				usernameFromConfig = "root"
+			// Get email from ENV
+			emailFromConfig := os.Getenv("EMAIL")
+			if emailFromConfig == "" {
+				emailFromConfig = "root"
 			}
 			// Get password from ENV
 			passwordFromConfig := os.Getenv("PASSWORD")
@@ -57,9 +57,9 @@ func JWTMiddleWare() jwt.GinJWTMiddleware {
 				passwordFromConfig = "root"
 			}
 
-			if username == usernameFromConfig && password == passwordFromConfig {
+			if email == emailFromConfig && password == passwordFromConfig {
 				return &models.User{
-					Username: username,
+					Email: email,
 					Role:     "admin",
 				}, nil
 			} else {
@@ -82,12 +82,12 @@ func JWTMiddleWare() jwt.GinJWTMiddleware {
 				"code":     http.StatusOK,
 				"token":    token,
 				"expire":   expire.Format(time.RFC3339),
-				"username": user["username"].(string),
+				"email": user["email"].(string),
 				"role":     user["role"].(string),
 			})
 		},
 		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if _, ok := data.(*models.User); ok { //&& v.Username == "admin" {
+			if _, ok := data.(*models.User); ok { //&& v.Email == "admin" {
 				return true
 			}
 			return false

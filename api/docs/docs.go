@@ -145,10 +145,10 @@ const docTemplate = `{
         "models.Authentication": {
             "type": "object",
             "properties": {
-                "password": {
+                "email": {
                     "type": "string"
                 },
-                "username": {
+                "password": {
                     "type": "string"
                 }
             }
@@ -159,6 +159,9 @@ const docTemplate = `{
                 "code": {
                     "type": "integer"
                 },
+                "email": {
+                    "type": "string"
+                },
                 "expire": {
                     "type": "string"
                 },
@@ -166,9 +169,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "token": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
@@ -196,22 +196,25 @@ const docTemplate = `{
         "models.User": {
             "type": "object",
             "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "integer"
                 },
-                "installed": {
-                    "type": "boolean"
-                },
                 "language": {
+                    "type": "string"
+                },
+                "lastname": {
                     "type": "string"
                 },
                 "password": {
                     "type": "string"
                 },
                 "role": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
