@@ -34,6 +34,39 @@ const docTemplate = `{
                         }
                     }
                 }
+            },
+            "post": {
+                "description": "Create location",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "locations"
+                ],
+                "summary": "Create location",
+                "operationId": "addLocation",
+                "parameters": [
+                    {
+                        "description": "Location",
+                        "name": "location",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Location"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Location"
+                        }
+                    }
+                }
             }
         },
         "/api/locations/{id}": {
@@ -59,6 +92,28 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.Location"
                         }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete location",
+                "tags": [
+                    "locations"
+                ],
+                "summary": "Delete location",
+                "operationId": "deleteLocation",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Location ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }
@@ -169,6 +224,28 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete user",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete user",
+                "operationId": "deleteUser",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }

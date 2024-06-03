@@ -49,3 +49,16 @@ func AddUser(user models.User) error {
 	err := database.AddUser(user)
 	return err
 }
+
+// user godoc
+// @Router /api/users/{id} [delete]
+// @ID deleteUser
+// @Tags users
+// @Summary Delete user
+// @Description Delete user
+// @Param id path int true "User ID"
+// @Success 200
+func DeleteUser(id int) error {
+	err := database.DeleteUser(id)
+	return err
+}

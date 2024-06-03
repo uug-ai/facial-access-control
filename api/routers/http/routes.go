@@ -21,36 +21,6 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 			})
 		})
 
-		api.GET("/locations", func(c *gin.Context) {
-			// Create a list of random locations
-			locations := controllers.GetLocations()
-			c.JSON(200, gin.H{
-				"data": locations,
-			})
-		})
-
-		api.GET("/locations/:id", func(c *gin.Context) {
-			// Get the id parameter from the URL
-			id := c.Param("id")
-
-			// Convert id to an integer
-			locationID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid location ID",
-				})
-				return
-			}
-
-			// Use the locationID to fetch the location
-			location := controllers.GetLocation(locationID)
-
-			c.JSON(200, gin.H{
-				"data": location,
-			})
-		})
-		
-
 		api.GET("/users", func(c *gin.Context) {
 			// Create a list of random users
 			users := controllers.GetUsers()
@@ -103,7 +73,108 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 
 
 		})
+		api.DELETE("/users/:id", func(c *gin.Context) {
+			// Get the id parameter from the URL
+			id := c.Param("id")
+
+			// Convert id to an integer
+			userID, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid user ID",
+				})
+				return
+			}
+
+			if err := controllers.DeleteUser(userID); err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to delete user",
+				})
+				return
+			}
+
+			c.JSON(200, gin.H{
+				"message": "User deleted successfully",
+			})
+		})
+
 			
+		api.GET("/locations", func(c *gin.Context) {
+			// Create a list of random locations
+			locations := controllers.GetLocations()
+			c.JSON(200, gin.H{
+				"data": locations,
+			})
+		})
+
+		api.GET("/locations/:id", func(c *gin.Context) {
+			// Get the id parameter from the URL
+			id := c.Param("id")
+
+			// Convert id to an integer
+			locationID, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid location ID",
+				})
+				return
+			}
+
+			// Use the locationID to fetch the location
+			location := controllers.GetLocation(locationID)
+
+			c.JSON(200, gin.H{
+				"data": location,
+			})
+		})
+
+			api.POST("/locations", func(c *gin.Context) {
+			var location models.Location
+			if err := c.ShouldBindJSON(&location); err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid location data",
+				})
+				return
+			}
+
+			if err := controllers.AddLocation(location); err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to add location",
+				})
+			return
+			}
+
+			c.JSON(201, gin.H{
+				"message": "Location added successfully",
+				"location": location,
+			})
+
+
+		})
+		api.DELETE("/locations/:id", func(c *gin.Context) {
+			// Get the id parameter from the URL
+			id := c.Param("id")
+
+			// Convert id to an integer
+			locationID, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid location ID",
+				})
+				return
+			}
+
+			if err := controllers.DeleteLocation(locationID); err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to delete location",
+				})
+				return
+			}
+
+			c.JSON(200, gin.H{
+				"message": "Location deleted successfully",
+			})
+		})
 
 		// Secured endpoints..
 		api.Use(authMiddleware.MiddlewareFunc())

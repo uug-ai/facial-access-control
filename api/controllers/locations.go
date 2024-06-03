@@ -35,3 +35,33 @@ func GetLocation(id int) models.Location {
 	return models.Location{}
 }
 
+
+// location godoc
+// @Router /api/locations [post]
+// @ID addLocation
+// @Tags locations
+// @Summary Create location
+// @Description Create location
+// @Accept json
+// @Produce json
+// @Param location body models.Location true "Location"
+// @Success 200 {object} models.Location
+func AddLocation(location models.Location) error {
+	err := database.AddLocation(location)
+	return err
+}
+
+// location godoc
+// @Router /api/locations/{id} [delete]
+// @ID deleteLocation
+// @Tags locations
+// @Summary Delete location
+// @Description Delete location
+// @Param id path int true "Location ID"
+// @Success 200
+func DeleteLocation(id int) error {
+	err := database.DeleteLocation(id)
+	return err
+}
+
+

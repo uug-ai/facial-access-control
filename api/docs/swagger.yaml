@@ -66,7 +66,44 @@ paths:
       summary: Get all locations
       tags:
       - locations
+    post:
+      consumes:
+      - application/json
+      description: Create location
+      operationId: addLocation
+      parameters:
+      - description: Location
+        in: body
+        name: location
+        required: true
+        schema:
+          $ref: '#/definitions/models.Location'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Location'
+      summary: Create location
+      tags:
+      - locations
   /api/locations/{id}:
+    delete:
+      description: Delete location
+      operationId: deleteLocation
+      parameters:
+      - description: Location ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+      summary: Delete location
+      tags:
+      - locations
     get:
       description: Get location by ID
       operationId: getLocation
@@ -140,6 +177,21 @@ paths:
       tags:
       - users
   /api/users/{id}:
+    delete:
+      description: Delete user
+      operationId: deleteUser
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: OK
+      summary: Delete user
+      tags:
+      - users
     get:
       description: Get user by id
       operationId: getUser
