@@ -11,3 +11,7 @@ func GetUsers() []models.User {
 func GetLocations() []models.Location {
 	return GetLocationsFromFile()
 }
+
+func AddUser(user models.User) error {
+	return AddUserToFile(user)
+}

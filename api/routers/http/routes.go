@@ -90,14 +90,15 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 			}
 
 			if err := controllers.AddUser(user); err != nil {
-		c.JSON(500, gin.H{
-			"error": "Failed to add user",
-		})
-		return
-	}
+				c.JSON(500, gin.H{
+					"error": "Failed to add user",
+				})
+			return
+			}
 
 			c.JSON(201, gin.H{
 				"message": "User added successfully",
+				"user": user,
 			})
 
 

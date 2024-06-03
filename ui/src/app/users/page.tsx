@@ -5,10 +5,7 @@ import React from "react";
 import AddUser from "./AddUser";
 
 export default function Users() {
-  const { data, error, isLoading, refetch } = useGetUsersQuery("");
-
-  console.log(data);
-  console.log(error);
+  const { data, error, isLoading } = useGetUsersQuery(undefined);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -41,7 +38,7 @@ export default function Users() {
   return (
     <div>
       <div>
-        <button onClick={() => refetch()}>Refresh Data</button>
+        {/* <button onClick={() => refetch()}>Refresh Data</button> */}
         {data &&
           data.data.map((user: any) => (
             <div key={user.email}>{user.email}</div>

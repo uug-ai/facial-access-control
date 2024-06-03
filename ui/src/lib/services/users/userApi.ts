@@ -14,10 +14,11 @@ export const userApi = createApi({
       providesTags: ["User"],
     }),
     addUser: build.mutation({
-      query: (body) => ({
+      query: (user) => ({
         url: "users",
         method: "POST",
-        body,
+        headers: { "Content-Type": "application/json" },
+        body: user,
       }),
       invalidatesTags: ["User"],
     }),

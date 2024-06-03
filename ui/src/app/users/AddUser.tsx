@@ -35,9 +35,9 @@ const AddUser = () => {
   const handleAddUser = async () => {
     try {
       const newUserData = {
-        firstName: "John",
+        firstName: "Johnnnn",
         lastName: "Doe",
-        email: "johndoe@example.com",
+        email: "newusers@example.com",
         password: "password",
         role: "admin",
         installed: true,
@@ -54,7 +54,8 @@ const AddUser = () => {
 
   return (
     <div>
-      {data?.email}
+      {/* {data?.user.email} */}
+      <hr />
       <button onClick={handleAddUser}>Add User</button>
       {data && <div>User added successfully</div>}
     </div>
