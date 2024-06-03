@@ -1,19 +1,9 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-// username or firstName, lastName?
-interface UserState {
-  id: number;
-  userName: string;
-  email: string;
-  password: string;
-  role: string;
-  installed: boolean;
-  language: string;
-}
-
-const initialState: UserState = {
+const initialState: User = {
   id: 0,
-  userName: "",
+  firstName: "",
+  lastName: "",
   email: "",
   password: "",
   role: "",
@@ -25,9 +15,10 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
+    setUser: (state, action: PayloadAction<User>) => {
       state.id = action.payload.id;
-      state.userName = action.payload.userName;
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
       state.email = action.payload.email;
       state.password = action.payload.password;
       state.role = action.payload.role;
@@ -36,7 +27,8 @@ const userSlice = createSlice({
     },
     clearUser: (state) => {
       state.id = 0;
-      state.userName = "";
+      state.firstName = "";
+      state.lastName = "";
       state.email = "";
       state.password = "";
       state.role = "";
