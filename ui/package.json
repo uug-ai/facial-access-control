@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
-    "@uug-ai/ui": "^1.0.29",
+    "@uug-ai/ui": "^1.0.30",
     "autoprefixer": "^10.4.19",
     "next": "14",
     "prettier-plugin-tailwindcss": "^0.6.1",

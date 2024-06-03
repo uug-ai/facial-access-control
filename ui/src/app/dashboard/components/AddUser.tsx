@@ -38,8 +38,8 @@ const AddUser = () => {
   const handleAddUser = async () => {
     try {
       const newUserData = {
-        firstName: "Johnn",
-        lastName: "Doe",
+        firstName: "John",
+        lastName: "Johnson",
         email: "newusermail@example.com",
         password: "password",
         role: "admin",

@@ -1,11 +1,12 @@
-import { Box, Row, Stack, Text } from "@uug-ai/ui";
+import { Box, Row, Stack, Text, Gradient } from "@uug-ai/ui";
 import React from "react";
-import Users from "./_components/_users";
-import AddUser from "./_components/_addUser";
+import AddUser from "./components/AddUser";
+import UserTable from "./components/UserTable";
 
 const Dashboard = () => {
   return (
     <Box>
+      <Gradient />
       <Stack className="gap-12 p-8 ">
         <Row className="justify-between">
           <Text as="h1" size="5xl" weight="semibold">
@@ -15,8 +16,10 @@ const Dashboard = () => {
             Organisation
           </Text>
         </Row>
-        <AddUser />
-        <Users />
+        <Row>
+          <AddUser />
+        </Row>
+        <UserTable />
       </Stack>
     </Box>
   );

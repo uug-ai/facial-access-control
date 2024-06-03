@@ -11,7 +11,7 @@ interface Data {
   email: string;
 }
 
-const Users = () => {
+const UserTable = () => {
   const { data, error, isLoading } = useGetUsersQuery(undefined);
 
   if (isLoading) {
@@ -69,4 +69,4 @@ const Users = () => {
   );
 };
 
-export default Users;
+export default UserTable;

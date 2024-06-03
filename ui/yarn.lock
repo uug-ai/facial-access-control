@@ -3281,10 +3281,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@uug-ai/ui@^1.0.29":
-  version "1.0.29"
-  resolved "https://registry.yarnpkg.com/@uug-ai/ui/-/ui-1.0.29.tgz#9d240ee786308754ced8e5df912981cf3bfad0cc"
-  integrity sha512-MzKs28dUT9lggsr+UsiLv19ov8sq/Ag40bY9LcQoZNb+vzMl0ymqMupVCGOm73rHIxos9ZnjdnoAZ9NUojxvzw==
+"@uug-ai/ui@^1.0.30":
+  version "1.0.30"
+  resolved "https://registry.yarnpkg.com/@uug-ai/ui/-/ui-1.0.30.tgz#1037942c67148d6511fe0df815c853fd9c7bcd6a"
+  integrity sha512-HKaD+/mRXZve+fpfv4IWem6eHZ7BOD17vtnMc48nTdy8e0zfneX1OPqBwPIAxcGfpBHCTmBOnf8Hl999BNY7aw==
   dependencies:
     "@storybook/addon-essentials" "^8.0.9"
     "@storybook/addon-interactions" "^8.0.9"
@@ -3297,6 +3297,7 @@
     next "^14.2.3"
     react "^18"
     react-dom "^18"
+    react-webcam "^7.2.0"
     tailwind-merge "^2.3.0"
 
 "@vitest/expect@1.3.1":
@@ -9236,6 +9237,11 @@ react-style-singleton@^2.2.1:
     get-nonce "^1.0.0"
     invariant "^2.2.4"
     tslib "^2.0.0"
+
+react-webcam@^7.2.0:
+  version "7.2.0"
+  resolved "https://registry.yarnpkg.com/react-webcam/-/react-webcam-7.2.0.tgz#64141c4c7bdd3e956620500187fa3fcc77e1fd49"
+  integrity sha512-xkrzYPqa1ag2DP+2Q/kLKBmCIfEx49bVdgCCCcZf88oF+0NPEbkwYk3/s/C7Zy0mhM8k+hpdNkBLzxg8H0aWcg==
 
 "react@^16.8.0 || ^17.0.0 || ^18.0.0", react@^18:
   version "18.3.1"
