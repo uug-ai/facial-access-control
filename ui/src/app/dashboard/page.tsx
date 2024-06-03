@@ -2,6 +2,8 @@ import { Box, Row, Stack, Text, Gradient } from "@uug-ai/ui";
 import React from "react";
 import AddUser from "./components/AddUser";
 import UserTable from "./components/UserTable";
+import LocationInfo from "./components/LocationInfo";
+import AddLocation from "./components/AddLocation";
 
 const Dashboard = () => {
   return (
@@ -16,7 +18,9 @@ const Dashboard = () => {
             Organisation
           </Text>
         </Row>
-        <Row>
+        <Row className="justify-between">
+          <LocationInfo />
+          <AddLocation />
           <AddUser />
         </Row>
         <UserTable />

@@ -14,11 +14,11 @@ export const locationApi = createApi({
       providesTags: ["Location"],
     }),
     addLocation: build.mutation({
-      query: (user) => ({
+      query: (location) => ({
         url: "locations",
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: user,
+        body: location,
       }),
       invalidatesTags: ["Location"],
     }),

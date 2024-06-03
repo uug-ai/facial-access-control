@@ -14,7 +14,9 @@ export const store = () => {
       [locationApi.reducerPath]: locationApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(userApi.middleware),
+      getDefaultMiddleware()
+        .concat(userApi.middleware)
+        .concat(locationApi.middleware),
   });
 };
 
