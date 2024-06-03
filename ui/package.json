@@ -12,9 +12,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
-    "@uug-ai/ui": "^1.0.28",
+    "@uug-ai/ui": "^1.0.29",
     "autoprefixer": "^10.4.19",
     "next": "14",
+    "prettier-plugin-tailwindcss": "^0.6.1",
     "react": "^18",
     "react-dom": "^18",
     "react-query": "^3.39.3",
