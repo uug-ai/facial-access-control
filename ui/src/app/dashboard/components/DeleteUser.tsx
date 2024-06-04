@@ -19,7 +19,11 @@ const DeleteUser: React.FC<DeleteUserProps> = ({ id }) => {
     }
   };
 
-  return <Button onClick={handleDeleteUser}>x</Button>;
+  return (
+    <Button size="sm" onClick={handleDeleteUser}>
+      x
+    </Button>
+  );
 };
 
 export default DeleteUser;
