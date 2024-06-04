@@ -1,5 +1,6 @@
+import StoreProvider from "./StoreProvider";
 import type { Metadata } from "next";
-import Head from 'next/head';
+import Head from "next/head";
 import { Inter } from "next/font/google";
 import "../index.css";
 
@@ -16,8 +17,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body className={inter.className}>{children}</body>
+      </html>
+    </StoreProvider>
   );
 }

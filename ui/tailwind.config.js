@@ -12,7 +12,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: colors.green,
+        primary: colors.blue,
+        gradientBlue: colors.cyan,
       },
       minWidth: {
         0: "0",

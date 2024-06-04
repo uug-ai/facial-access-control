@@ -1,15 +1,18 @@
 package models
 
 type User struct {
-	Installed bool   `json:"installed" bson:"installed"`
-	Username  string `json:"username" bson:"username"`
+	Id        int    `json:"id" bson:"id"`
+	FirstName  string `json:"firstname" bson:"firstname"`
+	LastName  string `json:"lastname" bson:"lastname"`
+	Email     string `json:"email" bson:"email"`
 	Password  string `json:"password" bson:"password"`
 	Role      string `json:"role" bson:"role"`
 	Language  string `json:"language" bson:"language"`
+	
 }
 
 type Authentication struct {
-	Username string `json:"username" bson:"username"`
+	Email string `json:"email" bson:"email"`
 	Password string `json:"password" bson:"password"`
 }
 
@@ -17,6 +20,6 @@ type Authorization struct {
 	Code     int    `json:"code" bson:"code"`
 	Token    string `json:"token" bson:"token"`
 	Expire   string `json:"expire" bson:"expire"`
-	Username string `json:"username" bson:"username"`
+	Email string `json:"email" bson:"email"`
 	Role     string `json:"role" bson:"role"`
 }
