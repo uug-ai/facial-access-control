@@ -16,12 +16,11 @@ import (
 // @Description Get all locations
 // @Success 200 {object} []models.Location
 func GetLocations(c *gin.Context) []models.Location {
-	// Create a list of random locations
-			locations := database.GetLocations()
-			c.JSON(200, gin.H{
-				"data": locations,
-			})
-			return nil;
+	locations := database.GetLocations()
+	c.JSON(200, gin.H{
+		"data": locations,
+	})
+	return nil;
 }
 
 // Location godoc
@@ -33,25 +32,22 @@ func GetLocations(c *gin.Context) []models.Location {
 // @Param id path int true "Location ID"
 // @Success 200 {object} models.Location
 func GetLocation(c *gin.Context) models.Location {
-				// Get the id parameter from the URL
-			id := c.Param("id")
+	id := c.Param("id")
 
-			// Convert id to an integer
-			locationID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid location ID",
-				})
-				return models.Location{}
-			}
+	locationID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid location ID",
+		})
+		return models.Location{}
+	}
 
-			// Use the locationID to fetch the location
-			location := database.GetLocation(locationID)
+	location := database.GetLocation(locationID)
 
-			c.JSON(200, gin.H{
-				"data": location,
-			})
-			return location
+	c.JSON(200, gin.H{
+		"data": location,
+	})
+	return location
 }
 
 
@@ -99,7 +95,7 @@ func AddLocation(c *gin.Context) error {
 func DeleteLocation(c *gin.Context) error {
 	id := c.Param("id")
 	locationID, err := strconv.Atoi(id)
-	
+
 	if err != nil {
 		c.JSON(400, gin.H{
 			"error": "Invalid location ID",

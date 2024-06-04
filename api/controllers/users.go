@@ -34,21 +34,21 @@ func GetUsers(c *gin.Context) []models.User {
 func GetUser(c *gin.Context) models.User {
 	id := c.Param("id")
 
-				userID, err := strconv.Atoi(id)
-				if err != nil {
-					c.JSON(400, gin.H{
-						"error": "Invalid user ID",
-					})
-					return models.User{}
-				}
-
-				user := database.GetUser(userID)
-
-				c.JSON(200, gin.H{
-					"data": user,
-				})
-				return user
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user ID",
+		})
+		return models.User{}
 	}
+
+	user := database.GetUser(userID)
+
+	c.JSON(200, gin.H{
+		"data": user,
+	})
+	return user
+}
 
 // user godoc
 // @Router /api/users [post]
@@ -62,25 +62,25 @@ func GetUser(c *gin.Context) models.User {
 // @Success 201 {object} models.User
 func AddUser(c *gin.Context) error {
 	var user models.User
-			if err := c.ShouldBindJSON(&user); err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid user data",
-				})
-				return err
-			}
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user data",
+		})
+		return err
+	}
 
-			if err := database.AddUser(user); err != nil {
-				c.JSON(500, gin.H{
-					"error": "Failed to add user",
-				})
-			return err
-			}
+	if err := database.AddUser(user); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Failed to add user",
+		})
+	return err
+	}
 
-			c.JSON(201, gin.H{
-				"message": "User added successfully",
-				"user": user,
-			})
-			return nil
+	c.JSON(201, gin.H{
+		"message": "User added successfully",
+		"user": user,
+	})
+	return nil
 }
 
 // user godoc
@@ -92,27 +92,25 @@ func AddUser(c *gin.Context) error {
 // @Param id path int true "User ID"
 // @Success 200
 func DeleteUser(c *gin.Context) error {
-	// Get the id parameter from the URL
-			id := c.Param("id")
+	id := c.Param("id")
 
-			// Convert id to an integer
-			userID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid user ID",
-				})
-				return err
-			}
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user ID",
+		})
+		return err
+	}
 
-			if err := database.DeleteUser(userID); err != nil {
-				c.JSON(500, gin.H{
-					"error": "Failed to delete user",
-				})
-				return err
-			}
+	if err := database.DeleteUser(userID); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Failed to delete user",
+		})
+		return err
+	}
 
-			c.JSON(200, gin.H{
-				"message": "User deleted successfully",
-			})
-			return nil
+	c.JSON(200, gin.H{
+		"message": "User deleted successfully",
+	})
+	return nil
 }
