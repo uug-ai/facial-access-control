@@ -7,6 +7,9 @@ import (
 func GetUsers() []models.User {
 	return GetUsersFromFile()
 }
+func GetUser(id int) models.User {
+	return GetUserFromFile(id)
+}
 func AddUser(user models.User) error {
 	return AddUserToFile(user)
 }
@@ -15,6 +18,9 @@ func DeleteUser(id int) error {
 }
 func GetLocations() []models.Location {
 	return GetLocationsFromFile()
+}
+func GetLocation(id int) models.Location {
+	return GetLocationFromFile(id)
 }
 func AddLocation(location models.Location) error {
 	return AddLocationToFile(location)

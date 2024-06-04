@@ -1,53 +1,86 @@
 package controllers
 
 import (
+	"strconv"
+
+	"github.com/gin-gonic/gin"
 	"github.com/uug-ai/facial-access-control/api/database"
 	"github.com/uug-ai/facial-access-control/api/models"
 )
 
-// users godoc
+// user godoc
 // @Router /api/users [get]
 // @ID getUsers
 // @Tags users
 // @Summary Get all users
 // @Description Get all users
-// @Success 200 {object} []models.User
-func GetUsers() []models.User {
-	users := database.GetUsers()
-	return users
+// @Success 200 {array} models.User
+func GetUsers(c *gin.Context) []models.User {
+			users := database.GetUsers()
+			c.JSON(200, gin.H{
+				"data": users,
+			})
+			return nil;
 }
 
 // user godoc
 // @Router /api/users/{id} [get]
 // @ID getUser
 // @Tags users
-// @Summary Get user by id
-// @Description Get user by id
+// @Summary Get user
+// @Description Get user
 // @Param id path int true "User ID"
 // @Success 200 {object} models.User
-func GetUser(id int) models.User {
-	users := database.GetUsers()
-	for _, user := range users {
-		if user.Id == id {
-			return user
-		}
+func GetUser(c *gin.Context) models.User {
+	id := c.Param("id")
+
+				userID, err := strconv.Atoi(id)
+				if err != nil {
+					c.JSON(400, gin.H{
+						"error": "Invalid user ID",
+					})
+					return models.User{}
+				}
+
+				user := database.GetUser(userID)
+
+				c.JSON(200, gin.H{
+					"data": user,
+				})
+				return user
 	}
-	return models.User{}
-}
 
 // user godoc
 // @Router /api/users [post]
 // @ID addUser
 // @Tags users
-// @Summary Create user
-// @Description Create user
+// @Summary Add user
+// @Description Add user
 // @Accept json
 // @Produce json
-// @Param user body models.User true "User"
-// @Success 200 {object} models.User
-func AddUser(user models.User) error {
-	err := database.AddUser(user)
-	return err
+// @Param user body models.User true "User data"
+// @Success 201 {object} models.User
+func AddUser(c *gin.Context) error {
+	var user models.User
+			if err := c.ShouldBindJSON(&user); err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid user data",
+				})
+				return err
+			}
+
+			if err := database.AddUser(user); err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to add user",
+				})
+			return err
+			}
+
+			c.JSON(201, gin.H{
+				"message": "User added successfully",
+				"user": user,
+			})
+			return nil
 }
 
 // user godoc
@@ -58,7 +91,28 @@ func AddUser(user models.User) error {
 // @Description Delete user
 // @Param id path int true "User ID"
 // @Success 200
-func DeleteUser(id int) error {
-	err := database.DeleteUser(id)
-	return err
+func DeleteUser(c *gin.Context) error {
+	// Get the id parameter from the URL
+			id := c.Param("id")
+
+			// Convert id to an integer
+			userID, err := strconv.Atoi(id)
+			if err != nil {
+				c.JSON(400, gin.H{
+					"error": "Invalid user ID",
+				})
+				return err
+			}
+
+			if err := database.DeleteUser(userID); err != nil {
+				c.JSON(500, gin.H{
+					"error": "Failed to delete user",
+				})
+				return err
+			}
+
+			c.JSON(200, gin.H{
+				"message": "User deleted successfully",
+			})
+			return nil
 }

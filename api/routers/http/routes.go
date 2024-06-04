@@ -1,12 +1,9 @@
 package http
 
 import (
-	"strconv"
-
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/uug-ai/facial-access-control/api/controllers"
-	"github.com/uug-ai/facial-access-control/api/models"
 )
 
 func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterGroup {
@@ -21,160 +18,40 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 			})
 		})
 
+		//users
 		api.GET("/users", func(c *gin.Context) {
-			// Create a list of random users
-			users := controllers.GetUsers()
-			c.JSON(200, gin.H{
-				"data": users,
-			})
+			controllers.GetUsers(c);
 		})
 
 		api.GET("/users/:id", func(c *gin.Context) {
-			// Get the id parameter from the URL
-			id := c.Param("id")
-
-			// Convert id to an integer
-			userID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid user ID",
-				})
-				return
-			}
-
-			// Use the userID to fetch the user
-			user := controllers.GetUser(userID)
-
-			c.JSON(200, gin.H{
-				"data": user,
-			})
+			controllers.GetUser(c);
 		})
 
 		api.POST("/users", func(c *gin.Context) {
-			var user models.User
-			if err := c.ShouldBindJSON(&user); err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid user data",
-				})
-				return
-			}
-
-			if err := controllers.AddUser(user); err != nil {
-				c.JSON(500, gin.H{
-					"error": "Failed to add user",
-				})
-			return
-			}
-
-			c.JSON(201, gin.H{
-				"message": "User added successfully",
-				"user": user,
-			})
-
-
+			controllers.AddUser(c);
 		})
+
 		api.DELETE("/users/:id", func(c *gin.Context) {
-			// Get the id parameter from the URL
-			id := c.Param("id")
-
-			// Convert id to an integer
-			userID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid user ID",
-				})
-				return
-			}
-
-			if err := controllers.DeleteUser(userID); err != nil {
-				c.JSON(500, gin.H{
-					"error": "Failed to delete user",
-				})
-				return
-			}
-
-			c.JSON(200, gin.H{
-				"message": "User deleted successfully",
-			})
+			controllers.DeleteUser(c);
 		})
+		// End users
 
-			
+		// Locations	
 		api.GET("/locations", func(c *gin.Context) {
-			// Create a list of random locations
-			locations := controllers.GetLocations()
-			c.JSON(200, gin.H{
-				"data": locations,
-			})
+			controllers.GetLocations(c);
 		})
 
 		api.GET("/locations/:id", func(c *gin.Context) {
-			// Get the id parameter from the URL
-			id := c.Param("id")
-
-			// Convert id to an integer
-			locationID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid location ID",
-				})
-				return
-			}
-
-			// Use the locationID to fetch the location
-			location := controllers.GetLocation(locationID)
-
-			c.JSON(200, gin.H{
-				"data": location,
-			})
+			controllers.GetLocation(c);
 		})
 
-			api.POST("/locations", func(c *gin.Context) {
-			var location models.Location
-			if err := c.ShouldBindJSON(&location); err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid location data",
-				})
-				return
-			}
-
-			if err := controllers.AddLocation(location); err != nil {
-				c.JSON(500, gin.H{
-					"error": "Failed to add location",
-				})
-			return
-			}
-
-			c.JSON(201, gin.H{
-				"message": "Location added successfully",
-				"location": location,
-			})
-
-
+		api.POST("/locations", func(c *gin.Context) {
+			controllers.AddLocation(c);
 		})
 		api.DELETE("/locations/:id", func(c *gin.Context) {
-			// Get the id parameter from the URL
-			id := c.Param("id")
-
-			// Convert id to an integer
-			locationID, err := strconv.Atoi(id)
-			if err != nil {
-				c.JSON(400, gin.H{
-					"error": "Invalid location ID",
-				})
-				return
-			}
-
-			if err := controllers.DeleteLocation(locationID); err != nil {
-				c.JSON(500, gin.H{
-					"error": "Failed to delete location",
-				})
-				return
-			}
-
-			c.JSON(200, gin.H{
-				"message": "Location deleted successfully",
-			})
+			controllers.DeleteLocation(c);
 		})
+		// End Locations
 
 		// Secured endpoints..
 		api.Use(authMiddleware.MiddlewareFunc())

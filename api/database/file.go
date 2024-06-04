@@ -13,6 +13,16 @@ func GetUsersFromFile() []models.User {
 	return users
 }
 
+func GetUserFromFile(id int) models.User {
+	users := data.Users
+	for _, user := range users {
+		if user.Id == id {
+			return user
+		}
+	}
+	return models.User{}
+}
+
 
 func AddUserToFile(user models.User) error {
     users := data.Users
@@ -49,17 +59,32 @@ func GetLocationsFromFile() []models.Location {
 	return locations
 }
 
-func AddLocationToFile(location models.Location) error {
+func GetLocationFromFile(id int) models.Location {
 	locations := data.Locations
-	location.Id = len(locations) + 1
-	// Check if the location already exists
-	for _, l := range locations {
-		if l.Id == location.Id {
-			return errors.New("location already exists")
+	for _, location := range locations {
+		if location.Id == id {
+			return location
 		}
 	}
-	data.Locations = append(data.Locations, location)
-	return nil
+	return models.Location{}
+}
+
+func AddLocationToFile(location models.Location) error {
+	locations := data.Locations
+
+    // Find the maximum ID in the current user list
+    maxID := 0
+    for _, location := range locations {
+        if location.Id > maxID {
+            maxID = location.Id
+        }
+    }
+
+    // Assign the new user an ID that is one greater than the current maximum
+    location.Id = maxID + 1
+
+    data.Locations = append(data.Locations, location)
+    return nil
 }
 
 func DeleteLocationFromFile(id int) error {

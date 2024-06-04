@@ -23,7 +23,7 @@ export default function Login() {
           Email
         </Text>
         <Input type="text" id="email" placeholder="email" className="mb-4" />
-        <Row className="mb justify-between ">
+        <Row className="mb justify-between">
           <Text as="label" for="password" weight="semibold">
             Password
           </Text>
