@@ -18,10 +18,14 @@ const Dashboard = () => {
             Organisation
           </Text>
         </Row>
-        <Row className="justify-between">
-          <LocationInfo />
-          <AddLocation />
-          <AddUser />
+        <Row className="justify-between gap-4">
+          <Row>
+            <LocationInfo />
+          </Row>
+          <Row className="gap-4 justify-end">
+            <AddLocation />
+            <AddUser />
+          </Row>
         </Row>
         <UserTable />
       </Stack>

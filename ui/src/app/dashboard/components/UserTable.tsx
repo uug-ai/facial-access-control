@@ -1,9 +1,10 @@
 "use client";
 
 import { useGetUsersQuery } from "@/lib/services/users/userApi";
-import { Table, Text } from "@uug-ai/ui";
+import { Button, Table, Text } from "@uug-ai/ui";
 import { ColumnProps } from "@uug-ai/ui/lib/components/Table/Table";
 import React from "react";
+import DeleteUser from "./DeleteUser";
 
 interface Data {
   id: number;
@@ -41,7 +42,6 @@ const UserTable = () => {
       return <div>{error.message}</div>;
     }
   }
-
   const mappedData =
     data?.data.map((user: User) => ({
       id: user.id,
@@ -61,6 +61,13 @@ const UserTable = () => {
     {
       key: "email",
       title: "Email",
+    },
+    {
+      key: "delete",
+      title: "",
+      render: (_, record) => {
+        return <DeleteUser id={record.id} />;
+      },
     },
   ];
 

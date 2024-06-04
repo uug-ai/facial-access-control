@@ -15,16 +15,21 @@ func GetUsersFromFile() []models.User {
 
 
 func AddUserToFile(user models.User) error {
-	users := data.Users
-	user.Id = len(users) + 1
-	// Check if the user already exists
-	for _, u := range users {
-		if u.Id == user.Id {
-			return errors.New("user already exists")
-		}
-	}
-	data.Users = append(data.Users, user)
-	return nil
+    users := data.Users
+
+    // Find the maximum ID in the current user list
+    maxID := 0
+    for _, u := range users {
+        if u.Id > maxID {
+            maxID = u.Id
+        }
+    }
+
+    // Assign the new user an ID that is one greater than the current maximum
+    user.Id = maxID + 1
+
+    data.Users = append(data.Users, user)
+    return nil
 }
 
 func DeleteUserFromFile(id int) error {
