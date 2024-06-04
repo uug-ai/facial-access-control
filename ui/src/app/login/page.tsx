@@ -19,12 +19,12 @@ export default function Login() {
         <Text as="h2" size="5xl" weight="semibold" className="pb-8">
           Sign in
         </Text>
-        <Text as="label" for="email" weight="semibold" className="mb-1">
+        <Text as="label" htmlFor="email" weight="semibold" className="mb-1">
           Email
         </Text>
         <Input type="text" id="email" placeholder="email" className="mb-4" />
         <Row className="mb justify-between">
-          <Text as="label" for="password" weight="semibold">
+          <Text as="label" htmlFor="password" weight="semibold">
             Password
           </Text>
           <Text as="a" variant="link" color="light">
@@ -32,7 +32,7 @@ export default function Login() {
           </Text>
         </Row>
         <Password placeholder="password" id="username" className="mb-4" />
-        <Button type="submit" variant="solid" width="third">
+        <Button type="submit" name="Sign in" variant="solid" width="third">
           Sign in
         </Button>
       </Stack>
