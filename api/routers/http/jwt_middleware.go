@@ -11,6 +11,7 @@ import (
 	jwtgo "github.com/golang-jwt/jwt/v4"
 	"github.com/uug-ai/facial-access-control/api/database"
 	"github.com/uug-ai/facial-access-control/api/models"
+	"github.com/uug-ai/facial-access-control/api/utils"
 )
 
 func JWTMiddleware() *jwt.GinJWTMiddleware {
@@ -53,8 +54,11 @@ func JWTMiddleware() *jwt.GinJWTMiddleware {
 
 			userFound := database.GetUserByEmail(email)
 
+			hashedpw, _ := utils.Hash(userFound.Password)
+			println("Hashed password: ", hashedpw)
+
 			if userFound.Email != "" {
-				if userFound.Password == password {
+				if utils.IsSame(userFound.Password, password) {
 					return &models.User{
 						Email: userFound.Email,
 					}, nil

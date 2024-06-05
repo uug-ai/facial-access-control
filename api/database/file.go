@@ -5,6 +5,7 @@ import (
 
 	"github.com/uug-ai/facial-access-control/api/data"
 	"github.com/uug-ai/facial-access-control/api/models"
+	"github.com/uug-ai/facial-access-control/api/utils"
 )
 
 
@@ -16,7 +17,7 @@ func GetUsersFromFile() []models.User {
 func GetUsersWithHashedPasswordFromFile() []models.User {
 	users := data.Users
 	for i := range users {
-		users[i].Password,_ = users[i].Password, ""//utils.Hash(users[i].Password)
+		users[i].Password,_ = utils.Hash(users[i].Password)
 	}
 	return users
 }
