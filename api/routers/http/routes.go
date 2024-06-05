@@ -24,7 +24,7 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 		})
 
 		api.GET("/users/:id", func(c *gin.Context) {
-			controllers.GetUser(c);
+			controllers.GetUserById(c);
 		})
 
 		api.POST("/users", func(c *gin.Context) {

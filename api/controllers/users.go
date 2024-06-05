@@ -31,7 +31,7 @@ func GetUsers(c *gin.Context) []models.User {
 // @Description Get user
 // @Param id path int true "User ID"
 // @Success 200 {object} models.User
-func GetUser(c *gin.Context) models.User {
+func GetUserById(c *gin.Context) models.User {
 	id := c.Param("id")
 
 	userID, err := strconv.Atoi(id)
@@ -42,7 +42,26 @@ func GetUser(c *gin.Context) models.User {
 		return models.User{}
 	}
 
-	user := database.GetUser(userID)
+	user := database.GetUserById(userID)
+
+	c.JSON(200, gin.H{
+		"data": user,
+	})
+	return user
+}
+
+// user godoc
+// @Router /api/users/{email} [get]
+// @ID getUserByEmail
+// @Tags users
+// @Summary Get user by email
+// @Description Get user by email
+// @Param email path string true "User email"
+// @Success 200 {object} models.User
+func GetUserByEmail(c *gin.Context) models.User {
+	email := c.Param("email")
+
+	user := database.GetUserByEmail(email)
 
 	c.JSON(200, gin.H{
 		"data": user,

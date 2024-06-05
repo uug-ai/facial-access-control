@@ -9,12 +9,20 @@ import (
 
 
 func GetUsersFromFile() []models.User {
-	users := data.Users
+	users := GetUsersWithHashedPasswordFromFile()
 	return users
 }
 
-func GetUserFromFile(id int) models.User {
+func GetUsersWithHashedPasswordFromFile() []models.User {
 	users := data.Users
+	for i := range users {
+		users[i].Password,_ = users[i].Password, ""//utils.Hash(users[i].Password)
+	}
+	return users
+}
+
+func GetUserByIdFromFile(id int) models.User {
+	users := GetUsersWithHashedPasswordFromFile()
 	for _, user := range users {
 		if user.Id == id {
 			return user
@@ -23,9 +31,19 @@ func GetUserFromFile(id int) models.User {
 	return models.User{}
 }
 
+func GetUserByEmailFromFile(email string) models.User {
+	users := GetUsersWithHashedPasswordFromFile()
+	for _, user := range users {
+		if user.Email == email {
+			return user
+		}
+	}
+	return models.User{}
+}
+
 
 func AddUserToFile(user models.User) error {
-    users := data.Users
+    users := GetUsersWithHashedPasswordFromFile()
 
     // Find the maximum ID in the current user list
     maxID := 0
