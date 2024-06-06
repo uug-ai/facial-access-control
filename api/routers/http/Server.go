@@ -8,6 +8,7 @@ import (
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"github.com/uug-ai/facial-access-control/api/data"
 	_ "github.com/uug-ai/facial-access-control/api/docs"
 )
 
@@ -51,6 +52,9 @@ func StartServer(port string) {
 
 	// Print running port
 	log.Println("Running on port: " + port)
+
+   // Initialize data (hash passwords)
+    data.Initialize()
 
 	// Run the API on the specified port
 	if err := r.Run(":" + port); err != nil {

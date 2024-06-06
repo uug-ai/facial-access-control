@@ -44,29 +44,35 @@ func JWTMiddleware() *jwt.GinJWTMiddleware {
 				Role:  user["role"].(string),
 			}
 		},
-		Authenticator: func(c *gin.Context) (interface{}, error) {
-			var user models.User
-			if err := c.ShouldBind(&user); err != nil {
-				return "", jwt.ErrMissingLoginValues
-			}
-			email := user.Email
-			password := user.Password
+	Authenticator: func(c *gin.Context) (interface{}, error) {
+    var user models.User
+    if err := c.ShouldBind(&user); err != nil {
+        log.Println("Binding error:", err)
+        return "", jwt.ErrMissingLoginValues
+    }
+    email := user.Email
+    password := user.Password
 
-			userFound := database.GetUserByEmail(email)
+    log.Println("Attempting to authenticate user:", email)
+    userFound := database.GetUserByEmail(email)
 
-			hashedpw, _ := utils.Hash(userFound.Password)
-			println("Hashed password: ", hashedpw)
+    if userFound.Email != "" {
+        log.Printf("Stored hashed password: %s\n", userFound.Password)
+        if utils.IsSame(password, userFound.Password) {
+            log.Println("Authentication successful for user:", email)
+            return &models.User{
+                Email: userFound.Email,
+            }, nil
+        } else {
+            log.Println("Password mismatch for user:", email)
+        }
+    } else {
+        log.Println("User not found for email:", email)
+    }
 
-			if userFound.Email != "" {
-				if utils.IsSame(userFound.Password, password) {
-					return &models.User{
-						Email: userFound.Email,
-					}, nil
-				}
-			} 
+    return nil, jwt.ErrFailedAuthentication
+},
 
-			return nil, jwt.ErrFailedAuthentication
-		},
 		LoginResponse: func(c *gin.Context, code int, token string, expire time.Time) {
 			// Decrypt the token
 			hmacSecret := []byte(myKey) // Key used for decrypting the token
