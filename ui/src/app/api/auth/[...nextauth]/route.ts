@@ -11,7 +11,7 @@ const handler = NextAuth({
       // e.g. domain, username, password, 2FA token, etc.
       // You can  pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "jsmith" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -37,6 +37,11 @@ const handler = NextAuth({
       },
     }),
   ],
+  secret: process.env.SECRET,
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
 });
 
 export { handler as GET, handler as POST };
