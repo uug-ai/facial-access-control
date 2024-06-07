@@ -1,4 +1,4 @@
-"use client"; // Add this at the top of the file
+"use client";
 
 import React, { useState } from "react";
 import { Box, Row, Stack, Gradient, Text, Button, Socials, Icon, VideoCapture } from "@uug-ai/ui";
@@ -6,7 +6,6 @@ import FormComponent from "./components/FormComponent";
 import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 
-// Define the validation schema using Zod
 const schema = z.object({
   firstName: z.string().min(1, "First Name is required"),
   lastName: z.string().min(1, "Last Name is required"),
@@ -36,12 +35,11 @@ const Onboarding: React.FC = () => {
 
     if (videoFile) {
       console.log("Video file exists in onSubmit:", videoFile);
-      data.video = videoFile; // Add the video file to form data
+      data.video = videoFile;
 
       console.log("Form data with video:", data);
 
-      // Simulate successful submission
-      setIsSubmitted(true); // Set submission status to true on successful submission
+      setIsSubmitted(true); 
     } else {
       console.error("Video is required in onSubmit");
     }
@@ -54,7 +52,7 @@ const Onboarding: React.FC = () => {
         <Row className="w-full pt-14 px-20 items-center">
           <Stack className="w-1/3 flex">
             {isSubmitted ? (
-              <Text className="text-green-500">Form submitted successfully!</Text>
+              <Text>User registered!</Text>
             ) : (
               <FormComponent videoFile={videoFile} onSubmit={onSubmit} />
             )}

@@ -3,9 +3,9 @@ import { useForm, SubmitHandler, FormProvider, useFormContext } from "react-hook
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Box, Text, Input, Button, Logo } from "@uug-ai/ui";
-import { schema } from "./formSchema";
-import { onSubmitAction } from "./formSubmit";
-import { FormData } from "./types";
+import { schema } from "./FormSchema";
+import { onSubmitAction } from "./FormSubmit";
+import { FormData } from "./Types";
 
 interface FormFieldProps {
   name: keyof FormData;
