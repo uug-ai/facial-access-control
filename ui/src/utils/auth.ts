@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
       // e.g. domain, username, password, 2FA token, etc.
       // You can  pass any HTML attribute to the <input> tag through the object.
       credentials: {
-        email: { label: "Email", type: "text" },
+        email: { label: "Email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
@@ -21,7 +21,7 @@ export const authOptions: NextAuthOptions = {
         // e.g. return { id: 1, name: 'J Smith', email: 'jsmith@example.com' }
         // You can also use the `req` object to obtain additional parameters
         // (i.e., the request IP address)
-        const res = await fetch("http://localhost:80/api/login", {
+        const res = await fetch("http://localhost/api/login", {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -35,11 +35,39 @@ export const authOptions: NextAuthOptions = {
         // Return null if user data could not be retrieved
         return null;
       },
+
+      // WITH TEST DATA
+      //   async authorize(credentials) {
+      //     const users = [
+      //       {
+      //         id: "test-user-1",
+      //         userName: "test1",
+      //         name: "Test 1",
+      //         password: "pass",
+      //         email: "test1@donotreply.com",
+      //       },
+      //       {
+      //         id: "test-user-2",
+      //         userName: "test2",
+      //         name: "Test 2",
+      //         password: "pass",
+      //         email: "test2@donotreply.com",
+      //       },
+      //     ];
+      //     const user = users.find(
+      //       (user) =>
+      //         user.email === credentials?.email &&
+      //         user.password === credentials?.password
+      //     );
+      //     return user
+      //       ? { id: user.id, name: user.name, email: user.email }
+      //       : null;
+      //   },
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 1,
   },
 };
