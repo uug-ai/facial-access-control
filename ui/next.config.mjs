@@ -5,4 +5,10 @@ const nextConfig = {
   reactStrictMode: true,
 };
 
+module.exports = {
+  env: {
+    API_LOGIN: "http://localhost:3000/api/login",
+  },
+};
+
 export default nextConfig;

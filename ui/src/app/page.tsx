@@ -1,4 +1,4 @@
-import { Text } from "@uug-ai/ui";
+import { Text } from "../components/ui";
 import { getServerSession } from "next-auth";
 import React from "react";
 
