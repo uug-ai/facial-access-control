@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetUsersQuery } from "@/lib/services/users/userApi";
-import { Button, Table, Text } from "@uug-ai/ui";
+import { Button, Table, Text } from "../../../components/ui";
 import { ColumnProps } from "@uug-ai/ui/lib/components/Table/Table";
 import React from "react";
 import DeleteUser from "./DeleteUser";
