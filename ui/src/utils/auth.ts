@@ -7,18 +7,15 @@ export const authOptions: NextAuthOptions = {
       // The name to display on the sign in form (e.g. 'Sign in with...')
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "jsmith" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(
-          process.env.API_LOGIN || "http://localhost/api/login",
-          {
-            method: "POST",
-            body: JSON.stringify(credentials),
-            headers: { "Content-Type": "application/json" },
-          }
-        );
+        const res = await fetch(process.env.API_LOGIN || "", {
+          method: "POST",
+          body: JSON.stringify(credentials),
+          headers: { "Content-Type": "application/json" },
+        });
         const user = await res.json();
 
         // If no error and we have user data, return it

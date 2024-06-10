@@ -16,13 +16,7 @@ import Credentials from "next-auth/providers/credentials";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-type Props = {
-  className?: string;
-  callbackUrl?: string;
-  error?: string;
-};
-
-const LoginForm = (props: Props) => {
+const LoginForm = () => {
   const router = useRouter();
   const email = useRef("");
   const password = useRef("");
@@ -34,7 +28,7 @@ const LoginForm = (props: Props) => {
       redirect: false,
     });
     if (result && !result.error) {
-      router.push("http://localhost:3000/");
+      router.push("/");
     } else {
       console.error("User not found");
     }
