@@ -1,4 +1,4 @@
-import { Box, Row, Stack, Text, Gradient } from "@uug-ai/ui";
+import { Box, Row, Stack, Text, Gradient } from "../../components/ui";
 import React from "react";
 import AddUser from "./components/AddUser";
 import UserTable from "./components/UserTable";
