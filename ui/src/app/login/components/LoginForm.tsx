@@ -16,7 +16,13 @@ import Credentials from "next-auth/providers/credentials";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-const LoginForm = () => {
+type Props = {
+  className?: string | null;
+  callbackUrl?: string | null;
+  error?: string | null;
+};
+
+const LoginForm = (props: Props) => {
   const router = useRouter();
   const email = useRef("");
   const password = useRef("");
@@ -27,10 +33,8 @@ const LoginForm = () => {
       password: password.current,
       redirect: false,
     });
-    if (result && !result.error) {
-      router.push("/");
-    } else {
-      console.error("User not found");
+    if (!result?.error) {
+      router.push(props.callbackUrl ?? "/");
     }
   };
   return (
