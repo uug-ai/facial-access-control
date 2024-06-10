@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, Row, Stack, Gradient, Text, Button, Socials, Icon, VideoCapture } from "@uug-ai/ui";
+import { Box, Row, Stack, Gradient, Text, Button, Socials, Icon, VideoCapture } from "../../components/ui";
 import FormComponent from "./components/FormComponent";
 import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
