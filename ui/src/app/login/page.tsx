@@ -11,8 +11,18 @@ import {
 } from "../../components/ui";
 import React from "react";
 import SignInForm from "./components/SignInForm";
+import { getServerSession } from "next-auth";
 
-export default function Login() {
+export default async function Login() {
+  // const session = await getServerSession();
+  // if (session) {
+  //   return {
+  //     redirect: {
+  //       destination: "/dashboard",
+  //     },
+  //   };
+  // }
+
   return (
     <Row>
       <Box className="shadow-inner-right min-h-screen min-w-fit max-w-96 w-4/12 flex flex-col items-start bg-primary-50/15">

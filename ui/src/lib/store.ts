@@ -1,10 +1,9 @@
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import userReducer from "./features/users/userSlice";
-import authReducer from "./features/auth/authSlice";
 import { userApi } from "./services/users/userApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { locationApi } from "./services/locations/locationApi";
-import { authApi } from "./services/auth/authApi";
+
 
 // const rootReducer = combineSlices(userSlice);
 
@@ -14,14 +13,11 @@ export const store = () => {
       user: userReducer,
       [userApi.reducerPath]: userApi.reducer,
       [locationApi.reducerPath]: locationApi.reducer,
-      [authApi.reducerPath]: authApi.reducer,
-      auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware()
         .concat(userApi.middleware)
-        .concat(locationApi.middleware)
-        .concat(authApi.middleware),
+        .concat(locationApi.middleware),
   });
 };
 

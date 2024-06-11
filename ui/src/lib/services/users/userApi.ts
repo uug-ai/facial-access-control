@@ -1,4 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getSession } from "next-auth/react";
+
+// const getToken = async () => {
+//   const session = await getSession();
+//   return session?.token?.token;
+// };
 
 export const userApi: any = createApi({
   reducerPath: "userApi",

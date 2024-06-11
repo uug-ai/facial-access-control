@@ -17,12 +17,12 @@ export const authOptions: NextAuthOptions = {
           headers: { "Content-Type": "application/json" },
         });
         const user = await res.json();
+        console.log(user);
 
-        // If no error and we have user data, return it
         if (res.ok && user) {
-          console.log(res);
           return user;
         }
+
         // Return null if user data could not be retrieved
         return null;
       },
@@ -34,6 +34,21 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   session: {
     strategy: "jwt",
-    maxAge: 1,
+  },
+  callbacks: {
+    async jwt({ token, user, session }) {
+      console.log("jwt callback:", { token, user, session });
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+        };
+      }
+      return token;
+    },
+    async session({ session, token, user }) {
+      console.log("session callback:", { session, token, user });
+      return session;
+    },
   },
 };
