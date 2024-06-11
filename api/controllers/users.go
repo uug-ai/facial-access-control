@@ -10,21 +10,29 @@ import (
 
 // user godoc
 // @Router /api/users [get]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID getUsers
 // @Tags users
 // @Summary Get all users
 // @Description Get all users
 // @Success 200 {array} models.User
 func GetUsers(c *gin.Context) []models.User {
-			users := database.GetUsers()
-			c.JSON(200, gin.H{
-				"data": users,
-			})
-			return nil;
+	users := database.GetUsers()
+	c.JSON(200, gin.H{
+		"data": users,
+	})
+	return nil
 }
 
 // user godoc
 // @Router /api/users/{id} [get]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID getUser
 // @Tags users
 // @Summary Get user
@@ -52,6 +60,10 @@ func GetUserById(c *gin.Context) models.User {
 
 // user godoc
 // @Router /api/users/{email} [get]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID getUserByEmail
 // @Tags users
 // @Summary Get user by email
@@ -71,6 +83,10 @@ func GetUserByEmail(c *gin.Context) models.User {
 
 // user godoc
 // @Router /api/users [post]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID addUser
 // @Tags users
 // @Summary Add user
@@ -92,18 +108,22 @@ func AddUser(c *gin.Context) error {
 		c.JSON(500, gin.H{
 			"error": "Failed to add user",
 		})
-	return err
+		return err
 	}
 
 	c.JSON(201, gin.H{
 		"message": "User added successfully",
-		"user": user,
+		"user":    user,
 	})
 	return nil
 }
 
 // user godoc
 // @Router /api/users/{id} [delete]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID deleteUser
 // @Tags users
 // @Summary Delete user
