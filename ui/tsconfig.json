@@ -18,7 +18,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@uug-ai/ui": ["./components/ui"]
     },
     "typeRoots": ["./src/types"]
   },

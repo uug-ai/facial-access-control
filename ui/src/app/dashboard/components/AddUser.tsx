@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useAddUserMutation } from "@/lib/services/users/userApi"; // Replace "path/to/addUsersQuery" with the actual path to the module containing the useAddUsersQuery function.
-import { Button } from "@uug-ai/ui";
+import { Button } from "../../../components/ui";
 
 const AddUser = () => {
   const [addUser, { data, error, isLoading }] = useAddUserMutation();

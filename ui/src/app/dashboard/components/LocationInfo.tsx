@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetLocationsQuery } from "@/lib/services/locations/locationApi";
-import { Box, Text } from "@uug-ai/ui";
+import { Box, Text } from "../../../components/ui";
 import React from "react";
 
 const LocationInfo = () => {

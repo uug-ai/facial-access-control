@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetUsersQuery } from "@/lib/services/users/userApi";
+import { useGetUsersQuery } from "@/lib/services/users/userApi"
 import { Button, Row, Stack, Table, Text } from "../../../components/ui";
 import { ColumnProps } from "@uug-ai/ui/lib/components/Table/Table";
 import React from "react";

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@uug-ai/ui";
+import { Button } from "../../../components/ui";
 import { useDeleteUserMutation } from "@/lib/services/users/userApi";
 
 interface DeleteUserProps {

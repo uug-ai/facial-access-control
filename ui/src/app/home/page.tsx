@@ -1,15 +1,12 @@
 import {
-  Button,
-  Input,
-  Gradient,
-  Socials,
+
   Box,
+  Gradient,
   Stack,
-  Password,
-  Row,
+
 } from "../../components/ui";
-import React from "react";
+
 
 export default function Home() {
-  return <div>Home</div>;
+  return <Box><Gradient/><Stack>Home</Stack></Box>;
 }
