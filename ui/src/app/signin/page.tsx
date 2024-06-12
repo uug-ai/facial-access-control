@@ -13,7 +13,7 @@ import React from "react";
 import SignInForm from "./components/SignInForm";
 import { getServerSession } from "next-auth";
 
-export default async function Login() {
+export default async function Signin() {
   // const session = await getServerSession();
   // if (session) {
   //   return {
