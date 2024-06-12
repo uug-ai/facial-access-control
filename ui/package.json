@@ -13,6 +13,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.5.0",
     "@reduxjs/toolkit": "^2.2.5",
+    "@uug-ai/ui": "^1.0.34",
     "autoprefixer": "^10.4.19",
     "next": "14",
     "prettier-plugin-tailwindcss": "^0.6.1",
