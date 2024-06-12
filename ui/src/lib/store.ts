@@ -4,6 +4,7 @@ import { userApi } from "./services/users/userApi";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import { locationApi } from "./services/locations/locationApi";
 
+
 // const rootReducer = combineSlices(userSlice);
 
 export const store = () => {

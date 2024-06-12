@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   models.Authentication:
     properties:
@@ -50,7 +51,17 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: support@kerberos.io
+    name: API Support
+    url: https://www.kerberos.io
+  description: This is the API for using and configuring Kerberos Agent.
+  license:
+    name: Apache 2.0 - Commons Clause
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: https://kerberos.io
+  title: Swagger Kerberos Agent API
+  version: "1.0"
 paths:
   /api/locations:
     get:
@@ -63,6 +74,8 @@ paths:
             items:
               $ref: '#/definitions/models.Location'
             type: array
+      security:
+      - Bearer: []
       summary: Get all locations
       tags:
       - locations
@@ -85,6 +98,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Location'
+      security:
+      - Bearer: []
       summary: Create location
       tags:
       - locations
@@ -101,6 +116,8 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Bearer: []
       summary: Delete location
       tags:
       - locations
@@ -118,6 +135,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.Location'
+      security:
+      - Bearer: []
       summary: Get location by ID
       tags:
       - locations
@@ -151,16 +170,18 @@ paths:
             items:
               $ref: '#/definitions/models.User'
             type: array
+      security:
+      - Bearer: []
       summary: Get all users
       tags:
       - users
     post:
       consumes:
       - application/json
-      description: Create user
+      description: Add user
       operationId: addUser
       parameters:
-      - description: User
+      - description: User data
         in: body
         name: user
         required: true
@@ -169,11 +190,33 @@ paths:
       produces:
       - application/json
       responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+      security:
+      - Bearer: []
+      summary: Add user
+      tags:
+      - users
+  /api/users/{email}:
+    get:
+      description: Get user by email
+      operationId: getUserByEmail
+      parameters:
+      - description: User email
+        in: path
+        name: email
+        required: true
+        type: string
+      responses:
         "200":
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Create user
+      security:
+      - Bearer: []
+      summary: Get user by email
       tags:
       - users
   /api/users/{id}:
@@ -189,11 +232,13 @@ paths:
       responses:
         "200":
           description: OK
+      security:
+      - Bearer: []
       summary: Delete user
       tags:
       - users
     get:
-      description: Get user by id
+      description: Get user
       operationId: getUser
       parameters:
       - description: User ID
@@ -206,7 +251,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Get user by id
+      security:
+      - Bearer: []
+      summary: Get user
       tags:
       - users
+securityDefinitions:
+  Bearer:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

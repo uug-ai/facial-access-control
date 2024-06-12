@@ -1,8 +1,28 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { getSession } from "next-auth/react";
+
+const getToken = async () => {
+  const session = await getSession();
+  return session?.user.token;
+};
+
+const baseQuery = fetchBaseQuery({
+  baseUrl: "http://localhost/api/",
+  prepareHeaders: async (headers) => {
+    const token = await getToken();
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+    return headers;
+  },
+});
 
 export const locationApi = createApi({
   reducerPath: "locationApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost/api/" }),
+  baseQuery: async (args, api, extraOptions) => {
+    const result = await baseQuery(args, api, extraOptions);
+    return result;
+  },
   tagTypes: ["Location"],
   endpoints: (build) => ({
     getLocations: build.query({
@@ -26,6 +46,7 @@ export const locationApi = createApi({
       query: ({ id, body }) => ({
         url: `locations/${id}`,
         method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body,
       }),
       invalidatesTags: ["Location"],

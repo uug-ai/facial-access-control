@@ -10,6 +10,10 @@ import (
 
 // Locations godoc
 // @Router /api/locations [get]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID getLocations
 // @Tags locations
 // @Summary Get all locations
@@ -20,11 +24,15 @@ func GetLocations(c *gin.Context) []models.Location {
 	c.JSON(200, gin.H{
 		"data": locations,
 	})
-	return nil;
+	return nil
 }
 
 // Location godoc
 // @Router /api/locations/{id} [get]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID getLocation
 // @Tags locations
 // @Summary Get location by ID
@@ -50,9 +58,12 @@ func GetLocation(c *gin.Context) models.Location {
 	return location
 }
 
-
 // location godoc
 // @Router /api/locations [post]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID addLocation
 // @Tags locations
 // @Summary Create location
@@ -74,18 +85,22 @@ func AddLocation(c *gin.Context) error {
 		c.JSON(500, gin.H{
 			"error": "Failed to add location",
 		})
-	return err
+		return err
 	}
 
 	c.JSON(201, gin.H{
-		"message": "Location added successfully",
+		"message":  "Location added successfully",
 		"location": location,
 	})
-	return nil	
+	return nil
 }
 
 // location godoc
 // @Router /api/locations/{id} [delete]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID deleteLocation
 // @Tags locations
 // @Summary Delete location
@@ -115,5 +130,3 @@ func DeleteLocation(c *gin.Context) error {
 	})
 	return nil
 }
-
-
