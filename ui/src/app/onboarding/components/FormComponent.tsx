@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useForm, SubmitHandler, FormProvider, useFormContext } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Box, Text, Input, Button, Logo } from "@uug-ai/ui";
+import { Box, Text, Input, Button, Logo } from "../../../components/ui";
 import { schema } from "./FormSchema";
 import { onSubmitAction } from "./FormSubmit";
 import { FormData } from "./Types";
