@@ -16,11 +16,11 @@ import (
 // @Description Get all users
 // @Success 200 {array} models.User
 func GetUsers(c *gin.Context) []models.User {
-			users := database.GetUsers()
-			c.JSON(200, gin.H{
-				"data": users,
-			})
-			return nil;
+	users := database.GetUsers()
+	c.JSON(200, gin.H{
+		"data": users,
+	})
+	return nil
 }
 
 // user godoc
@@ -73,12 +73,12 @@ func AddUser(c *gin.Context) error {
 		c.JSON(500, gin.H{
 			"error": "Failed to add user",
 		})
-	return err
+		return err
 	}
 
 	c.JSON(201, gin.H{
 		"message": "User added successfully",
-		"user": user,
+		"user":    user,
 	})
 	return nil
 }
@@ -112,5 +112,16 @@ func DeleteUser(c *gin.Context) error {
 	c.JSON(200, gin.H{
 		"message": "User deleted successfully",
 	})
+	return nil
+}
+
+// user godoc
+// @Router /api/users/onboard [post]
+// @ID onboardUser
+// @Tags users
+// @Summary Onboard a user using a fingerprint and a video
+// @Description Onboard a user using a fingerprint and a video
+// @Success 200
+func OnboardUser(c *gin.Context) error {
 	return nil
 }
