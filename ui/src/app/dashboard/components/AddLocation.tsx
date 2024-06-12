@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Button } from "@uug-ai/ui";
+import { Button } from "../../../components/ui";
 import { useAddLocationMutation } from "@/lib/services/locations/locationApi";
 
 const AddLocation = () => {
