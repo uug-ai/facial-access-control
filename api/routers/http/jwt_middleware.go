@@ -1,6 +1,7 @@
 package http
 
 import (
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -8,15 +9,20 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	jwtgo "github.com/golang-jwt/jwt/v4"
+	"github.com/uug-ai/facial-access-control/api/database"
 	"github.com/uug-ai/facial-access-control/api/models"
+	"github.com/uug-ai/facial-access-control/api/utils"
 )
 
-func JWTMiddleWare() jwt.GinJWTMiddleware {
+func JWTMiddleware() *jwt.GinJWTMiddleware {
 
 	identityKey := "id"
-	myKey := "TOBECHANGED"
+	myKey := os.Getenv("JWT_SECRET")
+	if myKey == "" {
+		myKey = "TOBECHANGED"
+	}
 
-	m := jwt.GinJWTMiddleware{
+	authMiddleware, err := jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "uuftai",
 		Key:         []byte(myKey),
 		Timeout:     time.Hour * 24,
@@ -32,62 +38,70 @@ func JWTMiddleWare() jwt.GinJWTMiddleware {
 		},
 		IdentityHandler: func(c *gin.Context) interface{} {
 			claims := jwt.ExtractClaims(c)
-			user := claims["id"].(map[string]interface{})
+			user := claims[identityKey].(map[string]interface{})
 			return &models.User{
 				Email: user["email"].(string),
-				Role:     user["role"].(string),
+				Role:  user["role"].(string),
 			}
 		},
-		Authenticator: func(c *gin.Context) (interface{}, error) {
-			var loginVals models.User
-			if err := c.ShouldBind(&loginVals); err != nil {
-				return "", jwt.ErrMissingLoginValues
-			}
-			email := loginVals.Email
-			password := loginVals.Password
+	Authenticator: func(c *gin.Context) (interface{}, error) {
+    var user models.User
+    if err := c.ShouldBind(&user); err != nil {
+        log.Println("Binding error:", err)
+        return "", jwt.ErrMissingLoginValues
+    }
+    email := user.Email
+    password := user.Password
 
-			// Get email from ENV
-			emailFromConfig := os.Getenv("EMAIL")
-			if emailFromConfig == "" {
-				emailFromConfig = "root"
-			}
-			// Get password from ENV
-			passwordFromConfig := os.Getenv("PASSWORD")
-			if passwordFromConfig == "" {
-				passwordFromConfig = "root"
-			}
+    log.Println("Attempting to authenticate user:", email)
+    userFound := database.GetUserByEmail(email)
 
-			if email == emailFromConfig && password == passwordFromConfig {
-				return &models.User{
-					Email: email,
-					Role:     "admin",
-				}, nil
-			} else {
-				return nil, jwt.ErrFailedAuthentication
-			}
-		},
+    if userFound.Email != "" {
+        log.Printf("Stored hashed password: %s\n", userFound.Password)
+        if utils.IsSame(password, userFound.Password) {
+            log.Println("Authentication successful for user:", email)
+            return &models.User{
+                Email: userFound.Email,
+            }, nil
+        } else {
+            log.Println("Password mismatch for user:", email)
+        }
+    } else {
+        log.Println("User not found for email:", email)
+    }
+
+    return nil, jwt.ErrFailedAuthentication
+},
+
 		LoginResponse: func(c *gin.Context, code int, token string, expire time.Time) {
-
 			// Decrypt the token
-			hmacSecret := []byte(myKey) // todo in config file
-			t, _ := jwtgo.Parse(token, func(token *jwtgo.Token) (interface{}, error) {
+			hmacSecret := []byte(myKey) // Key used for decrypting the token
+			t, err := jwtgo.Parse(token, func(token *jwtgo.Token) (interface{}, error) {
 				return hmacSecret, nil
 			})
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse token"})
+				return
+			}
 
 			// Get the claims
-			claims, _ := t.Claims.(jwtgo.MapClaims)
-			user := claims["id"].(map[string]interface{})
+			claims, ok := t.Claims.(jwtgo.MapClaims)
+			if !ok || !t.Valid {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Invalid token"})
+				return
+			}
+			user := claims[identityKey].(map[string]interface{})
 
 			c.JSON(http.StatusOK, gin.H{
-				"code":     http.StatusOK,
-				"token":    token,
-				"expire":   expire.Format(time.RFC3339),
-				"email": user["email"].(string),
-				"role":     user["role"].(string),
+				"code":   http.StatusOK,
+				"token":  token,
+				"expire": expire.Format(time.RFC3339),
+				"email":  user["email"].(string),
+				"role":   user["role"].(string),
 			})
 		},
 		Authorizator: func(data interface{}, c *gin.Context) bool {
-			if _, ok := data.(*models.User); ok { //&& v.Email == "admin" {
+			if _, ok := data.(*models.User); ok {
 				return true
 			}
 			return false
@@ -98,24 +112,13 @@ func JWTMiddleWare() jwt.GinJWTMiddleware {
 				"message": message,
 			})
 		},
-		// TokenLookup is a string in the form of "<source>:<name>" that is used
-		// to extract token from the request.
-		// Optional. Default value "header:Authorization".
-		// Possible values:
-		// - "header:<name>"
-		// - "query:<name>"
-		// - "cookie:<name>"
-		// - "param:<name>"
-		TokenLookup: "header: Authorization, query: token, cookie: jwt",
-		// TokenLookup: "query:token",
-		// TokenLookup: "cookie:token",
-
-		// TokenHeadName is a string in the header. Default value is "Bearer"
+		TokenLookup:   "header: Authorization, query: token, cookie: jwt",
 		TokenHeadName: "Bearer",
-
-		// TimeFunc provides the current time. You can override it to use another time
-		// value. This is useful for testing or if your server uses a different time zone than your tokens.
-		TimeFunc: time.Now,
+		TimeFunc:      time.Now,
+	})
+	if err != nil {
+		log.Fatalf("JWT Error: %s", err.Error())
 	}
-	return m
+
+	return authMiddleware
 }

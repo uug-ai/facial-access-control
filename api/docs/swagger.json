@@ -1,11 +1,29 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "This is the API for using and configuring Kerberos Agent.",
+        "title": "Swagger Kerberos Agent API",
+        "termsOfService": "https://kerberos.io",
+        "contact": {
+            "name": "API Support",
+            "url": "https://www.kerberos.io",
+            "email": "support@kerberos.io"
+        },
+        "license": {
+            "name": "Apache 2.0 - Commons Clause",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0"
     },
+    "basePath": "/",
     "paths": {
         "/api/locations": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all locations",
                 "tags": [
                     "locations"
@@ -25,6 +43,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create location",
                 "consumes": [
                     "application/json"
@@ -60,6 +83,11 @@
         },
         "/api/locations/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get location by ID",
                 "tags": [
                     "locations"
@@ -85,6 +113,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete location",
                 "tags": [
                     "locations"
@@ -138,6 +171,11 @@
         },
         "/api/users": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all users",
                 "tags": [
                     "users"
@@ -157,6 +195,11 @@
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Add user",
                 "consumes": [
                     "application/json"
@@ -190,23 +233,45 @@
                 }
             }
         },
-        "/api/users/onboard": {
-            "post": {
-                "description": "Onboard a user using a fingerprint and a video",
+        "/api/users/{email}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get user by email",
                 "tags": [
                     "users"
                 ],
-                "summary": "Onboard a user using a fingerprint and a video",
-                "operationId": "onboardUser",
+                "summary": "Get user by email",
+                "operationId": "getUserByEmail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
                     }
                 }
             }
         },
         "/api/users/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get user",
                 "tags": [
                     "users"
@@ -232,6 +297,11 @@
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete user",
                 "tags": [
                     "users"
@@ -330,11 +400,15 @@
                 },
                 "role": {
                     "type": "string"
-                },
-                "status": {
-                    "type": "string"
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
         }
     }
 }

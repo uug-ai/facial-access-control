@@ -5,27 +5,38 @@ import (
 
 	"github.com/uug-ai/facial-access-control/api/data"
 	"github.com/uug-ai/facial-access-control/api/models"
+	"github.com/uug-ai/facial-access-control/api/utils"
 )
 
 
 func GetUsersFromFile() []models.User {
-	users := data.Users
-	return users
+    // Directly return users from data without re-hashing passwords
+    return data.Users
 }
 
-func GetUserFromFile(id int) models.User {
-	users := data.Users
-	for _, user := range users {
-		if user.Id == id {
-			return user
-		}
-	}
-	return models.User{}
+func GetUserByIdFromFile(id int) models.User {
+    users := GetUsersFromFile()
+    for _, user := range users {
+        if user.Id == id {
+            return user
+        }
+    }
+    return models.User{}
+}
+
+func GetUserByEmailFromFile(email string) models.User {
+    users := GetUsersFromFile()
+    for _, user := range users {
+        if user.Email == email {
+            return user
+        }
+    }
+    return models.User{}
 }
 
 
 func AddUserToFile(user models.User) error {
-    users := data.Users
+    users := GetUsersFromFile()
 
     // Find the maximum ID in the current user list
     maxID := 0
@@ -38,19 +49,26 @@ func AddUserToFile(user models.User) error {
     // Assign the new user an ID that is one greater than the current maximum
     user.Id = maxID + 1
 
+    // Hash the user's password before saving
+    hashedPassword, err := utils.Hash(user.Password)
+    if err != nil {
+        return err
+    }
+    user.Password = hashedPassword
+
     data.Users = append(data.Users, user)
     return nil
 }
 
 func DeleteUserFromFile(id int) error {
-	users := data.Users
-	for i, user := range users {
-		if user.Id == id {
-			data.Users = append(users[:i], users[i+1:]...)
-			return nil
-		}
-	}
-	return errors.New("user not found")
+    users := GetUsersFromFile()
+    for i, user := range users {
+        if user.Id == id {
+            data.Users = append(users[:i], users[i+1:]...)
+            return nil
+        }
+    }
+    return errors.New("user not found")
 }
 
 

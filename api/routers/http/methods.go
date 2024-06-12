@@ -8,4 +8,5 @@ package http
 // @Description Get Authorization token.
 // @Param credentials body models.Authentication true "Credentials"
 // @Success 200 {object} models.Authorization
-func Login() {}
+func Login() {
+}

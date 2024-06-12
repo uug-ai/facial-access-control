@@ -1,6 +1,11 @@
 package data
 
-import "github.com/uug-ai/facial-access-control/api/models"
+import (
+	"log"
+
+	"github.com/uug-ai/facial-access-control/api/models"
+	"github.com/uug-ai/facial-access-control/api/utils"
+)
 
 var Users = []models.User{
 		{Id: 0, FirstName: "admin", LastName: "admin", Email: "admin@example.com", Password: "admin", Role: "admin", Language: "en", Status: "pending"},
@@ -22,5 +27,14 @@ var Locations = []models.Location{
 		{Id: 4, Name: "Location 4", Address: "Address 4", Lat: 4.0, Lng: 4.0},	
 }
 
-
+// Initialize function to hash passwords
+func Initialize() {
+    for i, user := range Users {
+        hashedPassword, err := utils.Hash(user.Password)
+        if err != nil {
+            log.Fatalf("Error hashing password for user %s: %v", user.Email, err)
+        }
+        Users[i].Password = hashedPassword
+    }
+}
 
