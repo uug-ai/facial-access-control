@@ -48,6 +48,8 @@ definitions:
         type: string
       role:
         type: string
+      status:
+        type: string
     type: object
 info:
   contact: {}
@@ -157,10 +159,10 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create user
+      description: Add user
       operationId: addUser
       parameters:
-      - description: User
+      - description: User data
         in: body
         name: user
         required: true
@@ -169,11 +171,11 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/models.User'
-      summary: Create user
+      summary: Add user
       tags:
       - users
   /api/users/{id}:
@@ -193,7 +195,7 @@ paths:
       tags:
       - users
     get:
-      description: Get user by id
+      description: Get user
       operationId: getUser
       parameters:
       - description: User ID
@@ -206,7 +208,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/models.User'
-      summary: Get user by id
+      summary: Get user
+      tags:
+      - users
+  /api/users/onboard:
+    post:
+      description: Onboard a user using a fingerprint and a video
+      operationId: onboardUser
+      responses:
+        "200":
+          description: OK
+      summary: Onboard a user using a fingerprint and a video
       tags:
       - users
 swagger: "2.0"

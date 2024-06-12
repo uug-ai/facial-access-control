@@ -168,7 +168,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create user",
+                "description": "Add user",
                 "consumes": [
                     "application/json"
                 ],
@@ -178,11 +178,11 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Create user",
+                "summary": "Add user",
                 "operationId": "addUser",
                 "parameters": [
                     {
-                        "description": "User",
+                        "description": "User data",
                         "name": "user",
                         "in": "body",
                         "required": true,
@@ -192,8 +192,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
@@ -201,13 +201,28 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/users/{id}": {
-            "get": {
-                "description": "Get user by id",
+        "/api/users/onboard": {
+            "post": {
+                "description": "Onboard a user using a fingerprint and a video",
                 "tags": [
                     "users"
                 ],
-                "summary": "Get user by id",
+                "summary": "Onboard a user using a fingerprint and a video",
+                "operationId": "onboardUser",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "description": "Get user",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user",
                 "operationId": "getUser",
                 "parameters": [
                     {
@@ -325,6 +340,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "role": {
+                    "type": "string"
+                },
+                "status": {
                     "type": "string"
                 }
             }

@@ -2,13 +2,13 @@ package models
 
 type User struct {
 	Id        int    `json:"id" bson:"id"`
-	FirstName  string `json:"firstname" bson:"firstname"`
+	FirstName string `json:"firstname" bson:"firstname"`
 	LastName  string `json:"lastname" bson:"lastname"`
 	Email     string `json:"email" bson:"email"`
 	Password  string `json:"password" bson:"password"`
 	Role      string `json:"role" bson:"role"`
 	Language  string `json:"language" bson:"language"`
-	
+	Status	  string `json:"status" bson:"status"`
 }
 
 type Authentication struct {
