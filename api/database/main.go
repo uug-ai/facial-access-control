@@ -7,8 +7,11 @@ import (
 func GetUsers() []models.User {
 	return GetUsersFromFile()
 }
-func GetUser(id int) models.User {
-	return GetUserFromFile(id)
+func GetUserById(id int) models.User {
+	return GetUserByIdFromFile(id)
+}
+func GetUserByEmail(email string) models.User {
+	return GetUserByEmailFromFile(email)
 }
 func AddUser(user models.User) error {
 	return AddUserToFile(user)

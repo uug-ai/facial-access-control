@@ -23,6 +23,9 @@ module.exports = {
         "3/4": "75%",
         full: "100%",
       },
+      boxShadow: {
+        "inner-right": "inset -5px 0 5px -5px rgba(0, 0, 0, 0.5)", // Adjust values as needed
+      },
     },
   },
   plugins: [],
