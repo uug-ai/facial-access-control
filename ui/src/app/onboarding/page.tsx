@@ -1,7 +1,17 @@
 "use client";
 
 import React, { useState } from "react";
-import { Box, Row, Stack, Gradient, Text, Button, Socials, Icon, VideoCapture } from "../../components/ui";
+import {
+  Box,
+  Row,
+  Stack,
+  Gradient,
+  Text,
+  Button,
+  Socials,
+  Icon,
+  VideoCapture,
+} from "../../components/ui";
 import FormComponent from "./components/FormComponent";
 import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
@@ -39,7 +49,7 @@ const Onboarding: React.FC = () => {
 
       console.log("Form data with video:", data);
 
-      setIsSubmitted(true); 
+      setIsSubmitted(true);
     } else {
       console.error("Video is required in onSubmit");
     }
@@ -75,7 +85,11 @@ interface FaceScanSectionProps {
   handleRecordingComplete: (recordedChunks: Blob[]) => void;
 }
 
-const FaceScanSection: React.FC<FaceScanSectionProps> = ({ isRecording, setIsRecording, handleRecordingComplete }) => (
+const FaceScanSection: React.FC<FaceScanSectionProps> = ({
+  isRecording,
+  setIsRecording,
+  handleRecordingComplete,
+}) => (
   <Stack className="w-2/3 flex items-center place-content-center">
     <Box className="w-96">
       <VideoCapture
@@ -106,9 +120,12 @@ const FaceScanSection: React.FC<FaceScanSectionProps> = ({ isRecording, setIsRec
 const InfoSection = () => (
   <Stack className="p-14 items-center place-content-center">
     <Box className="p-10 shadow-md rounded-md bg-white text-xl w-full ">
-      <Text as="a" weight="bold" className="shadow-inner bg-white" />
-      Hello, this is a registration form where you can register with a video of yourself! <br />
-      We will use this video to create biometrics, so you get access into the company and won't need to use a badge or card.
+      <Text as="a" weight="bold" className="shadow-inner bg-white">
+        Hello, this is a registration form where you can register with a video
+        of yourself! &lt;br /&gt; We will use this video to create biometrics,
+        so you get access into the company and won&apos;t need to use a badge or
+        card.
+      </Text>
     </Box>
     <Row className="pt-14 space-x-10">
       <Box className="w-1/2">
@@ -117,7 +134,11 @@ const InfoSection = () => (
             About UUFT.Ai
           </Text>
           <Text as="a">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vero reiciendis quae porro, voluptates odit. Culpa ipsam beatae voluptas vitae est repudiandae, nulla atque, reiciendis labore, voluptatibus eum dolorem! Id inventore quidem ipsam impedit possimus?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Voluptatibus vero reiciendis quae porro, voluptates odit. Culpa
+            ipsam beatae voluptas vitae est repudiandae, nulla atque, reiciendis
+            labore, voluptatibus eum dolorem! Id inventore quidem ipsam impedit
+            possimus?
           </Text>
         </Stack>
       </Box>
@@ -127,7 +148,11 @@ const InfoSection = () => (
             About UUFT.Ai
           </Text>
           <Text as="a">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus vero reiciendis quae porro, voluptates odit. Culpa ipsam beatae voluptas vitae est repudiandae, nulla atque, reiciendis labore, voluptatibus eum dolorem! Id inventore quidem ipsam impedit possimus?
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Voluptatibus vero reiciendis quae porro, voluptates odit. Culpa
+            ipsam beatae voluptas vitae est repudiandae, nulla atque, reiciendis
+            labore, voluptatibus eum dolorem! Id inventore quidem ipsam impedit
+            possimus?
           </Text>
         </Stack>
       </Box>
