@@ -11,8 +11,6 @@ export default async function App() {
       <Text as="h1" size="5xl">
         APP
       </Text>
-      <pre>{JSON.stringify(session, null, 2)}</pre>
-      <SignOutButton />
     </div>
   );
 }
