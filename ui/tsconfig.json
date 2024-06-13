@@ -17,12 +17,18 @@
         "name": "next"
       }
     ],
+    "types": ["node", "jest"],
     "paths": {
       "@/*": ["./src/*"],
       "@uug-ai/ui": ["./components/ui"]
-    },
-    "typeRoots": ["./src/types"]
+    }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    "**/*.test.tsx",
+    "**/*.spec.tsx"
+  ]
 }
