@@ -71,6 +71,17 @@ func DeleteUserFromFile(id int) error {
     return errors.New("user not found")
 }
 
+func OnboardUserToFile(user models.User) error {
+	if(user.Status == "onboarded") {
+		return errors.New("user already onboarded")
+	}
+	if(user.Status != "invited") {
+		return errors.New("user must be invited before onboarding")
+	}
+	data.Users[user.Id] = user
+	data.Users[user.Id].Status = "onboarded"
+	return nil;
+}
 
 func GetLocationsFromFile() []models.Location {
 	locations := data.Locations

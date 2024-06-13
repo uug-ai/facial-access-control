@@ -9,6 +9,7 @@ type User struct {
 	Role      string `json:"role" bson:"role"`
 	Language  string `json:"language" bson:"language"`
 	Status	  string `json:"status" bson:"status"`
+	VideoPath string `json:"videopath" bson:"videopath"`
 }
 
 type Authentication struct {

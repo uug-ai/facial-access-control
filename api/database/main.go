@@ -19,6 +19,9 @@ func AddUser(user models.User) error {
 func DeleteUser(id int) error {
 	return DeleteUserFromFile(id)
 }
+func OnboardUser(user models.User) error {
+	return OnboardUserToFile(user)
+}
 func GetLocations() []models.Location {
 	return GetLocationsFromFile()
 }
@@ -31,3 +34,4 @@ func AddLocation(location models.Location) error {
 func DeleteLocation(id int) error {
 	return DeleteLocationFromFile(id)
 }
+

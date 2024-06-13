@@ -1,4 +1,3 @@
-basePath: /
 definitions:
   models.Authentication:
     properties:
@@ -49,19 +48,13 @@ definitions:
         type: string
       role:
         type: string
+      status:
+        type: string
+      videopath:
+        type: string
     type: object
 info:
-  contact:
-    email: support@kerberos.io
-    name: API Support
-    url: https://www.kerberos.io
-  description: This is the API for using and configuring Kerberos Agent.
-  license:
-    name: Apache 2.0 - Commons Clause
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: https://kerberos.io
-  title: Swagger Kerberos Agent API
-  version: "1.0"
+  contact: {}
 paths:
   /api/locations:
     get:
@@ -256,9 +249,27 @@ paths:
       summary: Get user
       tags:
       - users
-securityDefinitions:
-  Bearer:
-    in: header
-    name: Authorization
-    type: apiKey
+  /api/users/onboard:
+    post:
+      consumes:
+      - application/json
+      description: Onboard a user using a fingerprint and a videossss
+      operationId: onboardUser
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.User'
+      summary: Onboard a user using a fingerprint and a video
+      tags:
+      - users
 swagger: "2.0"
