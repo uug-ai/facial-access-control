@@ -26,23 +26,7 @@ export default async function RootLayout({
     <StoreProvider>
       <html lang="en">
         <body className={inter.className}>
-          <SessionProvider session={session}>
-            {session ? (
-              <Row>
-                {/* Mock navigation element with session info */}
-                <Stack className="w-60 bg-gray-200">
-                  <div className="w-60 truncate">
-                    <p>NAVIGATION</p>
-                    <pre>{JSON.stringify(session, null, 2)}</pre>
-                  </div>
-                  <SignOutButton />
-                </Stack>
-                <main className="grow">{children}</main>
-              </Row>
-            ) : (
-              children
-            )}
-          </SessionProvider>
+          <SessionProvider session={session}>{children}</SessionProvider>
         </body>
       </html>
     </StoreProvider>
