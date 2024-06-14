@@ -942,6 +942,10 @@ video {
   place-content: center;
 }
 
+.content-center {
+  align-content: center;
+}
+
 .items-start {
   align-items: flex-start;
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import { Text, Input, Row, Password, Button } from "../../../components/ui";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import ResetForm from "./ResetForm";
 
 type Props = {
   className?: string | null;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 export default function SignInForm(props: Props) {
+  const [showResetForm, setShowResetForm] = useState(false);
   const router = useRouter();
   const email = useRef("");
   const password = useRef("");
@@ -26,13 +28,23 @@ export default function SignInForm(props: Props) {
     if (!result?.error) {
       router.push(props.callbackUrl ?? "/");
     } else {
-      // handle the error case
       console.error(result.error);
       alert("Sign in failed. Please check your credentials and try again.");
     }
     console.log(result);
   };
-  return (
+
+  const handleForgotPasswordClick = () => {
+    setShowResetForm(true);
+  };
+
+  const handleCancel = () => {
+    setShowResetForm(false);
+  };
+
+  return showResetForm ? (
+    <ResetForm onCancel={handleCancel} />
+  ) : (
     <form onSubmit={onSubmit} className="w-full">
       <Text as="label" htmlFor="email" weight="semibold" className="mb-1">
         Email
@@ -52,7 +64,12 @@ export default function SignInForm(props: Props) {
         <Text as="label" htmlFor="password" weight="semibold">
           Password
         </Text>
-        <Text as="a" variant="link" color="light">
+        <Text
+          as="a"
+          variant="link"
+          color="light"
+          onClick={handleForgotPasswordClick}
+        >
           forgot password?
         </Text>
       </Row>
