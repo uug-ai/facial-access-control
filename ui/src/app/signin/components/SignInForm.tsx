@@ -1,7 +1,7 @@
 "use client";
 
 import { Text, Input, Row, Password, Button } from "../../../components/ui";
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import ResetForm from "./ResetForm";
@@ -14,15 +14,15 @@ type Props = {
 
 export default function SignInForm(props: Props) {
   const [showResetForm, setShowResetForm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
-  const email = useRef("");
-  const password = useRef("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await signIn("credentials", {
-      email: email.current,
-      password: password.current,
+      email,
+      password,
       redirect: false,
     });
     if (!result?.error) {
@@ -31,7 +31,6 @@ export default function SignInForm(props: Props) {
       console.error(result.error);
       alert("Sign in failed. Please check your credentials and try again.");
     }
-    console.log(result);
   };
 
   const handleForgotPasswordClick = () => {
@@ -43,7 +42,7 @@ export default function SignInForm(props: Props) {
   };
 
   return showResetForm ? (
-    <ResetForm onCancel={handleCancel} />
+    <ResetForm email={email} onEmailChange={setEmail} onCancel={handleCancel} />
   ) : (
     <form onSubmit={onSubmit} className="w-full">
       <Text as="label" htmlFor="email" weight="semibold" className="mb-1">
@@ -56,8 +55,9 @@ export default function SignInForm(props: Props) {
         placeholder="email"
         className="mb-4 h-auto"
         required
+        value={email}
         onChange={(e: { target: { value: string } }) =>
-          (email.current = e.target.value)
+          setEmail(e.target.value)
         }
       />
       <Row className="mb justify-between">
@@ -80,7 +80,7 @@ export default function SignInForm(props: Props) {
         className="mb-4"
         required
         onChange={(e: { target: { value: string } }) =>
-          (password.current = e.target.value)
+          setPassword(e.target.value)
         }
       />
       <Button type="submit" name="Sign in" variant="solid" width="third">
