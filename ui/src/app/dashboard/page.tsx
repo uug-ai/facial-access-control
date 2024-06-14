@@ -7,7 +7,7 @@ import AddLocation from "./components/AddLocation";
 
 const Dashboard = () => {
   return (
-    <Box>
+    <Box className="w-full">
       <Gradient />
       <Stack className="gap-12 p-8 ">
         <Row className="justify-between">

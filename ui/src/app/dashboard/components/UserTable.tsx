@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetUsersQuery } from "@/lib/services/users/userApi"
+import { useGetUsersQuery } from "@/lib/services/users/userApi";
 import { Button, Row, Stack, Table, Text } from "../../../components/ui";
 import { ColumnProps } from "@uug-ai/ui/lib/components/Table/Table";
 import React from "react";
@@ -76,7 +76,7 @@ const UserTable = () => {
   };
 
   return (
-    <Stack>
+    <Stack className="gap-4">
       <Row className="justify-between">
         <Text as="h2" size="4xl" weight="semibold">
           Users

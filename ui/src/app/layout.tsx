@@ -28,8 +28,8 @@ export default async function RootLayout({
         <body className={inter.className}>
           <SessionProvider session={session}>
             {session ? (
-              <Row className="gap-4">
-                {/* Mock navigation element */}
+              <Row>
+                {/* Mock navigation element with session info */}
                 <Stack className="w-60 bg-gray-200">
                   <div className="w-60 truncate">
                     <p>NAVIGATION</p>
@@ -37,7 +37,7 @@ export default async function RootLayout({
                   </div>
                   <SignOutButton />
                 </Stack>
-                {children}
+                <main className="grow">{children}</main>
               </Row>
             ) : (
               children

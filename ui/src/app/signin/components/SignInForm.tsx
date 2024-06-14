@@ -25,6 +25,10 @@ export default function SignInForm(props: Props) {
     });
     if (!result?.error) {
       router.push(props.callbackUrl ?? "/");
+    } else {
+      // handle the error case
+      console.error(result.error);
+      alert("Sign in failed. Please check your credentials and try again.");
     }
     console.log(result);
   };
