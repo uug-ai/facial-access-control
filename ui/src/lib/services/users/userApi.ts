@@ -63,6 +63,15 @@ export const userApi = createApi({
       }),
       invalidatesTags: ["User"],
     }),
+    boardUser: build.mutation({
+      query: (user) => ({
+        url: "users/onboarding",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: user,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
