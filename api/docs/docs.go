@@ -9,16 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "https://kerberos.io",
-        "contact": {
-            "name": "API Support",
-            "url": "https://www.kerberos.io",
-            "email": "support@kerberos.io"
-        },
-        "license": {
-            "name": "Apache 2.0 - Commons Clause",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -240,6 +231,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/users/onboard": {
+            "post": {
+                "description": "Onboard a user using a fingerprint and a videossss",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Onboard a user using a fingerprint and a video",
+                "operationId": "onboardUser",
+                "parameters": [
+                    {
+                        "description": "User data",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
         "/api/users/{email}": {
             "get": {
                 "security": [
@@ -407,27 +433,26 @@ const docTemplate = `{
                 },
                 "role": {
                     "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "videopath": {
+                    "type": "string"
                 }
             }
-        }
-    },
-    "securityDefinitions": {
-        "Bearer": {
-            "type": "apiKey",
-            "name": "Authorization",
-            "in": "header"
         }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "",
 	Host:             "",
-	BasePath:         "/",
+	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Swagger Kerberos Agent API",
-	Description:      "This is the API for using and configuring Kerberos Agent.",
+	Title:            "",
+	Description:      "",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

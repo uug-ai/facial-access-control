@@ -153,3 +153,37 @@ func DeleteUser(c *gin.Context) error {
 	})
 	return nil
 }
+
+// user godoc
+// @Router /api/users/onboard [post]
+// @in header
+// @ID onboardUser
+// @Tags users
+// @Summary Onboard a user using a fingerprint and a video
+// @Description Onboard a user using a fingerprint and a videossss
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User data"
+// @Success 201 {object} models.User
+func OnboardUser(c *gin.Context) error {
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user data",
+		})
+		return err
+	}
+
+	if err := database.OnboardUser(user); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Failed to onboard user",
+		})
+		return err
+	}
+
+	c.JSON(201, gin.H{
+		"message": "User onboarded successfully",
+		"user":    user,
+	})
+	return nil
+}

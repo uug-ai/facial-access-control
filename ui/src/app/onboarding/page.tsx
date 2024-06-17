@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { Box, Row, Stack, Gradient, Text, Button, Socials, Icon, VideoCapture } from "../../components/ui";
 import FormComponent from "./components/FormComponent";
+import { useAddUserMutation } from "@/lib/services/users/userApi";
 import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 
@@ -23,12 +24,42 @@ const Onboarding: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [videoFile, setVideoFile] = useState<Blob | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [newUser, setNewUser] = useState<FormData | null>(null);
+
+  const [BoardUser, { data, error, isLoading }] = useAddUserMutation();
 
   const handleRecordingComplete = (recordedChunks: Blob[]) => {
     const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
     setVideoFile(videoBlob);
     console.log("Final video blob:", videoBlob);
   };
+
+  const handleBoardUser = async (data: FormData) => {
+    try {
+      console.log("Data received in handleBoardUser:", data);
+  
+      const newUserData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+        dateOfBirth: data.dateOfBirth,
+        password: "password",
+        role: "admin",
+        installed: true,
+        language: "en",
+      };
+  
+      console.log("New User Data:", newUserData);
+  
+      const response = await BoardUser(newUserData).unwrap();
+      setNewUser(response);
+      setIsSubmitted(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+  
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
     console.log("onSubmit called with data:", data);
@@ -37,9 +68,9 @@ const Onboarding: React.FC = () => {
       console.log("Video file exists in onSubmit:", videoFile);
       data.video = videoFile;
 
-      console.log("Form data with video:", data);
+      console.log("Form data with video:", data.firstName);
 
-      setIsSubmitted(true); 
+      handleBoardUser(data);
     } else {
       console.error("Video is required in onSubmit");
     }
@@ -51,8 +82,15 @@ const Onboarding: React.FC = () => {
         <Gradient />
         <Row className="w-full pt-14 px-20 items-center">
           <Stack className="w-1/3 flex">
-            {isSubmitted ? (
-              <Text>User registered!</Text>
+            {isSubmitted && newUser ? (
+              <Box>
+                <Text>User registered!</Text>
+                <Text>First Name: {newUser.firstName}</Text>
+                <Text>Last Name: {newUser.lastName}</Text>
+                <Text>Email: {newUser.email}</Text>
+                <Text>Phone Number: {newUser.phoneNumber}</Text>
+                <Text>Date of Birth: {newUser.dateOfBirth}</Text>
+              </Box>
             ) : (
               <FormComponent videoFile={videoFile} onSubmit={onSubmit} />
             )}
