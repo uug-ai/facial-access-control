@@ -4,6 +4,7 @@ import { Text, Input, Row, Password, Button } from "../../../components/ui";
 import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
 import ResetForm from "./ResetForm";
 
 type Props = {
@@ -16,6 +17,7 @@ export default function SignInForm(props: Props) {
   const [showResetForm, setShowResetForm] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -29,7 +31,7 @@ export default function SignInForm(props: Props) {
       router.push(props.callbackUrl ?? "/");
     } else {
       console.error(result.error);
-      alert("Sign in failed. Please check your credentials and try again.");
+      setError(result.error);
     }
   };
 
@@ -83,6 +85,9 @@ export default function SignInForm(props: Props) {
           setPassword(e.target.value)
         }
       />
+      <Text as="p" variant="error" className="mb-4 text-red-700">
+        {error}
+      </Text>
       <Button type="submit" name="Sign in" variant="solid" width="third">
         Sign in
       </Button>
