@@ -1399,6 +1399,11 @@ video {
   line-height: 1.75rem;
 }
 
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
 .font-bold {
   font-weight: 700;
 }
@@ -1695,6 +1700,14 @@ video {
 
 .placeholder\:opacity-0::placeholder {
   opacity: 0;
+}
+
+.backdrop\:bg-gray-800\/50::backdrop {
+  background-color: rgb(31 41 55 / 0.5);
+}
+
+.backdrop\:bg-primary-800\/50::backdrop {
+  background-color: rgb(30 64 175 / 0.5);
 }
 
 .placeholder-shown\:border:-moz-placeholder-shown {
