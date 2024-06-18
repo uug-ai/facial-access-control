@@ -32,7 +32,7 @@ export default async function Signin() {
         </Stack>
         <Socials className="mt-auto self-center justify-self-end p-8" />
       </Box>
-      <Box className="bg-primary-950 flex justify-center items-center w-full">
+      <Box className="bg-gradient-to-t from-primary-600 to-primary-900 flex justify-center items-center w-full">
         <Text as="h2" size="5xl" className="text-white p-8">
           UUG.AI
         </Text>
