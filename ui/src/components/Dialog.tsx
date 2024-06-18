@@ -1,8 +1,11 @@
 "use client";
 
+import { RootState } from "@/lib/store";
 import { Button, Text, Row } from "./ui";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useRef } from "react";
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { hideDialog } from "@/lib/features/dialog/dialogSlice";
 
 type DialogProps = {
   title: string;
@@ -17,19 +20,24 @@ const Dialog = ({ title, onClose, children }: DialogProps) => {
   const dialogRef = useRef<null | HTMLDialogElement>(null);
   const showDialog = searchParams.get("showDialog");
   const router = useRouter();
+  const isVisible = useAppSelector(
+    (state: RootState) => state.dialog.isVisible
+  );
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (showDialog === "true") {
+    if (isVisible) {
       dialogRef.current?.showModal();
     } else {
       dialogRef.current?.close();
     }
-  }, [showDialog]);
+  }, [isVisible]);
 
   const closeDialog = () => {
     dialogRef.current?.close();
     onClose();
-    router.push("/dashboard", undefined);
+    dispatch(hideDialog());
+    // router.push("/dashboard", undefined);
   };
 
   const dialog: JSX.Element | null =

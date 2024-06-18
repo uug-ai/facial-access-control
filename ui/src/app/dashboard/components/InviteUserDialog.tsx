@@ -40,7 +40,7 @@ const InviteUserDialog = () => {
     } catch (error) {
       return <div>Failed to add user</div>;
     }
-
+    
     console.log("Inviting user with email", email);
   }
 
