@@ -55,12 +55,12 @@ const UserTable = () => {
       title: "Id",
     },
     {
-      key: "name",
-      title: "Name",
-    },
-    {
       key: "email",
       title: "Email",
+    },
+    {
+      key: "name",
+      title: "Name",
     },
     {
       key: "delete",

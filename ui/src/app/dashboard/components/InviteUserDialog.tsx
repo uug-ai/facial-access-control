@@ -2,35 +2,18 @@
 
 import Dialog from "@/components/Dialog";
 import { Text, Input, Button } from "@/components/ui";
-import React from "react";
+import React, { useState } from "react";
 import { useAddUserMutation } from "@/lib/services/users/userApi";
-import { useAppSelector } from "@/lib/hooks"; // Import the custom hook
-import { RootState } from "@/lib/store"; // Import the RootState type
+import { useAppSelector } from "@/lib/hooks";
+import { RootState } from "@/lib/store";
 
 const InviteUserDialog: React.FC = () => {
   const [addUser, { error, isLoading }] = useAddUserMutation();
   const isVisible = useAppSelector(
     (store: RootState) => store.dialog.isVisible
   );
-
-  if (error) {
-    if ("status" in error) {
-      const errMsg =
-        "error" in error ? error.error : JSON.stringify(error.data);
-      return (
-        <div>
-          <div>An error has occurred:</div>
-          <div>{errMsg}</div>
-        </div>
-      );
-    } else {
-      return <div>{error.message}</div>;
-    }
-  }
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  const [email, setEmail] = useState("");
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   async function handleClose() {
     console.log("Dialog has closed");
@@ -38,15 +21,18 @@ const InviteUserDialog: React.FC = () => {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    try {
-      await addUser({ email: email as string });
-    } catch (error) {
-      return <div>Failed to add user</div>;
-    }
+    setSubmitError(null);
 
-    console.log("Inviting user with email", email);
+    try {
+      await addUser({ email }).unwrap();
+      console.log("Inviting user with email", email);
+    } catch (err) {
+      if ("data" in err) {
+        setSubmitError(err.data.error || "Failed to add user");
+      } else {
+        setSubmitError("An unexpected error occurred");
+      }
+    }
   }
 
   return isVisible ? (
@@ -61,9 +47,18 @@ const InviteUserDialog: React.FC = () => {
           id="email"
           name="email"
           placeholder="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <Button type="submit">Invite</Button>
+        {submitError && (
+          <Text as="p" variant="error" className="text-red-700">
+            {submitError}
+          </Text>
+        )}
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? "Inviting..." : "Invite"}
+        </Button>
       </form>
     </Dialog>
   ) : null;
