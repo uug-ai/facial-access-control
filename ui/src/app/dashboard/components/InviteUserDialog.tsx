@@ -4,13 +4,14 @@ import Dialog from "@/components/Dialog";
 import { Text, Input, Button } from "@/components/ui";
 import React from "react";
 import { useAddUserMutation } from "@/lib/services/users/userApi";
+import { useAppSelector } from "@/lib/hooks"; // Import the custom hook
+import { RootState } from "@/lib/store"; // Import the RootState type
 
-const InviteUserDialog = () => {
-  const [addUser, { data, error, isLoading }] = useAddUserMutation();
-
-  async function onClose() {
-    console.log("Dialog has closed");
-  }
+const InviteUserDialog: React.FC = () => {
+  const [addUser, { error, isLoading }] = useAddUserMutation();
+  const isVisible = useAppSelector(
+    (store: RootState) => store.dialog.isVisible
+  );
 
   if (error) {
     if ("status" in error) {
@@ -31,6 +32,10 @@ const InviteUserDialog = () => {
     return <div>Loading...</div>;
   }
 
+  async function handleClose() {
+    console.log("Dialog has closed");
+  }
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -40,12 +45,12 @@ const InviteUserDialog = () => {
     } catch (error) {
       return <div>Failed to add user</div>;
     }
-    
+
     console.log("Inviting user with email", email);
   }
 
-  return (
-    <Dialog title="Invite User" onClose={onClose}>
+  return isVisible ? (
+    <Dialog title="Invite User" onClose={handleClose}>
       <form onSubmit={handleSubmit}>
         <Text as="label" htmlFor="email">
           New user email
@@ -61,7 +66,7 @@ const InviteUserDialog = () => {
         <Button type="submit">Invite</Button>
       </form>
     </Dialog>
-  );
+  ) : null;
 };
 
 export default InviteUserDialog;

@@ -12,11 +12,7 @@ const InviteUser = () => {
   const handleInviteUser = () => {
     dispatch(showDialog());
   };
-  return (
-    <Link href="/dashboard?showDialog=true">
-      <Button onClick={handleInviteUser}>Invite User</Button>
-    </Link>
-  );
+  return <Button onClick={handleInviteUser}>Invite User</Button>;
 };
 
 export default InviteUser;

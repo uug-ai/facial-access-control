@@ -6,6 +6,7 @@ import LocationInfo from "./components/LocationInfo";
 import AddLocation from "./components/AddLocation";
 import InviteUser from "./components/InviteUser";
 import InviteUserDialog from "./components/InviteUserDialog";
+import { useAppSelector } from "@/lib/hooks";
 
 const Dashboard = () => {
   return (

@@ -16,13 +16,11 @@ type DialogProps = {
 //TODO move to ui library
 
 const Dialog = ({ title, onClose, children }: DialogProps) => {
-  const searchParams = useSearchParams();
-  const dialogRef = useRef<null | HTMLDialogElement>(null);
-  const showDialog = searchParams.get("showDialog");
-  const router = useRouter();
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const isVisible = useAppSelector(
-    (state: RootState) => state.dialog.isVisible
+    (store: RootState) => store.dialog.isVisible
   );
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -34,27 +32,24 @@ const Dialog = ({ title, onClose, children }: DialogProps) => {
   }, [isVisible]);
 
   const closeDialog = () => {
-    dialogRef.current?.close();
     onClose();
     dispatch(hideDialog());
-    // router.push("/dashboard", undefined);
   };
 
-  const dialog: JSX.Element | null =
-    showDialog === "true" ? (
-      <dialog
-        ref={dialogRef}
-        className="fixed top-50 left-50 -translate-x-50 -translate-y-50 z-10  rounded-xl p-8"
-      >
-        <Row className="justify-between mb-4">
-          <Text as="h2" size="2xl">
-            {title}
-          </Text>
-          <Button onClick={closeDialog}>x</Button>
-        </Row>
-        {children}
-      </dialog>
-    ) : null;
+  const dialog: JSX.Element | null = (
+    <dialog
+      ref={dialogRef}
+      className="fixed top-50 left-50 -translate-x-50 -translate-y-50 z-10  rounded-xl p-8"
+    >
+      <Row className="justify-between mb-4">
+        <Text as="h2" size="2xl">
+          {title}
+        </Text>
+        <Button onClick={closeDialog}>x</Button>
+      </Row>
+      {children}
+    </dialog>
+  );
 
   return dialog;
 };
