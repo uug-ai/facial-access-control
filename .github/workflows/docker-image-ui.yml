@@ -23,9 +23,13 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - uses: benjlevesque/short-sha@v2.1
+        id: short-sha
+        with:
+          length: 7
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: ./ui
           push: true
-          tags: user/app:latest
+          tags: uugai/facialaccess-frontend:${{ steps.short-sha.outputs.sha }}
