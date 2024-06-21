@@ -8,14 +8,18 @@ import { useAppSelector } from "@/lib/hooks";
 import { RootState } from "@/lib/store";
 
 const InviteUserDialog: React.FC = () => {
-  const [addUser, { error, isLoading }] = useAddUserMutation();
+  const [addUser, { isLoading }] = useAddUserMutation();
   const isVisible = useAppSelector(
     (store: RootState) => store.dialog.isVisible
   );
   const [email, setEmail] = useState("");
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  async function handleClose() {
+  function handleClose() {
+    setEmail("");
+    setIsSubmitted(false);
+    setSubmitError(null);
     console.log("Dialog has closed");
   }
 
@@ -25,10 +29,12 @@ const InviteUserDialog: React.FC = () => {
 
     try {
       await addUser({ email }).unwrap();
+      setIsSubmitted(true);
       console.log("Inviting user with email", email);
     } catch (err) {
-      if ("data" in err) {
-        setSubmitError(err.data.error || "Failed to add user");
+      if (err && typeof err === "object" && "data" in err) {
+        const errorData = (err as { data?: { error?: string } }).data;
+        setSubmitError(errorData?.error || "Failed to add user");
       } else {
         setSubmitError("An unexpected error occurred");
       }
@@ -37,29 +43,40 @@ const InviteUserDialog: React.FC = () => {
 
   return isVisible ? (
     <Dialog title="Invite User" onClose={handleClose}>
-      <form onSubmit={handleSubmit}>
-        <Text as="label" htmlFor="email">
-          New user email
-        </Text>
-        <Input
-          className="mb-4"
-          type="email"
-          id="email"
-          name="email"
-          placeholder="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        {submitError && (
-          <Text as="p" variant="error" className="text-red-700">
-            {submitError}
+      {isSubmitted ? (
+        <>
+          <Text as="p" className="mb-4">
+            User has been invited.
           </Text>
-        )}
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Inviting..." : "Invite"}
-        </Button>
-      </form>
+          <Button onClick={handleClose}>Close</Button>
+        </>
+      ) : (
+        <form onSubmit={handleSubmit}>
+          <Text as="label" htmlFor="email">
+            New user email
+          </Text>
+          <Input
+            className="mb-4"
+            type="email"
+            id="email"
+            name="email"
+            placeholder="email"
+            value={email}
+            onChange={(e: { target: { value: string } }) =>
+              setEmail(e.target.value)
+            }
+            required
+          />
+          {submitError && (
+            <Text as="p" variant="error" className="text-red-700">
+              {submitError}
+            </Text>
+          )}
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? "Inviting..." : "Invite"}
+          </Button>
+        </form>
+      )}
     </Dialog>
   ) : null;
 };
