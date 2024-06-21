@@ -12,7 +12,7 @@ const getToken = async () => {
 };
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost/api/",
+  baseUrl: process.env.API_URL,
   prepareHeaders: async (headers) => {
     const token = await getToken();
     if (token) {
