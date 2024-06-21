@@ -1,9 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
 
+let cachedToken: string | null = null;
+
 const getToken = async () => {
-  const session = await getSession();
-  return session?.user.token;
+  if (!cachedToken) {
+    const session = await getSession();
+    cachedToken = session?.user.token || null;
+  }
+  return cachedToken;
 };
 
 const baseQuery = fetchBaseQuery({
@@ -29,9 +34,7 @@ export const userApi = createApi({
   tagTypes: ["User"],
   endpoints: (build) => ({
     getUsers: build.query({
-      query: () => ({
-        url: "users",
-      }),
+      query: () => ({ url: "users" }),
       providesTags: ["User"],
     }),
     getUser: build.query({

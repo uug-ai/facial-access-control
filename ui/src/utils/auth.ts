@@ -23,8 +23,7 @@ export const authOptions: NextAuthOptions = {
           return user;
         }
 
-        // Return null if user data could not be retrieved
-        return null;
+        throw new Error(user?.message || res.statusText);
       },
     }),
   ],

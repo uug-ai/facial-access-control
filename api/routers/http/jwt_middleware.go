@@ -1,6 +1,7 @@
 package http
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -45,33 +46,34 @@ func JWTMiddleware() *jwt.GinJWTMiddleware {
 			}
 		},
 	Authenticator: func(c *gin.Context) (interface{}, error) {
-    var user models.User
-    if err := c.ShouldBind(&user); err != nil {
-        log.Println("Binding error:", err)
-        return "", jwt.ErrMissingLoginValues
-    }
-    email := user.Email
-    password := user.Password
+		var user models.User
+		if err := c.ShouldBind(&user); err != nil {
+			log.Println("Binding error:", err)
+			return "", jwt.ErrMissingLoginValues
+		}
+		email := user.Email
+		password := user.Password
 
-    log.Println("Attempting to authenticate user:", email)
-    userFound := database.GetUserByEmail(email)
+		log.Println("Attempting to authenticate user:", email)
+		userFound := database.GetUserByEmail(email)
 
-    if userFound.Email != "" {
-        log.Printf("Stored hashed password: %s\n", userFound.Password)
-        if utils.IsSame(password, userFound.Password) {
-            log.Println("Authentication successful for user:", email)
-            return &models.User{
-                Email: userFound.Email,
-            }, nil
-        } else {
-            log.Println("Password mismatch for user:", email)
-        }
-    } else {
-        log.Println("User not found for email:", email)
-    }
+		if userFound.Email == "" {
+			log.Println("User not found for email:", email)
+			return nil, fmt.Errorf("User not found")
+		}
 
-    return nil, jwt.ErrFailedAuthentication
-},
+		log.Printf("Stored hashed password: %s\n", userFound.Password)
+		if !utils.IsSame(password, userFound.Password) {
+			log.Println("Password mismatch for user:", email)
+			return nil, fmt.Errorf("Invalid password")
+		}
+
+		log.Println("Authentication successful for user:", email)
+		return &models.User{
+			Email: userFound.Email,
+		}, nil
+	},
+
 
 		LoginResponse: func(c *gin.Context, code int, token string, expire time.Time) {
 			// Decrypt the token

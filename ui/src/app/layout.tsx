@@ -5,6 +5,9 @@ import { Inter } from "next/font/google";
 import "../index.css";
 import SessionProvider from "../components/SessionProvider";
 import { getServerSession } from "next-auth";
+import { Row, Stack } from "../components/ui";
+import { authOptions } from "@/utils/auth";
+import SignOutButton from "@/components/SignOutButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +21,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return (
     <StoreProvider>
       <html lang="en">

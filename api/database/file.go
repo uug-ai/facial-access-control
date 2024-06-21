@@ -8,6 +8,8 @@ import (
 	"github.com/uug-ai/facial-access-control/api/utils"
 )
 
+var ErrUserAlreadyExists = errors.New("user already exists")
+   
 
 func GetUsersFromFile() []models.User {
     // Directly return users from data without re-hashing passwords
@@ -41,6 +43,9 @@ func AddUserToFile(user models.User) error {
     // Find the maximum ID in the current user list
     maxID := 0
     for _, u := range users {
+		if u.Email == user.Email {
+			return ErrUserAlreadyExists
+		}
         if u.Id > maxID {
             maxID = u.Id
         }

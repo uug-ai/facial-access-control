@@ -1,9 +1,11 @@
 "use client";
 
 import { Text, Input, Row, Password, Button } from "../../../components/ui";
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
+import ResetForm from "./ResetForm";
 
 type Props = {
   className?: string | null;
@@ -12,23 +14,38 @@ type Props = {
 };
 
 export default function SignInForm(props: Props) {
+  const [showResetForm, setShowResetForm] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const email = useRef("");
-  const password = useRef("");
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const result = await signIn("credentials", {
-      email: email.current,
-      password: password.current,
+      email,
+      password,
       redirect: false,
     });
     if (!result?.error) {
       router.push(props.callbackUrl ?? "/");
+    } else {
+      console.error(result.error);
+      setError(result.error);
     }
-    console.log(result);
   };
-  return (
+
+  const handleForgotPasswordClick = () => {
+    setShowResetForm(true);
+  };
+
+  const handleCancel = () => {
+    setShowResetForm(false);
+  };
+
+  return showResetForm ? (
+    <ResetForm email={email} onEmailChange={setEmail} onCancel={handleCancel} />
+  ) : (
     <form onSubmit={onSubmit} className="w-full">
       <Text as="label" htmlFor="email" weight="semibold" className="mb-1">
         Email
@@ -40,15 +57,21 @@ export default function SignInForm(props: Props) {
         placeholder="email"
         className="mb-4 h-auto"
         required
+        value={email}
         onChange={(e: { target: { value: string } }) =>
-          (email.current = e.target.value)
+          setEmail(e.target.value)
         }
       />
       <Row className="mb justify-between">
         <Text as="label" htmlFor="password" weight="semibold">
           Password
         </Text>
-        <Text as="a" variant="link" color="light">
+        <Text
+          as="a"
+          variant="link"
+          color="light"
+          onClick={handleForgotPasswordClick}
+        >
           forgot password?
         </Text>
       </Row>
@@ -59,9 +82,12 @@ export default function SignInForm(props: Props) {
         className="mb-4"
         required
         onChange={(e: { target: { value: string } }) =>
-          (password.current = e.target.value)
+          setPassword(e.target.value)
         }
       />
+      <Text as="p" variant="error" className="mb-4 text-red-700">
+        {error}
+      </Text>
       <Button type="submit" name="Sign in" variant="solid" width="third">
         Sign in
       </Button>
