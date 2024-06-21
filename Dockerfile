@@ -1,12 +1,12 @@
 FROM node:18-alpine
+LABEL AUTHOR=uug.ai
 
-WORKDIR /app
+RUN mkdir -p /fac
+WORKDIR /fac
 
-COPY package*.json ./
-
+COPY ui/ .
 RUN yarn install
-
-COPY . .
+RUN yarn build 
 
 EXPOSE 3000
 
