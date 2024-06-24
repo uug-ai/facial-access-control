@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next dev",
-    "build:dev": "NODE_ENV=development next build",
-    "build:prod": "NODE_ENV=production next build",
+    "build": "NODE_ENV=production next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
