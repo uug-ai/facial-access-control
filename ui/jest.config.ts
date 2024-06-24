@@ -51,5 +51,5 @@ module.exports = {
     "/node_modules/",
     "^.+\\.module\\.(css|sass|scss)$",
   ],
+  setupFilesAfterEnv: ["./jest.setup.js"],
 };
- 
