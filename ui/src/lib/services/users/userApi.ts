@@ -1,28 +1,5 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getSession } from "next-auth/react";
-
-let cachedToken: string | null = null;
-
-const getToken = async () => {
-  if (!cachedToken) {
-    const session = await getSession();
-    cachedToken = session?.user.token || null;
-  }
-  return cachedToken;
-};
-
-console.log(process.env.NEXT_PUBLIC_API_URL);
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  prepareHeaders: async (headers) => {
-    const token = await getToken();
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
+import { baseQuery, getToken } from "@/lib/utils/apiMethods";
+import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const userApi = createApi({
   reducerPath: "userApi",
