@@ -2877,10 +2877,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@uug-ai/ui@1.0.35":
-  version "1.0.35"
-  resolved "https://registry.yarnpkg.com/@uug-ai/ui/-/ui-1.0.35.tgz#3daab5491ac3d3a2d33d9b47af1f3d07b9aec2e8"
-  integrity sha512-/ZNHGNt1NWsYk1XTKmUlLSsSqelWXuo3UiIOCxwE2DNeTTfvboB8/OpXOCgKYpTKtoay5Zs85g+WyE6rrLFkbg==
+"@uug-ai/ui@^1.0.36":
+  version "1.0.36"
+  resolved "https://registry.yarnpkg.com/@uug-ai/ui/-/ui-1.0.36.tgz#d52b7d7be7de9183f4f225d46348c77de4792cb7"
+  integrity sha512-wWm7tCiObTGk6jZYGUohEDozRz3Q6O/w3abw3hlPvb3vckem1n9ODSI8HoAm7Wn9mM7TdZTasNxSFqB9GlvOuQ==
   dependencies:
     "@storybook/addon-essentials" "^8.0.9"
     "@storybook/addon-interactions" "^8.0.9"
@@ -2891,6 +2891,7 @@
     class-variance-authority "^0.7.0"
     clsx "^2.0.0"
     next "^14.2.3"
+    pigeon-maps "^0.21.6"
     react "^18"
     react-dom "^18"
     react-webcam "^7.2.0"
@@ -7335,6 +7336,11 @@ pify@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/pify/-/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha512-uB80kBFb/tfd68bVleG9T5GGsGPjJrLAUpR5PZIrhBnIaRTQRjqdJSsIKkOP6OAIFbj7GOrcudc5pNjZ+geV2g==
+
+pigeon-maps@^0.21.6:
+  version "0.21.6"
+  resolved "https://registry.yarnpkg.com/pigeon-maps/-/pigeon-maps-0.21.6.tgz#e9b89e614fa46a94c7e86984cf8e6794a1eccc0e"
+  integrity sha512-6io58lhpbtVT/DUKDoOqsjeAFW46Nfe+gr4PX/kmD1dyJxfb8WaT4hcgwcmM8dJdkyfibgLHo59Uo2o2/xscaQ==
 
 pirates@^4.0.1, pirates@^4.0.4, pirates@^4.0.6:
   version "4.0.6"

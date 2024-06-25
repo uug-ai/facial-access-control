@@ -1,4 +1,12 @@
-import { Box, Icon, Row } from "@uug-ai/ui";
+import {
+  Box,
+  Icon,
+  Row,
+  NavigationHeader,
+  NavItem,
+  NavigationSocials,
+  NavigationFooter,
+} from "./ui";
 import React from "react";
 
 const Navigation = () => {
