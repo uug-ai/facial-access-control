@@ -12,16 +12,13 @@ import {
 import React from "react";
 import SignInForm from "./components/SignInForm";
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
 export default async function Signin() {
-  // const session = await getServerSession();
-  // if (session) {
-  //   return {
-  //     redirect: {
-  //       destination: "/dashboard",
-  //     },
-  //   };
-  // }
+  const session = await getServerSession();
+  if (session) {
+    redirect("/dashboard");
+  }
 
   return (
     <Row>
@@ -31,11 +28,11 @@ export default async function Signin() {
           <Text as="h1" size="5xl" weight="semibold" className="pb-8">
             Sign in
           </Text>
-          <SignInForm />
+          <SignInForm callbackUrl="/dashboard" />
         </Stack>
         <Socials className="mt-auto self-center justify-self-end p-8" />
       </Box>
-      <Box className="bg-primary-950 flex justify-center items-center w-full">
+      <Box className="bg-gradient-to-t from-primary-600 to-primary-900 flex justify-center items-center w-full">
         <Text as="h2" size="5xl" className="text-white p-8">
           UUG.AI
         </Text>

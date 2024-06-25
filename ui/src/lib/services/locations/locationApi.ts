@@ -7,7 +7,7 @@ const getToken = async () => {
 };
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost/api/",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
   prepareHeaders: async (headers) => {
     const token = await getToken();
     if (token) {

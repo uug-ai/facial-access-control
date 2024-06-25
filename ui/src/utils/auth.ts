@@ -11,11 +11,14 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(process.env.API_LOGIN || "", {
-          method: "POST",
-          body: JSON.stringify(credentials),
-          headers: { "Content-Type": "application/json" },
-        });
+        const res = await fetch(
+          process.env.NEXT_PUBLIC_API_URL + "login" || "",
+          {
+            method: "POST",
+            body: JSON.stringify(credentials),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
         const user = await res.json();
         console.log(user);
 
@@ -23,8 +26,7 @@ export const authOptions: NextAuthOptions = {
           return user;
         }
 
-        // Return null if user data could not be retrieved
-        return null;
+        throw new Error(user?.message || res.statusText);
       },
     }),
   ],

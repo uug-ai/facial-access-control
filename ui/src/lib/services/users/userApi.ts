@@ -1,13 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
 
+let cachedToken: string | null = null;
+
 const getToken = async () => {
-  const session = await getSession();
-  return session?.user.token;
+  if (!cachedToken) {
+    const session = await getSession();
+    cachedToken = session?.user.token || null;
+  }
+  return cachedToken;
 };
 
+console.log(process.env.NEXT_PUBLIC_API_URL);
+
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost/api/",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
   prepareHeaders: async (headers) => {
     const token = await getToken();
     if (token) {
@@ -29,9 +36,7 @@ export const userApi = createApi({
   tagTypes: ["User"],
   endpoints: (build) => ({
     getUsers: build.query({
-      query: () => ({
-        url: "users",
-      }),
+      query: () => ({ url: "users" }),
       providesTags: ["User"],
     }),
     getUser: build.query({
