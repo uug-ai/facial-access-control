@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetUsersQuery } from "@/lib/services/users/userApi";
-import { Button, Table, Text } from "../../../components/ui";
+import { Button, Row, Stack, Table, Text } from "../../../components/ui";
 import { ColumnProps } from "@uug-ai/ui/lib/components/Table/Table";
 import React from "react";
 import DeleteUser from "./DeleteUser";
@@ -13,7 +13,7 @@ interface Data {
 }
 
 const UserTable = () => {
-  const { data, error, isLoading } = useGetUsersQuery(undefined);
+  const { data, error, isLoading, refetch } = useGetUsersQuery(undefined);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -55,12 +55,12 @@ const UserTable = () => {
       title: "Id",
     },
     {
-      key: "name",
-      title: "Name",
-    },
-    {
       key: "email",
       title: "Email",
+    },
+    {
+      key: "name",
+      title: "Name",
     },
     {
       key: "delete",
@@ -71,8 +71,20 @@ const UserTable = () => {
     },
   ];
 
+  const handleRefresh = () => {
+    refetch();
+  };
+
   return (
-    <Table columns={columns} data={mappedData} size="md" colors="primary" />
+    <Stack className="gap-4">
+      <Row className="justify-between">
+        <Text as="h2" size="4xl" weight="semibold">
+          Users
+        </Text>
+        <Button onClick={handleRefresh}>Refresh</Button>
+      </Row>
+      <Table columns={columns} data={mappedData} size="md" colors="primary" />
+    </Stack>
   );
 };
 

@@ -9,7 +9,16 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "contact": {},
+        "termsOfService": "https://kerberos.io",
+        "contact": {
+            "name": "API Support",
+            "url": "https://www.kerberos.io",
+            "email": "support@kerberos.io"
+        },
+        "license": {
+            "name": "Apache 2.0 - Commons Clause",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -17,6 +26,11 @@ const docTemplate = `{
     "paths": {
         "/api/locations": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all locations",
                 "tags": [
                     "locations"
@@ -36,6 +50,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Create location",
                 "consumes": [
                     "application/json"
@@ -71,6 +90,11 @@ const docTemplate = `{
         },
         "/api/locations/{id}": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get location by ID",
                 "tags": [
                     "locations"
@@ -96,6 +120,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete location",
                 "tags": [
                     "locations"
@@ -149,6 +178,11 @@ const docTemplate = `{
         },
         "/api/users": {
             "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Get all users",
                 "tags": [
                     "users"
@@ -168,7 +202,12 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create user",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Add user",
                 "consumes": [
                     "application/json"
                 ],
@@ -178,17 +217,49 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Create user",
+                "summary": "Add user",
                 "operationId": "addUser",
                 "parameters": [
                     {
-                        "description": "User",
+                        "description": "User data",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/users/{email}": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get user by email",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Get user by email",
+                "operationId": "getUserByEmail",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User email",
+                        "name": "email",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -203,11 +274,16 @@ const docTemplate = `{
         },
         "/api/users/{id}": {
             "get": {
-                "description": "Get user by id",
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Get user",
                 "tags": [
                     "users"
                 ],
-                "summary": "Get user by id",
+                "summary": "Get user",
                 "operationId": "getUser",
                 "parameters": [
                     {
@@ -228,6 +304,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "description": "Delete user",
                 "tags": [
                     "users"
@@ -329,17 +410,24 @@ const docTemplate = `{
                 }
             }
         }
+    },
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
     }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
+	Version:          "1.0",
 	Host:             "",
-	BasePath:         "",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Swagger Kerberos Agent API",
+	Description:      "This is the API for using and configuring Kerberos Agent.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

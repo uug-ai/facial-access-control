@@ -1,16 +1,16 @@
-import {
-  Button,
-  Input,
-  Gradient,
-  Text,
-  Socials,
-  Box,
-  Stack,
-  Password,
-  Row,
-} from "../components/ui";
+import { authOptions } from "@/utils/auth";
+import { Text } from "../components/ui";
+import { getServerSession } from "next-auth";
 import React from "react";
+import SignOutButton from "@/components/SignOutButton";
 
-export default function App() {
-  return <div>App</div>;
+export default async function App() {
+  const session = await getServerSession(authOptions);
+  return (
+    <div>
+      <Text as="h1" size="5xl">
+        APP
+      </Text>
+    </div>
+  );
 }

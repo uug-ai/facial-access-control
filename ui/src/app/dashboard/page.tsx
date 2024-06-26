@@ -4,10 +4,15 @@ import AddUser from "./components/AddUser";
 import UserTable from "./components/UserTable";
 import LocationInfo from "./components/LocationInfo";
 import AddLocation from "./components/AddLocation";
+import InviteUser from "./components/InviteUser";
+import InviteUserDialog from "./components/InviteUserDialog";
+import { useAppSelector } from "@/lib/hooks";
 
 const Dashboard = () => {
   return (
-    <Box>
+    <Box className="w-full">
+      <InviteUserDialog />
+
       <Gradient />
       <Stack className="gap-12 p-8 ">
         <Row className="justify-between">
@@ -24,7 +29,7 @@ const Dashboard = () => {
           </Row>
           <Row className="gap-4 justify-end">
             <AddLocation />
-            <AddUser />
+            <InviteUser />
           </Row>
         </Row>
         <UserTable />

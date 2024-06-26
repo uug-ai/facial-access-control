@@ -1,8 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "@/lib/utils/apiMethods";
+import { createApi } from "@reduxjs/toolkit/query/react";
 
 export const locationApi = createApi({
   reducerPath: "locationApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost/api/" }),
+  baseQuery: async (args, api, extraOptions) => {
+    const result = await baseQuery(args, api, extraOptions);
+    return result;
+  },
   tagTypes: ["Location"],
   endpoints: (build) => ({
     getLocations: build.query({
@@ -26,6 +30,7 @@ export const locationApi = createApi({
       query: ({ id, body }) => ({
         url: `locations/${id}`,
         method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body,
       }),
       invalidatesTags: ["Location"],
