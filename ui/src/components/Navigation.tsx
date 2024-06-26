@@ -1,3 +1,4 @@
+import SignOutButton from "./SignOutButton";
 import {
   Box,
   Icon,
@@ -27,6 +28,7 @@ const Navigation = () => {
       {/* end of Navigation main */}
 
       <NavigationSocials />
+      <SignOutButton />
       <NavigationFooter />
     </Box>
   );
