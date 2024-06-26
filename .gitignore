@@ -4,3 +4,4 @@ ml/data/test_images
 node_modules
 ui/out
 __debug_bin*
+api/.env.local
