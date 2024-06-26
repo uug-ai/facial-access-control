@@ -14,7 +14,7 @@ However before you get started this amazing applications, please activate your a
 Get in touch
 ------------
 support@uug.ai
-KErkstraat 108, 9050 Ghent, Belgium
+Kerkstraat 108, 9050 Ghent, Belgium
 https://uug.ai
 
 About Uug.ai
