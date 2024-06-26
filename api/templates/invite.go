@@ -1,6 +1,6 @@
 package templates
 
-var TEMPLATE_TEXT = `
+var TEMPLATE_INVITE_TEXT = `
 Uug.ai
 ------------
 
@@ -20,7 +20,7 @@ About Uug.ai
 Welcome to the revolutionary video analytics and video management platform. Open, modular, and extensible for everyone, anywhere.
 `
 
-var TEMPLATE_WELCOME = `
+var TEMPLATE_INVITE = `
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>

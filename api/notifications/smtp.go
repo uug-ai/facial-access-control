@@ -31,7 +31,7 @@ func (smtp SMTP) Send(message Message) error {
 	m.SetHeader("To", smtp.EmailTo)
 	m.SetHeader("Subject", message.Title)
 	timeNow := time.Now().Unix()
-	m.SetHeader("Message-Id", "<"+strconv.FormatInt(timeNow, 10)+"@kerberos.io>")
+	m.SetHeader("Message-Id", "<"+strconv.FormatInt(timeNow, 10)+"@uug.ai>")
 
 	textBody := templates.GetTextTemplate(smtp.TemplateId)
 	m.SetBody("text/plain", ReplaceValues(textBody, message))
