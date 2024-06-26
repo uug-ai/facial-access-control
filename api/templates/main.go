@@ -25,8 +25,8 @@ func GetTemplate(name string) string {
 	if HasTemplateOnFileSystem(path, name+".html") {
 		return Readfile(path, name+".html")
 	} else {
-		if name == "welcome" {
-			return TEMPLATE_WELCOME
+		if name == "invite" {
+			return TEMPLATE_INVITE
 		} else if name == "forgot" {
 			return TEMPLATE_FORGOT
 		} else if name == "activate" {
@@ -41,8 +41,8 @@ func GetTextTemplate(name string) string {
 	if HasTemplateOnFileSystem(path, name+".txt") {
 		return Readfile(path, name+".txt")
 	} else {
-		if name == "welcome" {
-			return TEMPLATE_WELCOME_TEXT
+		if name == "invite" {
+			return TEMPLATE_INVITE_TEXT
 		} else if name == "forgot" {
 			return TEMPLATE_FORGOT_TEXT
 		} else if name == "activate" {
