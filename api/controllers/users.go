@@ -242,7 +242,8 @@ func InviteUser(c *gin.Context) error {
 			Body:  "You have been invited to join the Facial Acces Control",
 			User:  user.Email,
 			Data: map[string]string{
-				"link": baseUrl + "/onboarding/" + fprint,
+				"link":      baseUrl + "/onboarding/" + fprint,
+				"firstname": user.FirstName,
 			},
 		}
 
