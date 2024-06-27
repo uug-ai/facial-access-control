@@ -14,4 +14,5 @@ type Message struct {
 	Email            string            `json:"email,omitempty" bson:"email,omitempty"`
 	DataUsage        string            `json:"data_usage,omitempty" bson:"data_usage,omitempty"`
 	Data             map[string]string `json:"data,omitempty" bson:"data,omitempty"`
+	Fingerprint      string            `json:"fingerprint,omitempty" bson:"fingerprint,omitempty"`
 }

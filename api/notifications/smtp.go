@@ -47,27 +47,7 @@ func (smtp SMTP) Send(message Message) error {
 // This function will replace the variables in the email template. We have following variables available:
 // - {{user}}: user that triggered the message
 // - {{text}}: text of the message
-// - {{link}}: link to the media (recording)
-//
-// - {{thumbnail}}: image (either a base64 or a url).
-// - {{classifications}}: list of classifications detected in the recording.
-//
-// - {{timezone}}: timezone of the account generating the event
-//
-// - {{date}}: date of the media
-// - {{time}}: time of the media
-// - {{datetime}}: datetime of the media
-//
-// - {{eventdate}}: date of the notification
-// - {{eventtime}}: time of the notification
-// - {{eventdatetime}}: datetime of the notification
-//
-// - {{devicename}}: device generating the event
-// - {{deviceid}}: device generating the event
-// - {{sites}}: the list of sites the device is part of
-// - {{groups}}: the list of groups the device is part of
-// - {{numberOfMedia}}: number of media attached to the message
-// - {{dataUsage}}: data usage of the message
+// - {{link}}: link to the invite page
 
 func ReplaceValues(body string, message Message) string {
 
