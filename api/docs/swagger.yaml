@@ -194,6 +194,12 @@ paths:
           description: Created
           schema:
             $ref: '#/definitions/models.User'
+        "400":
+          description: Bad Request
+        "409":
+          description: Conflict
+        "500":
+          description: Internal Server Error
       security:
       - Bearer: []
       summary: Add user
@@ -254,6 +260,18 @@ paths:
       security:
       - Bearer: []
       summary: Get user
+      tags:
+      - users
+  /api/users/invite:
+    post:
+      description: Invite user
+      operationId: inviteUser
+      responses:
+        "200":
+          description: OK
+      security:
+      - Bearer: []
+      summary: Invite
       tags:
       - users
 securityDefinitions:
