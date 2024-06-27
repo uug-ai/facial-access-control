@@ -33,6 +33,7 @@ const InviteUserDialog: React.FC = () => {
 
     try {
       await inviteUser({
+        status: "invited",
         email: email,
         firstname: firstName,
         lastname: lastName,

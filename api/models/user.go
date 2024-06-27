@@ -8,6 +8,8 @@ type User struct {
 	Password  string `json:"password" bson:"password"`
 	Role      string `json:"role" bson:"role"`
 	Language  string `json:"language" bson:"language"`
+	Status 	  string `json:"status" bson:"status"`
+	VideoPath string `json:"video_path" bson:"video_path"`
 }
 
 type Authentication struct {

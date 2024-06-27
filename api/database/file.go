@@ -9,6 +9,7 @@ import (
 )
 
 var ErrUserAlreadyExists = errors.New("user already exists")
+var ErrInvalidUserData = errors.New("invalid user data")
 
 func GetUsersFromFile() []models.User {
 	// Directly return users from data without re-hashing passwords

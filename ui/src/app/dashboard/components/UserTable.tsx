@@ -44,13 +44,17 @@ const UserTable = () => {
   }
   const mappedData =
     data?.data.map((user: User) => ({
-      status: user.
+      status: user.status,
       id: user.id,
       name: `${user.firstname} ${user.lastname}`,
       email: user.email,
     })) ?? [];
 
   const columns: Array<ColumnProps<Data>> = [
+    {
+      key: "status",
+      title: "Status",
+    },
     {
       key: "id",
       title: "Id",
