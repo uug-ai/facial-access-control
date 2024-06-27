@@ -6,3 +6,4 @@ ui/out
 __debug_bin*
 api/.env.local
 api/__debug_bin*
+ui/yarn.lock
