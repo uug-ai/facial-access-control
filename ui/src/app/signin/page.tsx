@@ -8,11 +8,14 @@ import {
   Stack,
   Password,
   Row,
+  Logo,
 } from "../../components/ui";
 import React from "react";
 import SignInForm from "./components/SignInForm";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import FaceScan from "./components/Facescan";
+import Background from "./components/Background";
 
 export default async function Signin() {
   const session = await getServerSession();
@@ -32,10 +35,15 @@ export default async function Signin() {
         </Stack>
         <Socials className="mt-auto self-center justify-self-end p-8" />
       </Box>
-      <Box className="bg-gradient-to-t from-primary-600 to-primary-900 flex justify-center items-center w-full">
-        <Text as="h2" size="5xl" className="text-white p-8">
-          UUG.AI
+        <Box className="flex justify-center items-center w-full relative">
+        <Background className="absolute"/>
+      <FaceScan className="opacity-30"/>
+        <Row className="absolute bottom-3 gap-2 place-content-end mr-10">
+        <Text>
+          A product made by
         </Text>
+        <Logo/>
+      </Row>
       </Box>
     </Row>
   );
