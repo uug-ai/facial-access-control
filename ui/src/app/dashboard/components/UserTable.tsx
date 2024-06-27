@@ -44,6 +44,7 @@ const UserTable = () => {
   }
   const mappedData =
     data?.data.map((user: User) => ({
+      status: user.
       id: user.id,
       name: `${user.firstname} ${user.lastname}`,
       email: user.email,
