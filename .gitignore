@@ -1,3 +1,5 @@
 ml/scripts/utils/__pycache__
 ml/data/face_inference.mp4
 ml/data/test_images
+ml/data/face_inference_cropped.mp4
+ml/data/face_inference_cropped_short.mp4
