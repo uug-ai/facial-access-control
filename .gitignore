@@ -8,3 +8,4 @@ api/.env.local
 api/__debug_bin*
 ui/yarn.lock
 api/.env
+ui/.env.local
