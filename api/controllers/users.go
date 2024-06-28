@@ -1,8 +1,7 @@
 package controllers
 
 import (
-	"bytes"
-	"encoding/gob"
+	"encoding/json"
 	"os"
 	"strconv"
 	"time"
@@ -169,6 +168,7 @@ func DeleteUser(c *gin.Context) error {
 	})
 	return nil
 }
+
 // InviteUser godoc
 // @Router /api/users/invite [post]
 // @Security Bearer
@@ -181,104 +181,103 @@ func DeleteUser(c *gin.Context) error {
 // @Description Invite user
 // @Success 200
 func InviteUser(c *gin.Context) {
-    var user models.User
-    if err := c.ShouldBindJSON(&user); err != nil {
-        c.JSON(400, gin.H{
-            "error": "Invalid user data",
-        })
-        return
-    }
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user data",
+		})
+		return
+	}
 
-    // Create fingerprint
-    now := time.Now()
-    fingerprint := models.UserFingerprint{
-        Email:      user.Email,
-        FirstName:  user.FirstName,
-        LastName:   user.LastName,
-        Id:         user.Id,
-        Expiration: now.Add(time.Hour * 24 * 7).Unix(), // 1 week (7 days)
-        Creation:   now.Unix(),
-    }
+	// Create fingerprint
+	now := time.Now()
+	fingerprint := models.UserFingerprint{
+		Email:      user.Email,
+		FirstName:  user.FirstName,
+		LastName:   user.LastName,
+		Id:         user.Id,
+		Expiration: now.Add(time.Hour * 24 * 7).Unix(), // 1 week (7 days)
+		Creation:   now.Unix(),
+	}
 
-    // Serialize fingerprint
-    var buffer bytes.Buffer
-    enc := gob.NewEncoder(&buffer)
-    if err := enc.Encode(fingerprint); err != nil {
-        c.JSON(500, gin.H{
-            "error": "Error while encoding fingerprint",
-        })
-        return
-    }
+	// Serialize fingerprint
+	bufferBytes, err := json.Marshal(fingerprint)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "Error while encoding fingerprint",
+		})
+		return
+	}
 
-    // Encrypt the fingerprint using the ENV variable PRIVATE_KEY
-    encryptionKey := os.Getenv("PRIVATE_KEY")
-    if encryptionKey == "" {
-        c.JSON(500, gin.H{
-            "error": "No encryption key found",
-        })
-        return
-    }
+	// Encrypt the fingerprint using the ENV variable PRIVATE_KEY
+	encryptionKey := os.Getenv("PRIVATE_KEY")
+	if encryptionKey == "" {
+		c.JSON(500, gin.H{
+			"error": "No encryption key found",
+		})
+		return
+	}
 
-    encryptedFingerprint, err := encryption.AesEncrypt(buffer.Bytes(), encryptionKey)
-    if err != nil {
-        c.JSON(500, gin.H{
-            "error": "Error while encrypting fingerprint",
-        })
-        return
-    }
+	encryptedFingerprint, err := encryption.AesEncrypt(bufferBytes, encryptionKey)
+	if err != nil {
+		c.JSON(500, gin.H{
+			"error": "Error while encrypting fingerprint",
+		})
+		return
+	}
 
-    base64Fingerprint := utils.Base64Encode(string(encryptedFingerprint))
-    fprint := utils.EncodeURL(base64Fingerprint)
+	base64Fingerprint := utils.Base64Encode(string(encryptedFingerprint))
+	fprint := utils.EncodeURL(base64Fingerprint)
 
-    mail := notifications.SMTP{
-        Server:     os.Getenv("SMTP_SERVER"),
-        Port:       os.Getenv("SMTP_PORT"),
-        Username:   os.Getenv("SMTP_USERNAME"),
-        Password:   os.Getenv("SMTP_PASSWORD"),
-        EmailFrom:  os.Getenv("EMAIL_FROM"),
-        EmailTo:    user.Email,
-        TemplateId: "invite",
-    }
+	mail := notifications.SMTP{
+		Server:     os.Getenv("SMTP_SERVER"),
+		Port:       os.Getenv("SMTP_PORT"),
+		Username:   os.Getenv("SMTP_USERNAME"),
+		Password:   os.Getenv("SMTP_PASSWORD"),
+		EmailFrom:  os.Getenv("EMAIL_FROM"),
+		EmailTo:    user.Email,
+		TemplateId: "invite",
+	}
 
-    // Get base url
-    baseUrl := os.Getenv("BASE_URL")
-    if baseUrl != "" {
-        baseUrl = utils.RemoveTrailingSlash(baseUrl)
-    }
+	// Get base url
+	baseUrl := os.Getenv("BASE_URL")
+	if baseUrl != "" {
+		baseUrl = utils.RemoveTrailingSlash(baseUrl)
+	}
 
-    message := notifications.Message{
-        Title: "Invitation",
-        Body:  "You have been invited to join the Facial Access Control",
-        User:  user.Email,
-        Data: map[string]string{
-            "link":      baseUrl + "/onboarding?token=" + fprint,
-            "firstname": user.FirstName,
-        },
-    }
+	message := notifications.Message{
+		Title: "Invitation",
+		Body:  "You have been invited to join the Facial Access Control",
+		User:  user.Email,
+		Data: map[string]string{
+			"link":      baseUrl + "/onboarding?token=" + fprint,
+			"firstname": user.FirstName,
+		},
+	}
 
-    if err := mail.Send(message); err != nil {
-        c.JSON(500, gin.H{
-            "error": "Failed to send invite to user",
-        })
-        return
-    }
+	if err := mail.Send(message); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Failed to send invite to user",
+		})
+		return
+	}
 
 	// Add user to the database
-    if errUser := database.AddUser(user); errUser != nil {
-        switch errUser {
-        case database.ErrUserAlreadyExists:
-            c.JSON(409, gin.H{
-                "error": "User already exists",
-            })
-        default:
-            c.JSON(500, gin.H{
-                "error": "Failed to add user",
-            })
-        }
-        return
-    }
+	if errUser := database.AddUser(user); errUser != nil {
+		switch errUser {
+		case database.ErrUserAlreadyExists:
+			c.JSON(409, gin.H{
+				"error": "User already exists",
+			})
+		default:
+			c.JSON(500, gin.H{
+				"error": "Failed to add user",
+			})
+		}
+		return
+	}
 
-    c.JSON(201, gin.H{
-        "message": "User successfully invited",
-    })
+	c.JSON(201, gin.H{
+		"message": "User successfully invited",
+	})
 }
