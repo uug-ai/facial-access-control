@@ -41,10 +41,10 @@ export default async function Signin() {
         <Image src={BG} alt="background image" layout="fill"></Image>
         <FaceScan className="absolute size-96"/>
         <Row className="absolute bottom-3 gap-2 place-content-end mr-10">
-        <Text>
+        <Text className="text-white">
           A product made by
         </Text>
-        <Logo/>
+        <Logo color="white" className="h-min"/>
       </Row>
       </Box>
     </Row>
