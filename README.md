@@ -42,6 +42,9 @@ The front-end makes use of the [Next.js](https://nextjs.org/) framework. [Storyb
 
 The back-end or API is written in Golang, and defines specific methods to persist data and call the face recognition model. It has various API methods to create new users, assign permissions and access control, and (re)train and interfere with the facial recognition model.
 
+  - Swagger API is hosted at http://localhost:80/swagger/index.html
+  - Postman Collection [can be found here](https://kerberosio.postman.co/workspace/UUG.AI~52218588-948a-49a0-8046-34f96285bd19/collection/5538769-9f1fc117-a30b-4acf-a7f4-e7ca1ebe5d6f?action=share&creator=5538769)
+
 ## ML (face recognition)
 
 To be documented

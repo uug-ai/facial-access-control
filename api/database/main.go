@@ -13,7 +13,7 @@ func GetUserById(id int) models.User {
 func GetUserByEmail(email string) models.User {
 	return GetUserByEmailFromFile(email)
 }
-func AddUser(user models.User) error {
+func AddUser(user models.User) (models.User, error) {
 	return AddUserToFile(user)
 }
 func DeleteUser(id int) error {

@@ -34,10 +34,13 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 				controllers.AddUser(c)
 			})
 
+			api.POST("/users/invite", func(c *gin.Context) {
+				controllers.InviteUser(c)
+			})
+
 			api.DELETE("/users/:id", func(c *gin.Context) {
 				controllers.DeleteUser(c)
 			})
-			// End users
 
 			// Locations
 			api.GET("/locations", func(c *gin.Context) {
