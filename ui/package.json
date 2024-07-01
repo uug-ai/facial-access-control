@@ -16,7 +16,7 @@
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/jest-dom": "^6.4.6",
     "@types/crypto-js": "^4.2.2",
-    "@uug-ai/ui": "^1.0.36",
+    "@uug-ai/ui": "^1.0.39",
     "autoprefixer": "^10.4.19",
     "base-64": "^1.0.0",
     "cookies-next": "^4.2.1",

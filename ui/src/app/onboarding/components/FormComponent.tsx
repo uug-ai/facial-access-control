@@ -75,25 +75,29 @@ const FormComponent: React.FC<{
     }, 
   });
 
+  console.log('private key client side', process.env.PRIVATE_KEY);
+
   useEffect(() => {
     if (token) {
-      const secretKey = process.env.NEXT_PUBLIC_PRIVATE_KEY as string;
       const decodedToken = atob(token as string); // Base64 decode
-      const decryptedData = decrypt(decodedToken, secretKey);
-      try {
-        const user = JSON.parse(decryptedData);
-        setUserData(user);
-        methods.setValue('firstName', user.firstname);
-        methods.setValue('lastName', user.lastname);
-        methods.setValue('email', user.email);
-
-        console.log("Form values set", methods.getValues());
-      } catch (error) {
-        console.error("Failed to decrypt or parse token", error);
-      }
+      decrypt(decodedToken)
+        .then(decryptedData => {
+          try {
+            const user = JSON.parse(decryptedData);
+            setUserData(user);
+            methods.setValue('firstName', user.firstname);
+            methods.setValue('lastName', user.lastname);
+            methods.setValue('email', user.email);
+          } catch (error) {
+            console.error("Failed to parse decrypted token", error);
+          }
+        })
+        .catch(error => {
+          console.error("Failed to decrypt token", error);
+        });
     }
   }, [token, methods]);
-
+  
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -110,9 +114,6 @@ const FormComponent: React.FC<{
       console.error("Video file is required.");
     }
   };
-
-
-  console.log("User data:", userData)
   
   return (
     <Box>
