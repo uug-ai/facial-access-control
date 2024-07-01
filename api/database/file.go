@@ -36,14 +36,14 @@ func GetUserByEmailFromFile(email string) models.User {
 	return models.User{}
 }
 
-func AddUserToFile(user models.User) error {
+func AddUserToFile(user models.User) (models.User, error) {
 	users := GetUsersFromFile()
 
 	// Find the maximum ID in the current user list
 	maxID := 0
 	for _, u := range users {
 		if u.Email == user.Email {
-			return ErrUserAlreadyExists
+			return models.User{}, ErrUserAlreadyExists
 		}
 		if u.Id > maxID {
 			maxID = u.Id
@@ -56,12 +56,12 @@ func AddUserToFile(user models.User) error {
 	// Hash the user's password before saving
 	hashedPassword, err := utils.Hash(user.Password)
 	if err != nil {
-		return err
+		return models.User{}, err
 	}
 	user.Password = hashedPassword
 
 	data.Users = append(data.Users, user)
-	return nil
+	return user, nil
 }
 
 func DeleteUserFromFile(id int) error {

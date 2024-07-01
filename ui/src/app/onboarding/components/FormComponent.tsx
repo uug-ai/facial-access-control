@@ -75,8 +75,6 @@ const FormComponent: React.FC<{
     }, 
   });
 
-  console.log('private key client side', process.env.PRIVATE_KEY);
-
   useEffect(() => {
     if (token) {
       const decodedToken = atob(token as string); // Base64 decode
@@ -88,6 +86,7 @@ const FormComponent: React.FC<{
             methods.setValue('firstName', user.firstname);
             methods.setValue('lastName', user.lastname);
             methods.setValue('email', user.email);
+            console.log("Decrypted token:", user);
           } catch (error) {
             console.error("Failed to parse decrypted token", error);
           }

@@ -112,7 +112,7 @@ func AddUser(c *gin.Context) {
 		return
 	}
 
-	err := database.AddUser(user)
+	_, err := database.AddUser(user)
 	if err != nil {
 		switch err {
 		case database.ErrUserAlreadyExists:
@@ -189,13 +189,29 @@ func InviteUser(c *gin.Context) {
 		return
 	}
 
+	// Add user to the database
+	addedUser, errUser := database.AddUser(user)
+	if errUser != nil {
+		switch errUser {
+		case database.ErrUserAlreadyExists:
+			c.JSON(409, gin.H{
+				"error": "User already exists",
+			})
+		default:
+			c.JSON(500, gin.H{
+				"error": "Failed to add user",
+			})
+		}
+		return
+	}
+
 	// Create fingerprint
 	now := time.Now()
 	fingerprint := models.UserFingerprint{
 		Email:      user.Email,
 		FirstName:  user.FirstName,
 		LastName:   user.LastName,
-		Id:         user.Id,
+		Id:         addedUser.Id,
 		Expiration: now.Add(time.Hour * 24 * 7).Unix(), // 1 week (7 days)
 		Creation:   now.Unix(),
 	}
@@ -259,21 +275,6 @@ func InviteUser(c *gin.Context) {
 		c.JSON(500, gin.H{
 			"error": "Failed to send invite to user",
 		})
-		return
-	}
-
-	// Add user to the database
-	if errUser := database.AddUser(user); errUser != nil {
-		switch errUser {
-		case database.ErrUserAlreadyExists:
-			c.JSON(409, gin.H{
-				"error": "User already exists",
-			})
-		default:
-			c.JSON(500, gin.H{
-				"error": "Failed to add user",
-			})
-		}
 		return
 	}
 
