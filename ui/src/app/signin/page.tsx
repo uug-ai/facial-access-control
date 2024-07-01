@@ -8,14 +8,16 @@ import {
   Stack,
   Password,
   Row,
-  Logo,
+  FaceScan,
+  Logo
 } from "../../components/ui";
 import React from "react";
 import SignInForm from "./components/SignInForm";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import FaceScan from "./components/Facescan";
-import Background from "./components/Background";
+import Image from "next/image";
+import BG from "../../../public/BG.png"
+
 
 export default async function Signin() {
   const session = await getServerSession();
@@ -36,13 +38,13 @@ export default async function Signin() {
         <Socials className="mt-auto self-center justify-self-end p-8" />
       </Box>
         <Box className="flex justify-center items-center w-full relative">
-        <Background className="absolute"/>
-      <FaceScan className="opacity-30"/>
+        <Image src={BG} alt="background image" layout="fill"></Image>
+        <FaceScan className="absolute size-96"/>
         <Row className="absolute bottom-3 gap-2 place-content-end mr-10">
-        <Text>
+        <Text className="text-white">
           A product made by
         </Text>
-        <Logo/>
+        <Logo color="white" className="h-min"/>
       </Row>
       </Box>
     </Row>
