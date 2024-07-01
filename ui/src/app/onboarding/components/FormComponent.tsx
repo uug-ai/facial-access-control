@@ -6,14 +6,12 @@ import {
   useFormContext,
 } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { Box, Text, Input, Button, Logo } from "../../../components/ui";
 import { schema } from "./FormSchema";
 import { onSubmitAction } from "./FormSubmit";
 import { FormData } from "./Types";
-import { useRouter } from "next/router";
 import { useSearchParams } from "next/navigation";
-import * as CryptoJS from "crypto-js"; // AES encryption, symmetric
+import { decrypt } from "@/utils/crypto";
 
 interface FormFieldProps {
   name: keyof FormData;
@@ -28,8 +26,8 @@ interface UserFingerprint {
   FirstName: string;
   LastName: string;
   Id: number;
-  Expiration: number; // Unix timestamp, typically represented as a number
-  Creation: number; // Unix timestamp, typically represented as a number
+  Expiration: number;
+  Creation: number;
 }
 
 const FormField: React.FC<FormFieldProps> = ({
@@ -66,45 +64,35 @@ const FormComponent: React.FC<{
 }> = ({ videoFile, onSubmit }) => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  console.log("token: ", token);
-
   const [userData, setUserData] = useState<UserFingerprint | null>(null);
-  console.log("KEYYYYY", process.env.NEXT_PUBLIC_PRIVATE_KEY);
-  useEffect(() => {
-    if (token) {
-      try {
-        const base64Token = decodeURI(token);
-        const encryptedToken = atob(base64Token);
-        const bytes = CryptoJS.AES.decrypt(
-          encryptedToken,
-          process.env.NEXT_PUBLIC_PRIVATE_KEY || ""
-        );
-        const decryptedToken = bytes.toString(CryptoJS.enc.Base64);
-
-        const base64 = atob(decryptedToken);
-        console.log("DECRYPTEDTOKEN: ", base64);
-
-        // Parse the decrypted JSON data
-        const parsedData = JSON.parse(base64) as UserFingerprint;
-
-        setUserData(parsedData);
-      } catch (error) {
-        console.error("Failed to decrypt or parse token", error);
-      }
-    }
-  }, [token]);
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
-      firstName: userData?.FirstName || "",
-      lastName: userData?.LastName || "",
-      email: userData?.Email || "",
       phoneNumber: "",
       dateOfBirth: "",
       video: undefined,
-    },
+    }, 
   });
+
+  useEffect(() => {
+    if (token) {
+      const secretKey = process.env.NEXT_PUBLIC_PRIVATE_KEY as string;
+      const decodedToken = atob(token as string); // Base64 decode
+      const decryptedData = decrypt(decodedToken, secretKey);
+      try {
+        const user = JSON.parse(decryptedData);
+        setUserData(user);
+        methods.setValue('firstName', user.firstname);
+        methods.setValue('lastName', user.lastname);
+        methods.setValue('email', user.email);
+
+        console.log("Form values set", methods.getValues());
+      } catch (error) {
+        console.error("Failed to decrypt or parse token", error);
+      }
+    }
+  }, [token, methods]);
 
   const formRef = useRef<HTMLFormElement>(null);
 
@@ -123,9 +111,13 @@ const FormComponent: React.FC<{
     }
   };
 
+
+  console.log("User data:", userData)
+  
   return (
     <Box>
       <Logo />
+      {userData && (
       <FormProvider {...methods}>
         <form
           ref={formRef}
@@ -171,6 +163,7 @@ const FormComponent: React.FC<{
           </Button>
         </form>
       </FormProvider>
+    )}
     </Box>
   );
 };
