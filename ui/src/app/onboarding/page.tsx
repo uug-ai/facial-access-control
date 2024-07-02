@@ -16,6 +16,7 @@ import FormComponent from "./components/FormComponent";
 import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
+import { useUpdateUserMutation } from "@/lib/services/users/userApi";
 
 const schema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -25,6 +26,8 @@ const schema = z.object({
   dateOfBirth: z.string().refine((val: string) => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
   }),
+  id: z.number().int().positive("Invalid ID"),
+  status: z.string().optional(),
   video: z.instanceof(Blob, { message: "Video is required" }),
 });
 
@@ -34,6 +37,8 @@ const Onboarding: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [videoFile, setVideoFile] = useState<Blob | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [updateUser] = useUpdateUserMutation();
+  
 
   const handleRecordingComplete = (recordedChunks: Blob[]) => {
     const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
@@ -41,16 +46,20 @@ const Onboarding: React.FC = () => {
     console.log("Final video blob:", videoBlob);
   };
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
     console.log("onSubmit called with data:", data);
 
     if (videoFile) {
       console.log("Video file exists in onSubmit:", videoFile);
-      data.video = videoFile;
+      const formDataWithVideo = { ...data, video: videoFile };
 
-      console.log("Form data with video:", data);
-
-      setIsSubmitted(true);
+      try {
+        await updateUser(formDataWithVideo).unwrap();
+        console.log("User updated successfully");
+        setIsSubmitted(true);
+      } catch (error) {
+        console.error("Failed to update user:", error);
+      }
     } else {
       console.error("Video is required in onSubmit");
     }

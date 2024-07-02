@@ -75,6 +75,17 @@ func DeleteUserFromFile(id int) error {
 	return errors.New("user not found")
 }
 
+func UpdateUserFromFile(user models.User) error {
+	users := GetUsersFromFile()
+	for i, u := range users {
+		if u.Id == user.Id {
+			users[i] = user
+			return nil
+		}
+	}
+	return errors.New("user not found")
+}
+
 func GetLocationsFromFile() []models.Location {
 	locations := data.Locations
 	return locations

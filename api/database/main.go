@@ -19,6 +19,9 @@ func AddUser(user models.User) (models.User, error) {
 func DeleteUser(id int) error {
 	return DeleteUserFromFile(id)
 }
+func UpdateUser(user models.User) error {
+	return UpdateUserFromFile(user)
+}
 func GetLocations() []models.Location {
 	return GetLocationsFromFile()
 }

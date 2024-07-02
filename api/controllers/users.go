@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"strconv"
 	"time"
@@ -207,6 +208,7 @@ func InviteUser(c *gin.Context) {
 
 	// Create fingerprint
 	now := time.Now()
+	fmt.Printf("ID: %v\n", addedUser.Id)
 	fingerprint := models.UserFingerprint{
 		Email:      user.Email,
 		FirstName:  user.FirstName,
@@ -280,5 +282,54 @@ func InviteUser(c *gin.Context) {
 
 	c.JSON(201, gin.H{
 		"message": "User successfully invited",
+	})
+}
+
+// UpdateUser godoc
+// @Router /api/users/{id} [patch]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @ID updateUser
+// @Tags users
+// @Summary Update user
+// @Description Update user
+// @Param id path int true "User ID"
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User data"
+// @Success 200
+// @Failure 400
+// @Failure 500
+func UpdateUser(c *gin.Context) {
+	id := c.Param("id")
+
+	userID, err := strconv.Atoi(id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user ID",
+		})
+		return
+	}
+
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user data",
+		})
+		return
+	}
+
+	user.Id = userID
+	if err := database.UpdateUser(user); err != nil {
+		c.JSON(500, gin.H{
+			"error": "Failed to update user",
+		})
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "User updated successfully",
 	})
 }

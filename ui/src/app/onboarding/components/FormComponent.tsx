@@ -72,6 +72,9 @@ const FormComponent: React.FC<{
       phoneNumber: "",
       dateOfBirth: "",
       video: undefined,
+      // DISCLAIMER: hacky solution to pass id and status
+      id: 0,
+      status: "onboarded",
     }, 
   });
 
@@ -83,9 +86,12 @@ const FormComponent: React.FC<{
           try {
             const user = JSON.parse(decryptedData);
             setUserData(user);
+            console.log("Decrypted token:", user);
+            console.log("id:", user.id);
             methods.setValue('firstName', user.firstname);
             methods.setValue('lastName', user.lastname);
             methods.setValue('email', user.email);
+            methods.setValue('id', user.id);
             console.log("Decrypted token:", user);
           } catch (error) {
             console.error("Failed to parse decrypted token", error);
