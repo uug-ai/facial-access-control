@@ -16,7 +16,7 @@ import FormComponent from "./components/FormComponent";
 import { SubmitHandler } from "react-hook-form";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
-import { useUpdateUserMutation } from "@/lib/services/users/userApi";
+import { useOnboardUserMutation } from "@/lib/services/users/userApi";
 
 const schema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -37,7 +37,7 @@ const Onboarding: React.FC = () => {
   const [isRecording, setIsRecording] = useState(false);
   const [videoFile, setVideoFile] = useState<Blob | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [updateUser] = useUpdateUserMutation();
+  const [onboardUser] = useOnboardUserMutation();
   
 
   const handleRecordingComplete = (recordedChunks: Blob[]) => {
@@ -54,7 +54,7 @@ const Onboarding: React.FC = () => {
       const formDataWithVideo = { ...data, video: videoFile };
 
       try {
-        await updateUser(formDataWithVideo).unwrap();
+        await onboardUser(formDataWithVideo).unwrap();
         console.log("User updated successfully");
         setIsSubmitted(true);
       } catch (error) {

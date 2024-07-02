@@ -86,6 +86,18 @@ func UpdateUserFromFile(user models.User) error {
 	return errors.New("user not found")
 }
 
+func OnboardUserToFile(user models.User) error {
+	users := GetUsersFromFile()
+	for i, u := range users {
+		if u.Email == user.Email {
+			user.Status = "onboarded"
+			users[i] = user
+			return nil
+		}
+	}
+	return errors.New("user not found")
+}
+
 func GetLocationsFromFile() []models.Location {
 	locations := data.Locations
 	return locations

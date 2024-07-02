@@ -333,3 +333,46 @@ func UpdateUser(c *gin.Context) {
 		"message": "User updated successfully",
 	})
 }
+
+// OnboardUser godoc
+// @Router /api/users/onboard [post]
+// @ID onboardUser
+// @Tags users
+// @Summary Onboard user
+// @Description Onboard user
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User data"
+// @Success 201 {object} models.User
+// @Failure 400
+// @Failure 409
+// @Failure 500
+func OnboardUser(c *gin.Context) {
+	var user models.User
+	if err := c.ShouldBindJSON(&user); err != nil {
+		c.JSON(400, gin.H{
+			"error": "Invalid user data",
+		})
+		return
+	}
+
+	err := database.OnboardUser(user)
+	if err != nil {
+		switch err {
+		case database.ErrUserAlreadyExists:
+			c.JSON(409, gin.H{
+				"error": "User already exists",
+			})
+		default:
+			c.JSON(500, gin.H{
+				"error": "Failed to add user",
+			})
+		}
+		return
+	}
+
+	c.JSON(201, gin.H{
+		"message": "User onboarded successfully",
+		"user":    user,
+	})
+}

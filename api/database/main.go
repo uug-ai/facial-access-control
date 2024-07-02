@@ -22,6 +22,9 @@ func DeleteUser(id int) error {
 func UpdateUser(user models.User) error {
 	return UpdateUserFromFile(user)
 }
+func OnboardUser(user models.User) error {
+	return OnboardUserToFile(user)
+}
 func GetLocations() []models.Location {
 	return GetLocationsFromFile()
 }

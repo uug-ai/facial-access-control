@@ -12,8 +12,8 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 	{
 		api.POST("/login", authMiddleware.LoginHandler)
 
-		api.PATCH("/users/:id", func(c *gin.Context) {
-			controllers.UpdateUser(c)
+		api.POST("/users/onboard", func(c *gin.Context) {
+			controllers.OnboardUser(c)
 		})
 
 		// Secured endpoints..
@@ -44,6 +44,10 @@ func AddRoutes(r *gin.Engine, authMiddleware *jwt.GinJWTMiddleware) *gin.RouterG
 
 			api.DELETE("/users/:id", func(c *gin.Context) {
 				controllers.DeleteUser(c)
+			})
+
+			api.PATCH("/users/:id", func(c *gin.Context) {
+				controllers.UpdateUser(c)
 			})
 
 			// Locations
