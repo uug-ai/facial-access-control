@@ -1,15 +1,17 @@
 package models
 
 type User struct {
-	Id        int    `json:"id" bson:"id"`
-	FirstName string `json:"firstname" bson:"firstname"`
-	LastName  string `json:"lastname" bson:"lastname"`
-	Email     string `json:"email" bson:"email"`
-	Password  string `json:"password" bson:"password"`
-	Role      string `json:"role" bson:"role"`
-	Language  string `json:"language" bson:"language"`
-	Status 	  string `json:"status" bson:"status"`
-	VideoPath string `json:"video_path" bson:"video_path"`
+	Id          int    `json:"id" bson:"id"`
+	FirstName   string `json:"firstname" bson:"firstname"`
+	LastName    string `json:"lastname" bson:"lastname"`
+	Email       string `json:"email" bson:"email"`
+	Password    string `json:"password" bson:"password"`
+	Role        string `json:"role" bson:"role"`
+	Language    string `json:"language" bson:"language"`
+	Status      string `json:"status" bson:"status"`
+	Video       []byte `json:"video" bson:"video"`
+	PhoneNumber string `json:"phoneNumber" bson:"phoneNumber"`
+	DateOfBirth string `json:"dateOfBirth" bson:"dateOfBirth"`
 }
 
 type Authentication struct {

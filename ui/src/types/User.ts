@@ -8,5 +8,5 @@ interface User {
   installed: boolean;
   language: string;
   status: string;
-  videoPath: string;
+  video: Blob;
 }

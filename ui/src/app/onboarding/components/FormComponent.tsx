@@ -72,9 +72,7 @@ const FormComponent: React.FC<{
       phoneNumber: "",
       dateOfBirth: "",
       video: undefined,
-      // DISCLAIMER: hacky solution to pass id and status
       id: 0,
-      status: "onboarded",
     }, 
   });
 

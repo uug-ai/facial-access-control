@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"strconv"
 	"time"
@@ -336,43 +337,67 @@ func UpdateUser(c *gin.Context) {
 
 // OnboardUser godoc
 // @Router /api/users/onboard [post]
+// @Security Bearer
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
 // @ID onboardUser
 // @Tags users
 // @Summary Onboard user
 // @Description Onboard user
-// @Accept json
+// @Accept multipart/form-data
 // @Produce json
-// @Param user body models.User true "User data"
-// @Success 201 {object} models.User
-// @Failure 400
-// @Failure 409
-// @Failure 500
+// @Param firstName formData string true "First name"
 func OnboardUser(c *gin.Context) {
 	var user models.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(400, gin.H{
-			"error": "Invalid user data",
-		})
+
+	// Parse form data
+	if err := c.Request.ParseMultipartForm(10 << 20); err != nil {
+		c.JSON(400, gin.H{"error": "Failed to parse multipart form data"})
 		return
 	}
 
-	err := database.OnboardUser(user)
+	// Get fields from form data
+	user.FirstName = c.Request.FormValue("firstName")
+	user.LastName = c.Request.FormValue("lastName")
+	user.Email = c.Request.FormValue("email")
+	user.PhoneNumber = c.Request.FormValue("phoneNumber")
+	user.DateOfBirth = c.Request.FormValue("dateOfBirth")
+	idStr := c.Request.FormValue("id")
+	id, err := strconv.Atoi(idStr)
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Invalid ID"})
+		return
+	}
+	user.Id = id
+
+	// Get video file from form data
+	file, _, err := c.Request.FormFile("video")
+	if err != nil {
+		c.JSON(400, gin.H{"error": "Video file is required"})
+		return
+	}
+	defer file.Close()
+
+	// Read video file into byte slice
+	videoBytes, err := io.ReadAll(file)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Failed to read video file"})
+		return
+	}
+	user.Video = videoBytes
+
+	// Save user to database (replace with your actual database logic)
+	err = database.OnboardUser(user)
 	if err != nil {
 		switch err {
 		case database.ErrUserAlreadyExists:
-			c.JSON(409, gin.H{
-				"error": "User already exists",
-			})
+			c.JSON(409, gin.H{"error": "User already exists"})
 		default:
-			c.JSON(500, gin.H{
-				"error": "Failed to add user",
-			})
+			c.JSON(500, gin.H{"error": "Failed to add user"})
 		}
 		return
 	}
 
-	c.JSON(201, gin.H{
-		"message": "User onboarded successfully",
-		"user":    user,
-	})
+	c.JSON(201, gin.H{"message": "User onboarded successfully", "user": user})
 }

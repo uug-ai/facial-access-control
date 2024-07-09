@@ -14,7 +14,7 @@ interface Data {
 
 const UserTable = () => {
   const { data, error, isLoading, refetch } = useGetUsersQuery(undefined);
-
+  console.log("data", data);
   if (isLoading) {
     return <div>Loading...</div>;
   }

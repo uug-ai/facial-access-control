@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Box,
   Row,
@@ -11,12 +11,15 @@ import {
   Socials,
   Icon,
   VideoCapture,
+  Input,
+  Logo,
 } from "../../components/ui";
-import FormComponent from "./components/FormComponent";
-import { SubmitHandler } from "react-hook-form";
+import { useForm, FormProvider, useFormContext } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useRouter } from "next/navigation";
 import { useOnboardUserMutation } from "@/lib/services/users/userApi";
+import { useSearchParams } from "next/navigation";
+import { decrypt } from "@/utils/crypto";
 
 const schema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -27,7 +30,6 @@ const schema = z.object({
     message: "Invalid date format",
   }),
   id: z.number().int().positive("Invalid ID"),
-  status: z.string().optional(),
   video: z.instanceof(Blob, { message: "Video is required" }),
 });
 
@@ -38,24 +40,43 @@ const Onboarding: React.FC = () => {
   const [videoFile, setVideoFile] = useState<Blob | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [onboardUser] = useOnboardUserMutation();
-  
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
 
-  const handleRecordingComplete = (recordedChunks: Blob[]) => {
+  const methods = useForm<FormData>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      dateOfBirth: "",
+      id: 0,
+      video: undefined,
+    },
+  });
+
+  const handleRecordingComplete = useCallback((recordedChunks: Blob[]) => {
     const videoBlob = new Blob(recordedChunks, { type: "video/webm" });
     setVideoFile(videoBlob);
+    methods.setValue("video", videoBlob);
     console.log("Final video blob:", videoBlob);
-  };
+  }, [methods]);
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log("onSubmit called with data:", data);
-
-    if (videoFile) {
-      console.log("Video file exists in onSubmit:", videoFile);
-      const formDataWithVideo = { ...data, video: videoFile };
-
+  const onSubmit = async (data: FormData) => {
+    console.log("Form submitted with data:", data);
+    if (data.video) {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === 'video') {
+          formData.append(key, value as Blob, 'video.webm');
+        } else {
+          formData.append(key, value.toString());
+        }
+      });
+  
       try {
-        await onboardUser(formDataWithVideo).unwrap();
-        console.log("User updated successfully");
+        await onboardUser(data).unwrap();
         setIsSubmitted(true);
       } catch (error) {
         console.error("Failed to update user:", error);
@@ -64,6 +85,29 @@ const Onboarding: React.FC = () => {
       console.error("Video is required in onSubmit");
     }
   };
+  
+
+  React.useEffect(() => {
+    if (token) {
+      const decodedToken = atob(token);
+      decrypt(decodedToken)
+        .then(decryptedData => {
+          try {
+            const user = JSON.parse(decryptedData);
+            methods.setValue('firstName', user.firstname);
+            methods.setValue('lastName', user.lastname);
+            methods.setValue('email', user.email);
+            methods.setValue('id', user.id);
+            console.log("Decrypted token:", user);
+          } catch (error) {
+            console.error("Failed to parse decrypted token", error);
+          }
+        })
+        .catch(error => {
+          console.error("Failed to decrypt token", error);
+        });
+    }
+  }, [token, methods]);
 
   return (
     <Box className="bg-primary-50">
@@ -74,7 +118,19 @@ const Onboarding: React.FC = () => {
             {isSubmitted ? (
               <Text>User registered!</Text>
             ) : (
-              <FormComponent videoFile={videoFile} onSubmit={onSubmit} />
+              <FormProvider {...methods}>
+                <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-8">
+                  <Logo />
+                  <FormField name="firstName" label="First Name" placeholder="First Name" description="Your first name." />
+                  <FormField name="lastName" label="Last Name" placeholder="Last Name" description="Your last name." />
+                  <FormField name="email" label="Email" placeholder="E-Mail" description="Your email address." />
+                  <FormField name="phoneNumber" label="Phone Number" placeholder="Phone Number" description="Your phone number." />
+                  <FormField name="dateOfBirth" label="Date of Birth" type="date" placeholder="Date of Birth" description="Your date of birth." />
+                  <Button type="submit" variant="solid" width="third">
+                    Register
+                  </Button>
+                </form>
+              </FormProvider>
             )}
           </Stack>
           <FaceScanSection
@@ -85,6 +141,39 @@ const Onboarding: React.FC = () => {
         </Row>
         <InfoSection />
       </Stack>
+    </Box>
+  );
+};
+
+interface FormFieldProps {
+  name: keyof FormData;
+  label: string;
+  description?: string;
+  placeholder?: string;
+  type?: string;
+}
+
+const FormField: React.FC<FormFieldProps> = ({
+  name,
+  label,
+  description,
+  placeholder,
+  type = "text",
+}) => {
+  const { register, formState: { errors } } = useFormContext<FormData>();
+  return (
+    <Box className="mb-4">
+      <Text as="label" weight="semibold" className="mb-1">
+        {label}
+      </Text>
+      <Input
+        {...register(name)}
+        type={type}
+        placeholder={placeholder}
+        className="bg-white"
+      />
+      {errors[name] && <p>{(errors[name]?.message as string) || ""}</p>}
+      {description && <p className="text-sm text-gray-500">{description}</p>}
     </Box>
   );
 };
@@ -126,6 +215,7 @@ const FaceScanSection: React.FC<FaceScanSectionProps> = ({
     </Box>
   </Stack>
 );
+
 
 const InfoSection = () => (
   <Stack className="p-14 items-center place-content-center">

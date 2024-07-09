@@ -9,6 +9,5 @@ export const schema = z.object({
     message: "Invalid date format",
   }),
   id: z.number().int().positive("Invalid ID"),
-  status: z.string().optional(),
   video: z.instanceof(Blob, { message: "Video is required" }),
 });
