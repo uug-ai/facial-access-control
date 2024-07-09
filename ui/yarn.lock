@@ -2877,10 +2877,10 @@
   resolved "https://registry.yarnpkg.com/@ungap/structured-clone/-/structured-clone-1.2.0.tgz#756641adb587851b5ccb3e095daf27ae581c8406"
   integrity sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==
 
-"@uug-ai/ui@1.0.36":
-  version "1.0.36"
-  resolved "https://registry.yarnpkg.com/@uug-ai/ui/-/ui-1.0.36.tgz#d52b7d7be7de9183f4f225d46348c77de4792cb7"
-  integrity sha512-wWm7tCiObTGk6jZYGUohEDozRz3Q6O/w3abw3hlPvb3vckem1n9ODSI8HoAm7Wn9mM7TdZTasNxSFqB9GlvOuQ==
+"@uug-ai/ui@^1.0.39":
+  version "1.0.39"
+  resolved "https://registry.yarnpkg.com/@uug-ai/ui/-/ui-1.0.39.tgz#a32d7e03747cfd7caa01caeef2add2c3965bdee5"
+  integrity sha512-wZnCU7GS1V28Kd9AqHUjU5bXPce9T2b/TJSOxqEiZTklcBANKJ952rI9G5Hd1+yqzpftpsXtSoaPMn5Y9+svzQ==
   dependencies:
     "@storybook/addon-essentials" "^8.0.9"
     "@storybook/addon-interactions" "^8.0.9"
