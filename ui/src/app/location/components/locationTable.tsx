@@ -1,9 +1,7 @@
-// src/app/location/components/locationTable.tsx
-
 'use client';
 
 import React, { useState } from "react";
-import { Stack, Row, Input, Button, Text } from "../../../components/ui";
+import { Stack, Row, Input, Button, Text, Icon } from "../../../components/ui";
 
 interface Location {
   id: number;
@@ -20,15 +18,17 @@ interface Location {
 interface LocationTableProps {
   locations: Location[];
   onLocationClick: (location: Location) => void;
+  onEditClick: (location: Location) => void;
 }
 
-const LocationTable: React.FC<LocationTableProps> = ({ locations, onLocationClick }) => {
+const LocationTable: React.FC<LocationTableProps> = ({ locations, onLocationClick, onEditClick }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const itemsPerPage = 9;
 
   const columns = [
-    { key: "name", title: "Name" },
+    { key: "name", title: "Name", dataIndex: "name" },
+    { key: "edit", title: "Edit", dataIndex: "edit" }, // Add Edit column
   ];
 
   // Pagination logic
@@ -66,19 +66,26 @@ const LocationTable: React.FC<LocationTableProps> = ({ locations, onLocationClic
           {currentData.map((location: Location) => (
             <React.Fragment key={location.id}>
               <tr onClick={() => { handleRowClick(location.id); onLocationClick(location); }} className="cursor-pointer border-y-2 border-white">
-                <td className="py-3 pl-2">{location.name}</td>
+                <td className="py-3 pl-2 ">{location.name}</td>
+                <td className="py-3 pl-2">
+                </td>
               </tr>
               {expandedRow === location.id && (
-                <tr>
+                <tr className="bg-white border-slate-700 border-b-2">
                   <td colSpan={columns.length}>
-                    <Stack className="p-4 bg-white">
-                      <Text>{location.city}</Text>
-                      <Text>{location.address}</Text>
-                      <Text>{location.locationPhone}</Text>
-                      <br />
-                      <Text>{location.head}</Text>
-                      <Text>{location.personPhone}</Text>
-                    </Stack>
+                    <Row className="p-4">
+                      <Stack className="bg-white">
+                        <Text>{location.city}</Text>
+                        <Text>{location.address}</Text>
+                        <Text>{location.locationPhone}</Text>
+                        <br />
+                        <Text>{location.head}</Text>
+                        <Text>{location.personPhone}</Text>
+                      </Stack>
+                      <Button className="text-sm place-self-end" onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.stopPropagation(); onEditClick(location); }}>
+                    Edit
+                  </Button>
+                    </Row>
                   </td>
                 </tr>
               )}
