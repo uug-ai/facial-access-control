@@ -20,6 +20,7 @@ import * as z from "zod";
 import { useOnboardUserMutation } from "@/lib/services/users/userApi";
 import { useSearchParams } from "next/navigation";
 import { decrypt } from "@/utils/crypto";
+import { InfoSection } from "./components/InfoSection";
 
 const schema = z.object({
   firstName: z.string().min(1, "First Name is required"),
@@ -189,27 +190,28 @@ const FaceScanSection: React.FC<FaceScanSectionProps> = ({
   setIsRecording,
   handleRecordingComplete,
 }) => (
-  <Stack className="w-2/3 flex items-center place-content-center">
+  <Stack className="w-2/3 flex items-center place-content-center relative">
     <Box className="w-96">
       <VideoCapture
         isRecording={isRecording}
         onRecordingComplete={handleRecordingComplete}
       />
     </Box>
-    <Box className="w-1/5 relative">
+    <Box className="w-1/5">
       {isRecording ? (
         <Row className="place-content-center pt-8">
+          <div className="absolute h-4 w-4 rounded-full right-52 top-5 bg-red-500"></div>
           <Button variant={"solid"} onClick={() => setIsRecording(false)}>
             Stop Recording
           </Button>
-          <Icon type="help" className="absolute -right-5 top-5" />
+          <Icon type="help" className="absolute right-5 top-5" />
         </Row>
       ) : (
         <Row className="place-content-center pt-8">
           <Button variant={"solid"} onClick={() => setIsRecording(true)}>
             Start Recording
           </Button>
-          <Icon type="help" className="absolute -right-5 top-5" />
+          <Icon type="help" className="absolute right-5 top-5" />
         </Row>
       )}
     </Box>
@@ -217,49 +219,6 @@ const FaceScanSection: React.FC<FaceScanSectionProps> = ({
 );
 
 
-const InfoSection = () => (
-  <Stack className="p-14 items-center place-content-center">
-    <Box className="p-10 shadow-md rounded-md bg-white text-xl w-full ">
-      <Text as="a" weight="bold" className="shadow-inner bg-white" />
-      Hello, this is a registration form where you can register with a video of
-      yourself! <br />
-      We will use this video to create biometrics, so you get access into the
-      company and won't need to use a badge or card.
-    </Box>
-    <Row className="pt-14 space-x-10">
-      <Box className="w-1/2">
-        <Stack>
-          <Text size={"lg"} weight={"bold"} className="pb-5">
-            About UUFT.Ai
-          </Text>
-          <Text as="a">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Voluptatibus vero reiciendis quae porro, voluptates odit. Culpa
-            ipsam beatae voluptas vitae est repudiandae, nulla atque, reiciendis
-            labore, voluptatibus eum dolorem! Id inventore quidem ipsam impedit
-            possimus?
-          </Text>
-        </Stack>
-      </Box>
-      <Box className="w-1/2">
-        <Stack>
-          <Text size={"lg"} weight={"bold"} className="pb-5">
-            About UUFT.Ai
-          </Text>
-          <Text as="a">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            Voluptatibus vero reiciendis quae porro, voluptates odit. Culpa
-            ipsam beatae voluptas vitae est repudiandae, nulla atque, reiciendis
-            labore, voluptatibus eum dolorem! Id inventore quidem ipsam impedit
-            possimus?
-          </Text>
-        </Stack>
-      </Box>
-    </Row>
-    <Box>
-      <Socials size={"lg"} className="pt-16" />
-    </Box>
-  </Stack>
-);
+
 
 export default Onboarding;
