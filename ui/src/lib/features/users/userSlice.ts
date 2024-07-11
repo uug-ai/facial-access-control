@@ -9,6 +9,8 @@ const initialState: User = {
   role: "",
   installed: false,
   language: "",
+  status: "",
+  video: undefined
 };
 
 const userSlice = createSlice({
