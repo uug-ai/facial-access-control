@@ -4,4 +4,10 @@ ml/data/test_images
 node_modules
 ui/out
 __debug_bin*
+api/.env.local
 api/__debug_bin*
+ui/yarn.lock
+api/.env
+ui/.env.local
+ui/.env.local
+*.local

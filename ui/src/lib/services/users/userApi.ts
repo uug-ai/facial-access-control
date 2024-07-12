@@ -8,6 +8,7 @@ export const userApi = createApi({
     if (token) {
       args.headers = { ...args.headers, Authorization: `Bearer ${token}` };
     }
+    console.log("args:", args, "api:", api, "extraOptions:", extraOptions);
     return baseQuery(args, api, extraOptions);
   },
   tagTypes: ["User"],
@@ -30,11 +31,11 @@ export const userApi = createApi({
       invalidatesTags: ["User"],
     }),
     updateUser: build.mutation({
-      query: ({ id, body }) => ({
-        url: `users/${id}`,
-        method: "PUT",
+      query: (user) => ({
+        url: `users/${user.id}`,
+        method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body,
+        body: user,
       }),
       invalidatesTags: ["User"],
     }),
@@ -43,6 +44,34 @@ export const userApi = createApi({
         url: `users/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["User"],
+    }),
+    inviteUser: build.mutation({
+      query: (user) => ({
+        url: "users/invite",
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: user,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    onboardUser: build.mutation({
+      query: (user) => {
+        const formData = new FormData();
+        Object.entries(user).forEach(([key, value]) => {
+          if (key === 'video' && value instanceof Blob) {
+            formData.append(key, value, 'video.webm');
+          } else {
+            formData.append(key, value as string);
+          }
+        });
+
+        return {
+          url: "users/onboard",
+          method: "POST",
+          body: formData,
+        };
+      },
       invalidatesTags: ["User"],
     }),
   }),
@@ -54,4 +83,6 @@ export const {
   useAddUserMutation,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useInviteUserMutation,
+  useOnboardUserMutation
 } = userApi;

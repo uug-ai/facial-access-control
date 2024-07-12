@@ -7,4 +7,6 @@ interface User {
   role: string;
   installed: boolean;
   language: string;
+  status: string;
+  video: Blob | undefined;
 }

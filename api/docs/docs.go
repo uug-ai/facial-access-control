@@ -236,6 +236,35 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/models.User"
                         }
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "409": {
+                        "description": "Conflict"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/users/invite": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "description": "Invite user",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Invite",
+                "operationId": "inviteUser",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             }

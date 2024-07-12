@@ -14,7 +14,7 @@ interface Data {
 
 const UserTable = () => {
   const { data, error, isLoading, refetch } = useGetUsersQuery(undefined);
-
+  console.log("data", data);
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -44,12 +44,17 @@ const UserTable = () => {
   }
   const mappedData =
     data?.data.map((user: User) => ({
+      status: user.status,
       id: user.id,
       name: `${user.firstname} ${user.lastname}`,
       email: user.email,
     })) ?? [];
 
   const columns: Array<ColumnProps<Data>> = [
+    {
+      key: "status",
+      title: "Status",
+    },
     {
       key: "id",
       title: "Id",

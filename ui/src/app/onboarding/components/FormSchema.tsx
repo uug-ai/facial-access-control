@@ -8,5 +8,6 @@ export const schema = z.object({
   dateOfBirth: z.string().refine((val) => !isNaN(Date.parse(val)), {
     message: "Invalid date format",
   }),
+  id: z.number().int().positive("Invalid ID"),
   video: z.instanceof(Blob, { message: "Video is required" }),
 });

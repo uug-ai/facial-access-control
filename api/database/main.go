@@ -13,11 +13,17 @@ func GetUserById(id int) models.User {
 func GetUserByEmail(email string) models.User {
 	return GetUserByEmailFromFile(email)
 }
-func AddUser(user models.User) error {
+func AddUser(user models.User) (models.User, error) {
 	return AddUserToFile(user)
 }
 func DeleteUser(id int) error {
 	return DeleteUserFromFile(id)
+}
+func UpdateUser(user models.User) error {
+	return UpdateUserFromFile(user)
+}
+func OnboardUser(user models.User) error {
+	return OnboardUserToFile(user)
 }
 func GetLocations() []models.Location {
 	return GetLocationsFromFile()
