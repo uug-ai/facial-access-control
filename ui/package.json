@@ -15,7 +15,7 @@
     "@hookform/resolvers": "^3.5.0",
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/jest-dom": "^6.4.6",
-    "@uug-ai/ui": "^1.0.36",
+    "@uug-ai/ui": "^1.0.39",
     "autoprefixer": "^10.4.19",
     "cookies-next": "^4.2.1",
     "next": "14",
